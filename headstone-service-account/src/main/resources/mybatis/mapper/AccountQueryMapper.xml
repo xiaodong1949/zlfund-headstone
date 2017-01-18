@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.account.dao.impl.AccountQueryDaoImpl">
+
+    <sql id="table_custinfo">custinfo</sql>
+
+    <resultMap id="beanMap" type="CustInfo">
+        <id property="custno" column="custno"/>
+        <result property="invnm" column="invnm"/>
+        <result property="idno" column="idno"/>
+        <result property="mobileno" column="mobileno"/>
+        <result property="custst" column="custst"/>
+        <result property="mobileverifist" column="mobileverifist"/>
+        <result property="insertTimestamp" column="inserttimestamp"/>
+        <result property="updateTimestamp" column="updatetimestamp"/>
+    </resultMap>
+
+    <select id="listBy" parameterType="java.util.Map" resultMap="beanMap">
+        select * from
+        <include refid="table_custinfo"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        <![CDATA[ order by custst DESC , mobileverifist DESC ,custno DESC ]]>
+    </select>
+
+
+    <sql id="condition_sql">
+        <!-- Equal query -->
+        <if test="custno != null and custno !='' ">and custno = #{custno}</if>
+        <if test="idno != null and idno !='' ">and STATUS = #{idno}</if>
+        <if test="mobileno != null and mobileno !='' ">and mobileno = #{mobileno}</if>
+        <if test="custst != null and custst !='' ">and custst = #{custst}</if>
+    </sql>
+
+    <select id="listPage" parameterType="java.util.Map" resultMap="beanMap">
+        select * from
+        <include refid="table_custinfo"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        <![CDATA[ order by custno desc]]>
+    </select>
+
+    <select id="listPageCount" parameterType="java.util.Map" resultType="long">
+        select count(1) from
+        <include refid="table_custinfo"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+</mapper>
