@@ -20,7 +20,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<dubbo:application name="dubbo-demo-consumer" />
+	<dubbo:application name="headstone-demo-consumer" />
 	<!-- 
 	这种配置不好使，某个节点宕机导致无法上报
     <dubbo:registry protocol="zookeeper" address="10.234.99.247:2181,10.234.99.248:2181,10.234.99.247:2182" />
