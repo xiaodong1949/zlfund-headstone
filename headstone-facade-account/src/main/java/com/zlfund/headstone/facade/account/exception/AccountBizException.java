@@ -36,14 +36,14 @@ public class AccountBizException extends BizException {
 
     public static final AccountBizException ACCOUNTHISTORY_IS_EXIST = new AccountBizException(20080122, "账户历史记录已存在");
 
-    public AccountBizException() {
+    protected AccountBizException() {
     }
 
-    public AccountBizException(int code, String msgFormat, Object... args) {
+    protected AccountBizException(int code, String msgFormat, Object... args) {
         super(code, msgFormat, args);
     }
 
-    public AccountBizException(int code, String msg) {
+    protected AccountBizException(int code, String msg) {
         super(code, msg);
     }
 

@@ -25,7 +25,7 @@
 			<!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
 			<resource>
 				<directory>src/main/resources</directory>
-				<targetPath>${project.build.directory}/classes</targetPath>
+				<targetPath>target/classes</targetPath>
 				<includes>
 					<include>**/*</include>
 				</includes>

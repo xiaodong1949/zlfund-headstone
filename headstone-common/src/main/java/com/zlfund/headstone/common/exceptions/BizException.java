@@ -80,13 +80,13 @@ public class BizException extends RuntimeException {
      */
     protected int code;
 
-    private BizException(int code, String msgFormat, Object... args) {
+    protected BizException(int code, String msgFormat, Object... args) {
         super(String.format(msgFormat, args));
         this.code = code;
         this.msg = String.format(msgFormat, args);
     }
 
-    private BizException() {
+    protected BizException() {
         super();
     }
 
