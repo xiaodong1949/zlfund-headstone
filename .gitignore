@@ -1,5 +1,7 @@
 # maven ignore
 target/
+bin/
+*.class
 *.jar
 *.war
 *.zip

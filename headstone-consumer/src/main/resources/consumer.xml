@@ -33,6 +33,6 @@
 	<dubbo:registry address="zookeeper://10.234.99.244:2181" />
 
 	<dubbo:monitor protocol="registry"/>
-	<dubbo:reference id="accountManageFacade" interface="com.zlfund.headstone.facade.account.service.AccountManageFacade" />
-	<dubbo:reference id="accountQueryFacade" interface="com.zlfund.headstone.facade.account.service.AccountQueryFacade" />
+	<dubbo:reference id="accountManageFacade" interface="com.zlfund.headstone.facade.account.service.AccountManageFacade" version="1.0"/>
+	<dubbo:reference id="accountQueryFacade" interface="com.zlfund.headstone.facade.account.service.AccountQueryFacade" version="1.0" />
 </beans>
