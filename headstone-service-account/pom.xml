@@ -8,7 +8,7 @@
     </parent>
     <artifactId>headstone-service-account</artifactId>
     <version>${headstone_service_account_version}</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>${project.artifactId}</name>
     <description>The common module of headstone-facade-account</description>
 
@@ -89,14 +89,6 @@
                 <includes>
                     <include>**/*.xml</include>
                     <include>**/*.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>META-INF/spring</targetPath>
-                <directory>src/main/resources/spring</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>spring-context.xml</include>
                 </includes>
             </resource>
         </resources>
