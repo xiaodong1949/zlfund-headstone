@@ -8,7 +8,7 @@
     </parent>
     <artifactId>headstone-service-account</artifactId>
     <version>${headstone_service_account_version}</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>${project.artifactId}</name>
     <description>The common module of headstone-facade-account</description>
 
@@ -84,7 +84,6 @@
     <build>
         <resources>
             <resource>
-                <targetPath>target/classes</targetPath>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
@@ -93,7 +92,7 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>target/classes/META-INF/spring</targetPath>
+                <targetPath>META-INF/spring</targetPath>
                 <directory>src/main/resources/spring</directory>
                 <filtering>true</filtering>
                 <includes>
