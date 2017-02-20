@@ -18,8 +18,8 @@
         <module>headstone-common</module>
         <module>headstone-common-config</module>
         <module>headstone-common-core</module>
-        <module>headstone-facade-account</module>
-        <module>headstone-service-account</module>
+        <module>headstone-facade-account-manage</module>
+        <module>headstone-service-account-manage</module>
         <module>headstone-consumer</module>
     </modules>
 

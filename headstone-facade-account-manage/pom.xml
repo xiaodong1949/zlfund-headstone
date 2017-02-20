@@ -6,11 +6,11 @@
         <artifactId>headstone-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>headstone-facade-account</artifactId>
+    <artifactId>headstone-facade-account-manage</artifactId>
     <version>${headstone_facade_account_version}</version>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <description>The common module of headstone-facade-account</description>
+    <description>The common module of headstone-facade-account-manage</description>
     <dependencies>
         <dependency>
             <groupId>com.zlfund.headstone</groupId>

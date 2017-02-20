@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.zlfund.headstone</groupId>
-            <artifactId>headstone-facade-account</artifactId>
+            <artifactId>headstone-facade-account-manage</artifactId>
             <version>${headstone_facade_account_version}</version>
         </dependency>
         <dependency>
