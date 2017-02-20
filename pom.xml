@@ -23,8 +23,6 @@
         <module>headstone-consumer</module>
     </modules>
 
-<<<<<<< HEAD
-=======
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
@@ -38,7 +36,6 @@
         </snapshotRepository>
     </distributionManagement>
 
->>>>>>> f456662e52c2db4deb4ba31cd55b18be8096c2f8
     <properties>
         <!-- 众禄金融 项目的工程版本号 begin -->
         <headstone_common_version>1.0-SNAPSHOT</headstone_common_version>		
