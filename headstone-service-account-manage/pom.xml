@@ -84,20 +84,11 @@
     <build>
         <resources>
             <resource>
-                <targetPath>target/classes</targetPath>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
                     <include>**/*.xml</include>
                     <include>**/*.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>target/classes/META-INF/spring</targetPath>
-                <directory>src/main/resources/spring</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>spring-context.xml</include>
                 </includes>
             </resource>
         </resources>
