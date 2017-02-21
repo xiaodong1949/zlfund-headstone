@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.account.dao.impl.AccountManageDaoImpl">
+
+    <sql id="table_custinfo">custinfo</sql>
+
+    <select id="newCustNo" resultType="java.lang.Integer">
+		SELECT (1000000000 + NEXTVAL('SEQ_CUSTNO'))   custno
+	</select>
+
+
+    <insert id="insert" parameterType="CustInfo" keyProperty="custno" useGeneratedKeys="false">
+        insert into
+        <include refid="table_custinfo"/>
+        (custno, idno, invnm, mobileno, custst, mobileverifist)
+        values (#{custno}, #{idno}, #{invnm}, #{mobileno},
+        #{custst}, #{mobileverifist})
+    </insert>
+
+
+    <update id="update" parameterType="CustInfo">
+        update
+        <include refid="table_custinfo"/>
+        <set>
+            idno = #{idno},
+            invnm = #{invnm},
+            mobileno = #{mobileno},
+            custst = #{custst},
+            mobileverifist=#{mobileverifist},
+            updateimestamp = now()
+        </set>
+        <where>
+            custno = #{custno}
+        </where>
+    </update>
+
+
+</mapper>
