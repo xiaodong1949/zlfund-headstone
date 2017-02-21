@@ -9,9 +9,10 @@
 package com.zlfund.headstone.facade.trade.service.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
-import com.zlfund.headstone.facade.trade.entity.BuyRequest;
-import com.zlfund.headstone.facade.trade.entity.BuyResult;
+import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
+import com.zlfund.headstone.facade.trade.dto.BuyResultDTO;
 import com.zlfund.headstone.facade.trade.service.BuyFacade;
 
 /** 
@@ -19,21 +20,20 @@ import com.zlfund.headstone.facade.trade.service.BuyFacade;
  * @since: 2017年2月20日 下午6:57:43 
  * @history:
  */
+@Component("buyFacade")
 public class BuyFacadeImpl implements BuyFacade {
 
     private static final Logger LOG = Logger.getLogger(BuyFacadeImpl.class);
 
     /** 
-     * @see com.zlfund.headstone.facade.trade.service.BuyFacade#buy(com.zlfund.headstone.facade.trade.entity.BuyRequest)
+     * @see com.zlfund.headstone.facade.trade.service.BuyFacade#buy(com.zlfund.headstone.facade.trade.dto.BuyRequestDTO)
      */
     @Override
-    public BuyResult buy(BuyRequest buyRequest) {
+    public BuyResultDTO buy(BuyRequestDTO buyRequest) {
         LOG.info(buyRequest);
 
-        BuyResult buyResult = new BuyResult();
-        buyResult.setErrCod("0000");
-        buyResult.setErrMsg("成功");
-        buyResult.setWorkDate("20170220");
+        BuyResultDTO buyResult = new BuyResultDTO();
+        buyResult.setSuccess(true);
         return buyResult;
     }
 }

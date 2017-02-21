@@ -1,4 +1,4 @@
-package com.zlfund.headstone.common.entity;
+package com.zlfund.headstone.common.dto;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -6,18 +6,18 @@
  * @date 2017年2月20日 下午5:05:10 
  * @version V1.0   
  */
-package com.zlfund.headstone.facade.trade.entity;
+package com.zlfund.headstone.facade.trade.dto;
 
 import java.io.Serializable;
 
-import com.zlfund.headstone.common.entity.BaseResult;
+import com.zlfund.headstone.common.dto.BaseResultDTO;
 
 /** 
  * @author: 徐文凡 
  * @since: 2017年2月20日 下午5:05:10 
  * @history:
  */
-public class BuyResult extends BaseResult implements Serializable {
+public class BuyResultDTO extends BaseResultDTO implements Serializable {
 
     private static final long serialVersionUID = -9044297068712842696L;
 

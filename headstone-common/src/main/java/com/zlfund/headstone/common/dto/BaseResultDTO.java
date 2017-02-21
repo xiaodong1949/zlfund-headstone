@@ -6,15 +6,15 @@
  * @date 2017年2月21日 上午9:33:34 
  * @version V1.0   
  */
-package com.zlfund.headstone.common.entity;
+package com.zlfund.headstone.common.dto;
 
 /** 
- * 响应基类，用于RPC调用响应
+ * RPC数据传输对象响应基类,所有响应DTO继承此类
  * @author: 徐文凡 
  * @since: 2017年2月21日 上午9:33:34 
  * @history:
  */
-public class BaseResult {
+public class BaseResultDTO {
 
     // 调用是否成功
     private boolean isSuccess;

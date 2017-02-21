@@ -8,8 +8,8 @@
  */
 package com.zlfund.headstone.facade.trade.service;
 
-import com.zlfund.headstone.facade.trade.entity.BuyRequest;
-import com.zlfund.headstone.facade.trade.entity.BuyResult;
+import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
+import com.zlfund.headstone.facade.trade.dto.BuyResultDTO;
 
 /** 
  * @author: 徐文凡 
@@ -18,6 +18,6 @@ import com.zlfund.headstone.facade.trade.entity.BuyResult;
  */
 public interface BuyFacade {
 
-    BuyResult buy(BuyRequest buyRequest);
+    BuyResultDTO buy(BuyRequestDTO buyRequest);
 
 }

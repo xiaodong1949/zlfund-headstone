@@ -6,14 +6,16 @@
  * @date 2017年2月20日 下午5:06:39 
  * @version V1.0   
  */
-package com.zlfund.headstone.facade.trade.entity;
+package com.zlfund.headstone.facade.trade.dto;
+
+import com.zlfund.headstone.common.dto.BaseRequestDTO;
 
 /** 
  * @author: 徐文凡 
  * @since: 2017年2月20日 下午5:06:39 
  * @history:
  */
-public class BuyRequest extends BaseRequest {
+public class BuyRequestDTO extends BaseRequestDTO {
 
     private static final long serialVersionUID = 1L;
 

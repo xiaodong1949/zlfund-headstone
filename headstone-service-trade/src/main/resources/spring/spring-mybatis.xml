@@ -11,10 +11,10 @@
 	<!-- 基于Druid数据库链接池的数据源配置 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<!-- 基本属性driverClassName、 url、user、password -->
-		<property name="driverClassName" value="${account.jdbc.driverClassName}" />
-		<property name="url" value="${account.jdbc.url}" />
-		<property name="username" value="${account.jdbc.username}" />
-		<property name="password" value="${account.jdbc.password}" />
+		<property name="driverClassName" value="${trade.jdbc.driverClassName}" />
+		<property name="url" value="${trade.jdbc.url}" />
+		<property name="username" value="${trade.jdbc.username}" />
+		<property name="password" value="${trade.jdbc.password}" />
 		
 	    <!-- 初始化时建立物理连接的个数，缺省值为0 -->
 		<property name="initialSize" value="5" />
@@ -36,7 +36,7 @@
 		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒(300000:为5分钟) -->
 		<property name="minEvictableIdleTimeMillis" value="300000" />
 		<!-- 用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。 -->
-		<property name="validationQuery" value="${account.jdbc.pool.validationQuery}" />
+		<property name="validationQuery" value="${trade.jdbc.pool.validationQuery}" />
 		<!-- 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。建议配置为true，不影响性能，并且保证安全性。-->
       	<property name="testWhileIdle" value="true" />
       	<!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。缺省值:true -->
@@ -52,7 +52,7 @@
 		
 		<!-- 解密密码必须要配置的项 利用druid的加密功能-->
 		<property name="filters" value="config" />
-		<property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${account.jdbc.password.key}" />
+		<property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${trade.jdbc.password.key}" />
 
 	</bean>
 	<!-- 将数据源映射到sqlSessionFactory中 -->

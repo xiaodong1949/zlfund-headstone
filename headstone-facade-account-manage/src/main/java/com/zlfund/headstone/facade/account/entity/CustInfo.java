@@ -3,7 +3,7 @@
  */
 package com.zlfund.headstone.facade.account.entity;
 
-import com.zlfund.headstone.common.entity.BaseEntity;
+import com.zlfund.headstone.common.dto.BaseEntity;
 
 import java.util.Date;
 import java.util.List;

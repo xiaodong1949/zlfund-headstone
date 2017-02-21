@@ -7,13 +7,13 @@
             http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 提供方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="headstone-service-account"/>
+    <dubbo:application name="headstone-service-trade"/>
 
     <!-- 使用zookeeper注册中心暴露服务地址 -->
     <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address}"/>
 
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="20880"/>
+    <dubbo:protocol name="dubbo" port="20820"/>
 
     <!-- 监控中心配置，protocol="registry"，表示从注册中心发现监控中心地址 -->
     <dubbo:monitor protocol="registry"/>
@@ -25,13 +25,8 @@
 
     <!-- 声明需要暴露的服务接口 尽可能配置客户端的参数-->
     <!-- 账户管理 不可重试，可以配置consumer更多策略 -->
-    <dubbo:service retries="0" interface="com.zlfund.headstone.facade.account.service.AccountManageFacade"
+    <dubbo:service retries="0" interface="com.zlfund.headstone.facade.trade.service.BuyFacade"
                    ref="accountManageFacade" cluster="failfast"  loadbalance="roundrobin"
                    timeout="15000" owner="wangyf,xuwf" version="1.0"/>
-
-    <!-- 账户查询 可适当重试，可以配置更多consumer策略-->
-    <dubbo:service retries="3" interface="com.zlfund.headstone.facade.account.service.AccountQueryFacade"
-                   ref="accountQueryFacade"  cluster="failover" loadbalance="roundrobin"
-                   timeout="10000" owner="wangyf,xuwf" version="1.0"/>
 
 </beans>  

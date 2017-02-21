@@ -1,7 +1,7 @@
 package com.zlfund.headstone.core.common.biz;
 
 
-import com.zlfund.headstone.common.entity.BaseEntity;
+import com.zlfund.headstone.common.dto.BaseEntity;
 import com.zlfund.headstone.common.page.PageBean;
 import com.zlfund.headstone.common.page.PageParam;
 

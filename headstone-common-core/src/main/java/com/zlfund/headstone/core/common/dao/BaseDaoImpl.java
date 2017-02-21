@@ -1,11 +1,12 @@
 package com.zlfund.headstone.core.common.dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.zlfund.headstone.common.entity.BaseEntity;
+import com.zlfund.headstone.common.dto.BaseEntity;
 import com.zlfund.headstone.common.exceptions.BizException;
 import com.zlfund.headstone.common.page.PageBean;
 import com.zlfund.headstone.common.page.PageParam;
 import com.zlfund.headstone.core.common.mybatis.interceptor.ExecutorInterceptor;
+
 import org.apache.ibatis.jdbc.SqlRunner;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
