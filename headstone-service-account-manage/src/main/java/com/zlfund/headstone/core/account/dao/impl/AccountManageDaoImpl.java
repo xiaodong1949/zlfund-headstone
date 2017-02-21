@@ -1,6 +1,6 @@
 package com.zlfund.headstone.core.account.dao.impl;
 
-import com.zlfund.headstone.core.account.dao.AccountManageDao;
+import com.zlfund.headstone.core.AccountManageDao;
 import com.zlfund.headstone.core.common.dao.BaseDaoImpl;
 import com.zlfund.headstone.facade.account.entity.CustInfo;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
-package com.zlfund.headstone.service.account.service.impl;
+package com.zlfund.headstone.core.facade.account.query.service.impl;
 
-import com.zlfund.headstone.core.account.dao.AccountQueryDao;
+import com.zlfund.headstone.core.AccountQueryDao;
 import com.zlfund.headstone.facade.account.entity.CustInfo;
 import com.zlfund.headstone.facade.account.exception.AccountBizException;
 import com.zlfund.headstone.facade.account.service.AccountQueryFacade;

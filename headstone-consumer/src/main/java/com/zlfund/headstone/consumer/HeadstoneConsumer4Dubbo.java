@@ -2,7 +2,7 @@ package com.zlfund.headstone.consumer;
 
 import com.zlfund.headstone.common.exceptions.BizException;
 import com.zlfund.headstone.facade.account.entity.CustInfo;
-import com.zlfund.headstone.facade.account.service.AccountManageFacade;
+import com.zlfund.headstone.facade.account.manage.service.AccountManageFacade;
 import com.zlfund.headstone.facade.account.service.AccountQueryFacade;
 import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
