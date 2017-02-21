@@ -19,6 +19,7 @@ public class BuyBizException extends BizException {
 
     private static final long serialVersionUID = 1L;
 
-    private BuyBizException() {
+    protected BuyBizException() {
     }
+
 }
