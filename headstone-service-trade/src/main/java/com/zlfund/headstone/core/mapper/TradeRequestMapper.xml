@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.TradeRequestMapper">
+
+  <insert id="saveTradeRequest" resultType="TradeRequestPO">
+    INSERT INTO traderequest(
+            serialno, custno, tradeacco, apkind, fundid, subquty, subamt, 
+            apdt, aptm, remark, updatetimestamp, workdate, spanflag, cashfrom, 
+            subramt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 
+            ?, ?, ?, ?, ?, ?, ?, 
+            ?);
+  </insert>
+  
+  <select id="xxx">
+    select 
+    
+  </select>
+
+</mapper>
