@@ -60,6 +60,7 @@ public class BizException extends RuntimeException {
      * Token 验证不通过
      */
     public static final BizException TOKEN_IS_ILLICIT = new BizException(90040005, "Token 验证非法");
+
     /**
      * 会话超时　获取session时，如果是空，throws 下面这个异常 拦截器会拦截爆会话超时页面
      */
@@ -71,31 +72,38 @@ public class BizException extends RuntimeException {
     public static final BizException DB_GET_SEQ_NEXT_VALUE_ERROR = new BizException(90040007, "获取序列出错");
 
     /**
-     * 异常信息
+     * 异常信息(固定)
      */
     protected String msg;
 
     /**
-     * 具体异常码
+     * 具体异常码(固定)
      */
     protected int code;
 
-    protected BizException(int code, String msgFormat, Object... args) {
-        super(String.format(msgFormat, args));
+    /**
+     * 异常详细信息,默认为空,可format
+     */
+    protected String detailMsg;
+
+    protected BizException(int code, String msg) {
+        super(msg);
         this.code = code;
-        this.msg = String.format(msgFormat, args);
+        this.msg = msg;
     }
 
-    protected BizException() {
-        super();
+    protected BizException(int code, String msg, String detailMsg) {
+        super(msg);
+        this.code = code;
+        this.msg = msg;
+        this.detailMsg = detailMsg;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public int getCode() {
-        return code;
+    protected BizException(int code, String msg, String detailMsg, Object... args) {
+        super(msg);
+        this.code = code;
+        this.msg = msg;
+        this.detailMsg = String.format(detailMsg, args);
     }
 
     /**
@@ -105,8 +113,8 @@ public class BizException extends RuntimeException {
      * @param args
      * @return
      */
-    public BizException newInstance(String msgFormat, Object... args) {
-        return new BizException(this.code, msgFormat, args);
+    public BizException newInstance(String detailMsg, Object... args) {
+        return new BizException(this.code, this.msg, detailMsg, args);
     }
 
     public BizException(String message, Throwable cause) {
@@ -119,5 +127,29 @@ public class BizException extends RuntimeException {
 
     public BizException(String message) {
         super(message);
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getDetailMsg() {
+        return detailMsg;
+    }
+
+    public void setDetailMsg(String detailMsg) {
+        this.detailMsg = detailMsg;
     }
 }
