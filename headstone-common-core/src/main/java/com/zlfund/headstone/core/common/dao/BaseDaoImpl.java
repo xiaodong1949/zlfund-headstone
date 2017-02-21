@@ -1,11 +1,9 @@
 package com.zlfund.headstone.core.common.dao;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.zlfund.headstone.common.dto.BaseEntity;
-import com.zlfund.headstone.common.exceptions.BizException;
-import com.zlfund.headstone.common.page.PageBean;
-import com.zlfund.headstone.common.page.PageParam;
-import com.zlfund.headstone.core.common.mybatis.interceptor.ExecutorInterceptor;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.jdbc.SqlRunner;
 import org.apache.ibatis.session.RowBounds;
@@ -17,10 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.zlfund.headstone.common.exceptions.BizException;
+import com.zlfund.headstone.common.page.PageBean;
+import com.zlfund.headstone.common.page.PageParam;
+import com.zlfund.headstone.core.common.mybatis.interceptor.ExecutorInterceptor;
 
 /**
  * @param <T>
@@ -29,7 +28,7 @@ import java.util.Map;
  * @创建时间: 2013-7-22,下午4:52:52 .
  * @版本: 1.0 .
  */
-public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSupport implements BaseDao<T> {
+public abstract class BaseDaoImpl<T> extends SqlSessionDaoSupport implements BaseDao<T> {
 
     protected static final Logger log = LoggerFactory.getLogger(BaseDaoImpl.class);
 
@@ -55,6 +54,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
     @Autowired
     private DruidDataSource druidDataSource;
 
+    @Override
     public SqlSessionTemplate getSessionTemplate() {
         return sessionTemplate;
     }
@@ -63,10 +63,12 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         this.sessionTemplate = sessionTemplate;
     }
 
+    @Override
     public SqlSession getSqlSession() {
         return super.getSqlSession();
     }
 
+    @Override
     public long insert(T t) {
 
         if (t == null)
@@ -83,6 +85,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         return result;
     }
 
+    @Override
     public long insert(List<T> list) {
 
         if (list == null || list.size() <= 0)
@@ -96,6 +99,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         return result;
     }
 
+    @Override
     public long update(T t) {
         if (t == null)
             throw new RuntimeException("T is null");
@@ -108,6 +112,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         return result;
     }
 
+    @Override
     public long update(List<T> list) {
 
         if (list == null || list.size() <= 0)
@@ -126,14 +131,17 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         return result;
     }
 
+    @Override
     public T getById(long id) {
         return sessionTemplate.selectOne(getStatement(SQL_GET_BY_ID), id);
     }
 
+    @Override
     public long deleteById(long id) {
-        return (long) sessionTemplate.delete(getStatement(SQL_DELETE_BY_ID), id);
+        return sessionTemplate.delete(getStatement(SQL_DELETE_BY_ID), id);
     }
 
+    @Override
     public PageBean listPage(PageParam pageParam, Map<String, Object> paramMap, String sqlId) {
 
         if (paramMap == null)
@@ -144,12 +152,13 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
                 new RowBounds((pageParam.getPageNum() - 1) * pageParam.getNumPerPage(), pageParam.getNumPerPage()));
 
         // 统计总记录数
-        Object countObject = (Object) getSqlSession().selectOne(getStatement(sqlId), new ExecutorInterceptor.CountParameter(paramMap));
+        Object countObject = getSqlSession().selectOne(getStatement(sqlId), new ExecutorInterceptor.CountParameter(paramMap));
         Long count = Long.valueOf(countObject.toString());
 
         return new PageBean(pageParam.getPageNum(), pageParam.getNumPerPage(), count.intValue(), list);
     }
 
+    @Override
     public PageBean listPage(PageParam pageParam, Map<String, Object> paramMap) {
 
         if (paramMap == null)
@@ -160,7 +169,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
                 new RowBounds((pageParam.getPageNum() - 1) * pageParam.getNumPerPage(), pageParam.getNumPerPage()));
 
         // 统计总记录数
-        Object countObject = (Object) getSqlSession().selectOne(getStatement(SQL_LIST_PAGE),
+        Object countObject = getSqlSession().selectOne(getStatement(SQL_LIST_PAGE),
                 new ExecutorInterceptor.CountParameter(paramMap));
         Long count = Long.valueOf(countObject.toString());
 
@@ -174,11 +183,13 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         }
     }
 
+    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public List<T> listBy(Map<String, Object> paramMap) {
         return (List) this.listBy(paramMap, SQL_LIST_BY);
     }
 
+    @Override
     public List<Object> listBy(Map<String, Object> paramMap, String sqlId) {
         if (paramMap == null)
             paramMap = new HashMap<String, Object>();
@@ -186,11 +197,13 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
         return sessionTemplate.selectList(getStatement(sqlId), paramMap);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public T getBy(Map<String, Object> paramMap) {
         return (T) this.getBy(paramMap, SQL_LIST_BY);
     }
 
+    @Override
     public Object getBy(Map<String, Object> paramMap, String sqlId) {
         if (paramMap == null || paramMap.isEmpty())
             return null;
@@ -210,6 +223,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> extends SqlSessionDaoSup
     /**
      * 根据序列名称,获取序列值
      */
+    @Override
     public String getSeqNextValue(String seqName) {
         boolean isClosedConn = false;
         // 获取当前线程的连接

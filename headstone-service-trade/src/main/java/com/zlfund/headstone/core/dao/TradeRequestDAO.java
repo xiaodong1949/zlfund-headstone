@@ -14,5 +14,6 @@ package com.zlfund.headstone.core.dao;
  * @history:
  */
 public interface TradeRequestDAO {
+    private 
 
 }
