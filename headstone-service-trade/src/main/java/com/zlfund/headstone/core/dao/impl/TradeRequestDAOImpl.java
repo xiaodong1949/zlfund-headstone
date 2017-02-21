@@ -8,7 +8,10 @@
  */
 package com.zlfund.headstone.core.dao.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.zlfund.headstone.core.dao.TradeRequestDAO;
+import com.zlfund.headstone.core.mapper.TradeRequestMapper;
 
 /** 
  * @author: 徐文凡 
@@ -17,4 +20,8 @@ import com.zlfund.headstone.core.dao.TradeRequestDAO;
  */
 public class TradeRequestDAOImpl implements TradeRequestDAO {
 
+    @Autowired
+    private TradeRequestMapper tradeRequestMapper;
+
+    // CRUD
 }
