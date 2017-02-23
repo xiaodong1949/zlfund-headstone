@@ -15,26 +15,32 @@
  */
 package com.zlfund.headstone.common.utils;
 
-import com.zlfund.headstone.common.Constants;
-import com.zlfund.headstone.common.io.UnsafeStringWriter;
-
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.zlfund.headstone.common.Constants;
+import com.zlfund.headstone.common.io.UnsafeStringWriter;
+
 /**
- * StringUtils
- *
- * @author qian.lei
+ * headstone 字符串工具类
+ * @author: 徐文凡 
+ * @since: 2017年2月23日 下午2:05:35 
+ * @history:
  */
-
-public final class StringUtils {
-
+public final class StringUtil {
 
     public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final Pattern KVP_PATTERN = Pattern.compile("([_.a-zA-Z0-9][-_.a-zA-Z0-9]*)[=](.*)"); //key value pair pattern.
+    private static final Pattern KVP_PATTERN = Pattern.compile("([_.a-zA-Z0-9][-_.a-zA-Z0-9]*)[=](.*)"); // key value
+                                                                                                         // pair
+                                                                                                         // pattern.
 
     private static final Pattern INT_PATTERN = Pattern.compile("^\\d+$");
 
@@ -195,7 +201,8 @@ public final class StringUtils {
      * @return String.
      */
     public static String translat(String src, String from, String to) {
-        if (isEmpty(src)) return src;
+        if (isEmpty(src))
+            return src;
         StringBuilder sb = null;
         int ix;
         char c;
@@ -238,7 +245,7 @@ public final class StringUtils {
         }
         if (ix > 0)
             list.add(str.substring(ix));
-        return list == null ? EMPTY_STRING_ARRAY : (String[]) list.toArray(EMPTY_STRING_ARRAY);
+        return list == null ? EMPTY_STRING_ARRAY : (String[])list.toArray(EMPTY_STRING_ARRAY);
     }
 
     /**
@@ -248,7 +255,8 @@ public final class StringUtils {
      * @return String.
      */
     public static String join(String[] array) {
-        if (array.length == 0) return "";
+        if (array.length == 0)
+            return "";
         StringBuilder sb = new StringBuilder();
         for (String s : array)
             sb.append(s);
@@ -263,7 +271,8 @@ public final class StringUtils {
      * @return String.
      */
     public static String join(String[] array, char split) {
-        if (array.length == 0) return "";
+        if (array.length == 0)
+            return "";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             if (i > 0)
@@ -281,7 +290,8 @@ public final class StringUtils {
      * @return String.
      */
     public static String join(String[] array, String split) {
-        if (array.length == 0) return "";
+        if (array.length == 0)
+            return "";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             if (i > 0)
@@ -292,13 +302,16 @@ public final class StringUtils {
     }
 
     public static String join(Collection<String> coll, String split) {
-        if (coll.isEmpty()) return "";
+        if (coll.isEmpty())
+            return "";
 
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
         for (String s : coll) {
-            if (isFirst) isFirst = false;
-            else sb.append(split);
+            if (isFirst)
+                isFirst = false;
+            else
+                sb.append(split);
             sb.append(s);
         }
         return sb.toString();
@@ -324,7 +337,7 @@ public final class StringUtils {
     }
 
     public static String getQueryStringValue(String qs, String key) {
-        Map<String, String> map = StringUtils.parseQueryString(qs);
+        Map<String, String> map = StringUtil.parseQueryString(qs);
         return map.get(key);
     }
 
@@ -340,15 +353,13 @@ public final class StringUtils {
         return parseKeyValuePair(qs, "\\&");
     }
 
-
     public static String toQueryString(Map<String, String> ps) {
         StringBuilder buf = new StringBuilder();
         if (ps != null && ps.size() > 0) {
             for (Map.Entry<String, String> entry : new TreeMap<String, String>(ps).entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                if (key != null && key.length() > 0
-                        && value != null && value.length() > 0) {
+                if (key != null && key.length() > 0 && value != null && value.length() > 0) {
                     if (buf.length() > 0) {
                         buf.append("&");
                     }
@@ -386,7 +397,48 @@ public final class StringUtils {
         return buf == null ? camelName : buf.toString();
     }
 
+    /** 
+     * 包含
+     * @param ori
+     * @param dests
+     * @return 
+     * @create: 2014年5月13日 下午3:33:07 
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public static boolean isIn(String ori, String... dests) {
+        if (null == ori) {
+            return false;
+        }
+        for (String tmp : dests) {
+            if (tmp.equals(ori)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    private StringUtils() {
+    /** 
+     * 包含 忽略大小写
+     * @param ori
+     * @param dests
+     * @return 
+     * @create: 2014年5月13日 下午3:33:11 
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public static boolean isInIgnoreCase(String ori, String... dests) {
+        if (null == ori) {
+            return false;
+        }
+        for (String tmp : dests) {
+            if (tmp.equalsIgnoreCase(ori)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private StringUtil() {
     }
 }
