@@ -8,9 +8,12 @@
  */
 package com.zlfund.headstone.core.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zlfund.headstone.core.dao.TradeRequestDAO;
+import com.zlfund.headstone.core.dao.po.TradeRequestPO;
 import com.zlfund.headstone.core.mapper.TradeRequestMapper;
 
 /** 
@@ -23,5 +26,29 @@ public class TradeRequestDAOImpl implements TradeRequestDAO {
     @Autowired
     private TradeRequestMapper tradeRequestMapper;
 
-    // CRUD
+    @Override
+    public TradeRequestPO getTradeRequest() {
+        return null;
+    }
+
+    @Override
+    public List<TradeRequestPO> listTradeRequest() {
+        return null;
+    }
+
+    @Override
+    public int countTradeRequest() {
+        return 0;
+    }
+
+    @Override
+    public int saveTradeRequest(TradeRequestPO tradeRequestPO) {
+        return tradeRequestMapper.saveTradeRequest(tradeRequestPO);
+    }
+
+    @Override
+    public int updateTradeRequest(TradeRequestPO tradeRequestPO) {
+        return tradeRequestMapper.updateTradeRequest(tradeRequestPO);
+    }
+
 }

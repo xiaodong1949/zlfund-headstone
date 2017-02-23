@@ -20,10 +20,13 @@ public class BaseResultDTO {
     private boolean isSuccess;
 
     // 错误码 00000000-成功,其余为各自业务Exception里自定义的错误码
-    private String errCode;
+    private int errCode;
 
     // 错误码描述
     private String errMsg;
+
+    // 详细描述
+    private String errDetailMsg;
 
     public boolean isSuccess() {
         return isSuccess;
@@ -33,19 +36,27 @@ public class BaseResultDTO {
         this.isSuccess = isSuccess;
     }
 
-    public String getErrCode() {
-        return errCode;
-    }
-
-    public void setErrCode(String errCode) {
-        this.errCode = errCode;
-    }
-
     public String getErrMsg() {
         return errMsg;
     }
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
+    }
+
+    public int getErrCode() {
+        return errCode;
+    }
+
+    public void setErrCode(int errCode) {
+        this.errCode = errCode;
+    }
+
+    public String getErrDetailMsg() {
+        return errDetailMsg;
+    }
+
+    public void setErrDetailMsg(String errDetailMsg) {
+        this.errDetailMsg = errDetailMsg;
     }
 }

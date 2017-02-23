@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.CustInfoMapper">
+
+  <select id="getCustInfoByCustNo" resultType="CustInfo">
+    SELECT custno, invtp, invnm, idtp, idno, mobileno, email, custst, passwd, 
+       cappasswd, logintime, logincount, passwderr, opendt, updatetimestamp, 
+       pwdchdt, npasswderr, flogintime, resetflag, inserttimestamp, 
+       mobileverifist, tradepasswd, tradepasswderr, tradenpasswderr, 
+       tradepwdchdt, tradeftime
+    FROM custinfo
+    WHERE custno = #{custNo}
+  </select>
+
+  <select id="countCustInfoByCustNo">
+    select count(custno) from custinfo where custno = #{custNo}
+  </select>
+  
+</mapper>

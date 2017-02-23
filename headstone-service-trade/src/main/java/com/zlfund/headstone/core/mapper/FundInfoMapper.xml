@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.FundInfoMapper">
+
+  <select id="getFundInfoByFundId" resultType="FundInfo">
+    SELECT fundid, fundnm, currencytype, fundst, tano, displayorder, inserttimestamp, 
+       updatetimestamp, navdt, nav, sharetype, shareclass, yield, companyno, 
+       aipst, convst, fundincome
+    FROM fundinfo
+    WHERE fundid = #{fundId}
+  </select>
+
+  <select id="countFundInfoByFundId">
+    select count(fundid) from fundinfo where fundid = #{fundId} 
+  </select>
+
+</mapper>

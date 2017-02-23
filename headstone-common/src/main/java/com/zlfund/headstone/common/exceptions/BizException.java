@@ -37,39 +37,54 @@ public class BizException extends RuntimeException {
     private static final long serialVersionUID = -5875371379845226068L;
 
     /**
+     * 参数为空
+     */
+    public static final BizException PARAM_IS_NULL = new BizException("90000001", "参数为空");
+
+    /**
+     * 参数不合法
+     */
+    public static final BizException PARAM_ILLEGAL = new BizException("90000002", "参数非法");
+
+    /**
+     * 功能为实现
+     */
+    public static final BizException FUNCTION_NOT_SUPPORT = new BizException("90000003", "功能未实现");
+
+    /**
      * 数据库操作,insert返回0
      */
-    public static final BizException DB_INSERT_RESULT_0 = new BizException(90040001, "数据库操作,insert返回0");
+    public static final BizException DB_INSERT_RESULT_0 = new BizException("90040001", "数据库操作,insert返回0");
 
     /**
      * 数据库操作,update返回0
      */
-    public static final BizException DB_UPDATE_RESULT_0 = new BizException(90040002, "数据库操作,update返回0");
+    public static final BizException DB_UPDATE_RESULT_0 = new BizException("90040002", "数据库操作,update返回0");
 
     /**
      * 数据库操作,selectOne返回null
      */
-    public static final BizException DB_SELECTONE_IS_NULL = new BizException(90040003, "数据库操作,selectOne返回null");
+    public static final BizException DB_SELECTONE_IS_NULL = new BizException("90040003", "数据库操作,selectOne返回null");
 
     /**
      * 数据库操作,list返回null
      */
-    public static final BizException DB_LIST_IS_NULL = new BizException(90040004, "数据库操作,list返回null");
+    public static final BizException DB_LIST_IS_NULL = new BizException("90040004", "数据库操作,list返回null");
 
     /**
      * Token 验证不通过
      */
-    public static final BizException TOKEN_IS_ILLICIT = new BizException(90040005, "Token 验证非法");
+    public static final BizException TOKEN_IS_ILLICIT = new BizException("90040005", "Token 验证非法");
 
     /**
      * 会话超时　获取session时，如果是空，throws 下面这个异常 拦截器会拦截爆会话超时页面
      */
-    public static final BizException SESSION_IS_OUT_TIME = new BizException(90040006, "会话超时");
+    public static final BizException SESSION_IS_OUT_TIME = new BizException("90040006", "会话超时");
 
     /**
      * 获取序列出错
      */
-    public static final BizException DB_GET_SEQ_NEXT_VALUE_ERROR = new BizException(90040007, "获取序列出错");
+    public static final BizException DB_GET_SEQ_NEXT_VALUE_ERROR = new BizException("90040007", "获取序列出错");
 
     /**
      * 异常信息(固定)
@@ -79,27 +94,27 @@ public class BizException extends RuntimeException {
     /**
      * 具体异常码(固定)
      */
-    protected int code;
+    protected String code;
 
     /**
      * 异常详细信息,默认为空,可format
      */
     protected String detailMsg;
 
-    protected BizException(int code, String msg) {
+    protected BizException(String code, String msg) {
         super(msg);
         this.code = code;
         this.msg = msg;
     }
 
-    protected BizException(int code, String msg, String detailMsg) {
+    protected BizException(String code, String msg, String detailMsg) {
         super(msg);
         this.code = code;
         this.msg = msg;
         this.detailMsg = detailMsg;
     }
 
-    protected BizException(int code, String msg, String detailMsg, Object... args) {
+    protected BizException(String code, String msg, String detailMsg, Object... args) {
         super(msg);
         this.code = code;
         this.msg = msg;
@@ -137,19 +152,19 @@ public class BizException extends RuntimeException {
         this.msg = msg;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public String getDetailMsg() {
         return detailMsg;
     }
 
     public void setDetailMsg(String detailMsg) {
         this.detailMsg = detailMsg;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

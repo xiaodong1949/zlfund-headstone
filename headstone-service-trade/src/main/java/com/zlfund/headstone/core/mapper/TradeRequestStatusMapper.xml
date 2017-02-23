@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.TradeRequestStatusMapper">
+
+  <insert id="saveTradeRequestStatus" resultType="TradeRequestStatusPO">
+    INSERT INTO traderequest_status(
+            serialno, priorno, referno, seqno, custno, applyst, transst, 
+            payst, summary, modifyflag, paydt, paytm, updatetimestamp)
+    VALUES (#{param.serialNo}, #{param.priorNo}, #{referNo}, #{seqNo}, #{custNo}, #{applySt}, #{transSt}, 
+            #{paySt}, #{summary}, #{modifyFlag}, #{payDt}, #{payTm}, #{updateTimeStamp});
+  </insert>
+  
+</mapper>
