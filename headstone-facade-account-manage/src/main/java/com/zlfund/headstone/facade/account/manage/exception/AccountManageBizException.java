@@ -26,15 +26,25 @@ public class AccountManageBizException extends BizException {
 
     public static final AccountManageBizException ACCOUNT_PARAM_BLANK = new AccountManageBizException(10019999, "参数不能为空");
 
-    protected AccountManageBizException() {
-    }
-
-    protected AccountManageBizException(int code, String msgFormat, Object... args) {
-        super(code, msgFormat, args);
-    }
-
-    protected AccountManageBizException(int code, String msg) {
+    private AccountManageBizException(int code, String msg) {
         super(code, msg);
+    }
+
+    private AccountManageBizException(int code, String msg, String detailMsg) {
+        super(code, msg, detailMsg);
+    }
+
+    private AccountManageBizException(int code, String msg, String detailMsg, Object... args) {
+        super(code, msg, detailMsg, args);
+    }
+
+    public AccountManageBizException newInstance(String detailMsg) {
+        return new AccountManageBizException(this.code, this.msg, detailMsg);
+    }
+
+    @Override
+    public AccountManageBizException newInstance(String detailMsg, Object... args) {
+        return new AccountManageBizException(this.code, this.msg, detailMsg, args);
     }
 
 }

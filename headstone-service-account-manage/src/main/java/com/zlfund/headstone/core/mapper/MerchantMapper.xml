@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.MerchantMapper">
+	<select id="queryFromMerchant" parameterType="MerchantPO" resultType="boolean">
+		select NOT EXISTS(SELECT 1 FROM MERCHANT WHERE MCTCODE =
+		#{mctcode} AND PARTNERNO =
+		#{partnerno})
+	</select>
+</mapper>

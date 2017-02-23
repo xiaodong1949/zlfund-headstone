@@ -8,7 +8,7 @@ import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizExce
  * @author Yang Xiaodong
  * @since: 2017年2月21日
  */
-public class AccountManageBiz {
+public class AccountManageCommonBiz {
 
     /** 
      * 参数非空验证

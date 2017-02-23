@@ -79,8 +79,8 @@ public abstract class BaseDaoImpl<T> extends SqlSessionDaoSupport implements Bas
         if (result <= 0)
             throw BizException.DB_INSERT_RESULT_0;
 
-        if (t != null && t.getId() != null && result > 0)
-            return t.getId();
+        // if (t != null && t.getId() != null && result > 0)
+        // return t.getId();
 
         return result;
     }

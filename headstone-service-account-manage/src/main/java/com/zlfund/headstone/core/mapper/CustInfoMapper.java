@@ -63,4 +63,6 @@ public interface CustInfoMapper extends BaseSqlMapper {
      * @history: 
      */
     int updateCustInfo(CustInfoPO custInfoPO);
+
+    int countMerchant(String mctCode, String partnerno);
 }
