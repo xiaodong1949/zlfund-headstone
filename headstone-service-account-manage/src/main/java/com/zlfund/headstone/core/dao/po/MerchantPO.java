@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Yang Xiaodong
  * @since: 2017年2月22日
  */
-public class MerchantPO implements Serializable {
+public class MerchantPO extends AccountManageBasePO implements Serializable {
 
     private static final long serialVersionUID = -1172153128782422911L;
 

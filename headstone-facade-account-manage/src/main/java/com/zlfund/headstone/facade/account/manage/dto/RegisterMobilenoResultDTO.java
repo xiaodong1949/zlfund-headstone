@@ -9,7 +9,7 @@ import com.zlfund.headstone.common.dto.BaseResultDTO;
  * @author Yang Xiaodong
  * @since: 2017年2月21日
  */
-public class RegisterResultDTO extends BaseResultDTO implements Serializable {
+public class RegisterMobilenoResultDTO extends BaseResultDTO implements Serializable {
 
     private static final long serialVersionUID = -8232006821804289735L;
 

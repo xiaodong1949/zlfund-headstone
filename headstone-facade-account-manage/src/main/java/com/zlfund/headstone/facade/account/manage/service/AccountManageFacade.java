@@ -1,7 +1,7 @@
 package com.zlfund.headstone.facade.account.manage.service;
 
-import com.zlfund.headstone.facade.account.manage.dto.RegisterRequestDTO;
-import com.zlfund.headstone.facade.account.manage.dto.RegisterResultDTO;
+import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
+import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoResultDTO;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
 
 /**
@@ -23,6 +23,6 @@ public interface AccountManageFacade {
      * @author: Yang Xiaodong
      * @history: 
      */
-    RegisterResultDTO registerByMobileno(RegisterRequestDTO registerRequestDTO);
+    RegisterMobilenoResultDTO registerByMobileno(RegisterMobilenoRequestDTO registerRequestDTO);
 
 }

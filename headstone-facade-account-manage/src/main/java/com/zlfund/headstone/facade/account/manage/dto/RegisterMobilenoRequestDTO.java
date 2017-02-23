@@ -10,7 +10,7 @@ import com.zlfund.headstone.common.utils.StringUtils;
  * @author Yang Xiaodong
  * @since: 2017年2月21日
  */
-public class RegisterRequestDTO extends BaseRequestDTO implements Serializable {
+public class RegisterMobilenoRequestDTO extends BaseRequestDTO implements Serializable {
 
     private static final long serialVersionUID = -4020639312188954726L;
 

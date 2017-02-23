@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * @author Yang Xiaodong
  * @since: 2017年2月21日
  */
-public class CustInfoExPO implements Serializable {
+public class CustInfoExPO extends AccountManageBasePO implements Serializable {
 
     private static final long serialVersionUID = -357168964039258873L;
 
