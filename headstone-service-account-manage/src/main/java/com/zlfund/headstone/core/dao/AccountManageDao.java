@@ -1,7 +1,7 @@
 package com.zlfund.headstone.core.dao;
 
-import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
+import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 
 /**
  * 用户信息表操作
@@ -20,30 +20,29 @@ public interface AccountManageDao {
      * @author: Yang Xiaodong
      * @history: 
      */
-    public boolean queryFromMerchant(String mctCode, String partnerno);
+    public boolean queryFromMerchant(String mctCode);
 
     /** 
-     * @param mobileNo
-     * @param mobilenoVerifist
+     * @param mobileno
      * @return
      * @return 
      * @create: 2017年2月22日
      * @author: Yang Xiaodong
      * @history: 
      */
-    public boolean queryAlreadyRegistered(String mobileNo, String mobilenoVerifist);
+    public boolean queryAlreadyRegistered(String mobileno);
 
     /** 
      * 手机号码未验证已绑卡，且在众禄渠道绑卡
-     * @param mobileNo
-     * @param mobilenoVerifist
+     * 异常情况返回身份证件后四位
+     * @param mobileno
      * @return
      * @return 
      * @create: 2017年2月22日
      * @author: Yang Xiaodong
      * @history: 
      */
-    public boolean queryMctRegistered(String mobileNo, String mobilenoVerifist);
+    public String queryMctRegistered(String mobileno);
 
     /** 
      * 生成客户id
@@ -83,6 +82,16 @@ public interface AccountManageDao {
      * @author: Yang Xiaodong
      * @history: 
      */
-    public void saveCustinfoex(CustInfoExPO custInfoExPO);
+    public void saveCustInfoEx(CustInfoExPO custInfoExPO);
+
+    /** 
+     * 设置风险等级
+     * @param custno
+     * @return 
+     * @create: 2017年2月23日
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public void saveCustRiskLevel(String custno);
 
 }

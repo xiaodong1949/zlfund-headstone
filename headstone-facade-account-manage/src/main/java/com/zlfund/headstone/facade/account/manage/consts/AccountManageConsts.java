@@ -27,4 +27,13 @@ public class AccountManageConsts {
      */
     public static final String CUST_NOT_BIND_CARD_FLAG = "C";
 
+    /**
+     * 超过此毫秒，显示执行时间
+     */
+    public static final long SHOW_EXECTIME_THRESHOLD = 30 * 1000;
+
+    /**
+     * webserver商户号
+     */
+    public static final String WEBSERVER_MCT_CODE = "1003";
 }

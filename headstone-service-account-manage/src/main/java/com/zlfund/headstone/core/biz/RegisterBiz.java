@@ -1,11 +1,11 @@
 package com.zlfund.headstone.core.biz;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zlfund.headstone.common.dto.BaseRequestDTO;
-import com.zlfund.headstone.common.utils.StringUtils;
 import com.zlfund.headstone.core.dao.AccountManageDao;
 import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
@@ -25,56 +25,39 @@ public class RegisterBiz extends AccountManageCommonBiz {
     @Autowired
     private AccountManageDao accountManagerDao;
 
-    /** 
-     * 注册客户信息校验
-     * @param registerRequestDTO
-     * @return 
-     * @create: 2017年2月22日
-     * @author: Yang Xiaodong
-     * @history: 
-     */
-    public void validation(RegisterMobilenoRequestDTO registerRequestDTO) {
-    }
-
-    /** 
-     * 手机号码注册
-     * @param mobileNo
-     * @param password
-     * @return
-     * @return 
-     * @create: 2017年2月21日
-     * @author: Yang Xiaodong
-     * @history: 
-     */
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public RegisterMobilenoResultDTO registerByMobileno(RegisterMobilenoRequestDTO registerRequestDTO) throws AccountManageBizException {
+    protected RegisterMobilenoResultDTO doBiz(BaseRequestDTO requestDTO) throws AccountManageBizException {
+        RegisterMobilenoRequestDTO bizRequestDTO = (RegisterMobilenoRequestDTO)requestDTO;
         RegisterMobilenoResultDTO resultDTO = new RegisterMobilenoResultDTO();
+        // 生成客户号
         String custno = accountManagerDao.getNewCustno();
+        // 生成虚拟身份证号码
         String vIdno = accountManagerDao.getNewVIdno();
+
         CustInfoPO custInfoPO = new CustInfoPO();
         custInfoPO.setCustno(custno);
         custInfoPO.setIdno(vIdno);
-        custInfoPO.setPasswd(registerRequestDTO.getPassword());
-        custInfoPO.setMobileno(registerRequestDTO.getMobileNo());
+        custInfoPO.setInvtp("1");
+
+        custInfoPO.setPasswd(bizRequestDTO.getPassword());
+        custInfoPO.setMobileno(bizRequestDTO.getMobileNo());
         custInfoPO.setMobileverifist(AccountManageConsts.MOBILENO_VERIFIST);
-        custInfoPO.setMctcode(registerRequestDTO.getMctcode());
+        custInfoPO.setMctcode(bizRequestDTO.getMctcode());
+        custInfoPO.setInvnm("");
 
         CustInfoExPO custInfoExPO = new CustInfoExPO();
-
+        custInfoExPO.setCustno(custno);
         // 写入custinfo表
         accountManagerDao.saveCustInfo(custInfoPO);
         // 写如custinfoex表
-        accountManagerDao.saveCustinfoex(custInfoExPO);
+        accountManagerDao.saveCustInfoEx(custInfoExPO);
         // TODO 写客户定制信息
         // TODO 如果不存在客户信息 写入风险等级
-
+        accountManagerDao.saveCustRiskLevel(custno);
+        resultDTO.setMctCustno(custno);
         return resultDTO;
-    }
 
-    @Override
-    protected RegisterMobilenoResultDTO doBiz(BaseRequestDTO requestDTO) throws AccountManageBizException {
-
-        return null;
     }
 
     /*
@@ -87,20 +70,21 @@ public class RegisterBiz extends AccountManageCommonBiz {
     protected void checkRequestDTO(BaseRequestDTO requestDTO) throws AccountManageBizException {
         RegisterMobilenoRequestDTO registerRequestDTO = (RegisterMobilenoRequestDTO)requestDTO;
         // 非众禄渠道不能使用手机号码注册
-        if (accountManagerDao.queryFromMerchant(registerRequestDTO.getMctCode(), AccountManageConsts.ZLFUND_PARTNERNO)) {
+        if (accountManagerDao.queryFromMerchant(registerRequestDTO.getMctcode())) {
             throw AccountManageBizException.ACCOUNT_NOT_FROM_ZLFUND;
         }
         // 验证手机号码是否注册
-        if (accountManagerDao.queryAlreadyRegistered(registerRequestDTO.getMobileNo(), AccountManageConsts.MOBILENO_VERIFIST)) {
+        if (accountManagerDao.queryAlreadyRegistered(registerRequestDTO.getMobileNo())) {
             throw AccountManageBizException.ACCOUNT_ALREADY_REGISTERED;
         }
         // 手机号码未验证已绑卡，且在众禄渠道绑卡
-        if (accountManagerDao.queryMctRegistered(registerRequestDTO.getMobileNo(), AccountManageConsts.MOBILENO_VERIFIST)) {
+        String msg = accountManagerDao.queryMctRegistered(registerRequestDTO.getMobileNo());
+        if (StringUtils.isNotBlank(msg)) {
             AccountManageBizException ame = AccountManageBizException.ACCOUNT_ALREADY_REGISTERED;
-            throw ame.newInstance("该手机号码已被身份证尾号%s注册，请使用身份证登录后绑定该手机，如有疑问请联系客服4006-788-887", "1234");
+            throw ame.newInstance("该手机号码已被身份证尾号%s注册，请使用身份证登录后绑定该手机，如有疑问请联系客服4006-788-887", msg);
         }
         // 一个客户不能同时属于地推员和推广员
-        if (!StringUtils.isBlank(registerRequestDTO.getPromo_code()) && StringUtils.isBlank(registerRequestDTO.getSpread_code())) {
+        if (StringUtils.isNotBlank(registerRequestDTO.getPromo_code()) && StringUtils.isBlank(registerRequestDTO.getSpread_code())) {
             registerRequestDTO.setSerialno("");
         }
     }

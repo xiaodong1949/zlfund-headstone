@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.zlfund.headstone.core.dao.AccountManageDao;
 import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
-import com.zlfund.headstone.core.dao.po.MerchantPO;
+import com.zlfund.headstone.core.mapper.CustInfoExMapper;
 import com.zlfund.headstone.core.mapper.CustInfoMapper;
+import com.zlfund.headstone.core.mapper.CustRiskLevelMapper;
 import com.zlfund.headstone.core.mapper.MerchantMapper;
 
 /**
@@ -21,7 +22,13 @@ public class AccountManageDaoImpl implements AccountManageDao {
     private CustInfoMapper custInfoMapper;
 
     @Autowired
+    private CustInfoExMapper custInfoExMapper;
+
+    @Autowired
     private MerchantMapper merchantMapper;
+
+    @Autowired
+    private CustRiskLevelMapper custRiskLevelMapper;
 
     /*
      * (non-Javadoc)
@@ -29,47 +36,87 @@ public class AccountManageDaoImpl implements AccountManageDao {
      * @see com.zlfund.headstone.core.dao.AccountManageDao#queryFromMerchant(java.lang.String, java.lang.String)
      */
     @Override
-    public boolean queryFromMerchant(String mctcode, String partnerno) {
-        MerchantPO merchantPO = new MerchantPO();
-        merchantPO.setMctcode(mctcode);
-        merchantPO.setPartnerno(partnerno);
-        return merchantMapper.queryFromMerchant(merchantPO);
+    public boolean queryFromMerchant(String mctcode) {
+        return merchantMapper.queryFromMerchant(mctcode);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#queryAlreadyRegistered(java.lang.String)
+     */
     @Override
-    public boolean queryAlreadyRegistered(String mobileNo, String mobilenoVerifist) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean queryAlreadyRegistered(String mobileno) {
+        return custInfoMapper.queryAlreadyRegistered(mobileno) || custInfoExMapper.queryAlreadyRegistered(mobileno);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#queryMctRegistered(java.lang.String)
+     */
     @Override
-    public boolean queryMctRegistered(String mobileNo, String mobilenoVerifist) {
-        // TODO Auto-generated method stub
-        return false;
+    public String queryMctRegistered(String mobileno) {
+        if (custInfoMapper.queryMctRegistered(mobileno)) {
+            return custInfoMapper.getlastDigitsIdno(mobileno, 4);
+        } else {
+            return "";
+        }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#getNewCustno()
+     */
     @Override
     public String getNewCustno() {
-        // TODO Auto-generated method stub
-        return null;
+        return custInfoMapper.generateCustno();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#getNewVIdno()
+     */
     @Override
     public String getNewVIdno() {
-        // TODO Auto-generated method stub
-        return null;
+        return custInfoMapper.generateVirtualIdno();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#saveCustinfo(com.zlfund.headstone.core.dao.po.CustinfoPO)
+     */
     @Override
     public void saveCustInfo(CustInfoPO custInfoPO) {
-        // TODO Auto-generated method stub
+        custInfoMapper.saveCustInfo(custInfoPO);
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#saveCustinfoex(com.zlfund.headstone.core.dao.po.CustinfoexPO)
+     */
     @Override
-    public void saveCustinfoex(CustInfoExPO custInfoExPO) {
-        // TODO Auto-generated method stub
+    public void saveCustInfoEx(CustInfoExPO custInfoExPO) {
+        custInfoExMapper.saveCustInfoEx(custInfoExPO);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#saveCustrisklevel(java.lang.String)
+     */
+    @Override
+    public void saveCustRiskLevel(String custno) {
+        if (custRiskLevelMapper.queryNotSetCustRiskLevel(custno)) {
+            custRiskLevelMapper.saveCustRiskLevel(custno);
+        }
 
     }
+
 
 }

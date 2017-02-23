@@ -1,7 +1,7 @@
 
 package com.zlfund.headstone.core.mapper;
 
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 import com.zlfund.headstone.core.common.mybatis.BaseSqlMapper;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
@@ -13,56 +13,67 @@ import com.zlfund.headstone.core.dao.po.CustInfoPO;
 public interface CustInfoMapper extends BaseSqlMapper {
 
     /** 
-     * 获取单个用户
+     * 查看客户是否已经注册
+     * @param mobileno
      * @return
      * @return 
-     * @create: 2017年2月21日
+     * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    CustInfoPO getCustInfo(String custno);
+    boolean queryAlreadyRegistered(@Param("mobileno") String mobileno);
 
     /** 
-     * 获取用户集合
+     * 是否在渠道已经绑卡
+     * @param mobileno
      * @return
      * @return 
-     * @create: 2017年2月21日
+     * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    List<CustInfoPO> listCustInfo();
+    boolean queryMctRegistered(@Param("mobileno") String mobileno);
 
     /** 
-     * 获取用户个数
+     * 返回身份证后四位
+     * @param mobileno
      * @return
      * @return 
-     * @create: 2017年2月21日
+     * @create: 2017年2月23日
+     * @author: Yang Xiaodong
+     * @param count 
+     * @history: 
+     */
+    String getlastDigitsIdno(@Param("mobileno") String mobileno, @Param("i") int count);
+
+    /** 
+     * 生成客户号
+     * @return
+     * @return 
+     * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    int countCustInfo();
+    String generateCustno();
 
     /** 
-     * 保存用户
+     * 生成虚拟身份证号
+     * @return
+     * @return 
+     * @create: 2017年2月23日
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    String generateVirtualIdno();
+
+    /** 
+     * 写入用户信息
      * @param custInfoPO
-     * @return
      * @return 
-     * @create: 2017年2月21日
+     * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    int saveCustInfo(CustInfoPO custInfoPO);
+    void saveCustInfo(@Param("custInfoPO") CustInfoPO custInfoPO);
 
-    /** 
-     * 更新用户
-     * @param custInfoPO
-     * @return
-     * @return 
-     * @create: 2017年2月21日
-     * @author: Yang Xiaodong
-     * @history: 
-     */
-    int updateCustInfo(CustInfoPO custInfoPO);
-
-    int countMerchant(String mctCode, String partnerno);
 }

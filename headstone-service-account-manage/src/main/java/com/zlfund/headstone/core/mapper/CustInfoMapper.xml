@@ -2,5 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlfund.headstone.core.mapper.CustInfoMapper">
-
+	<select id="queryAlreadyRegistered" resultType="boolean">
+		select EXISTS (SELECT 1 FROM CUSTINFO T1 WHERE T1.mobileno = #{mobileno} AND T1.MOBILEVERIFIST = 'N')
+	</select>
+	<select id="queryMctRegistered" resultType="boolean">
+		<![CDATA[ 
+		select EXISTS (SELECT 1 FROM CUSTINFO T1 WHERE T1.mobileno = #{mobileno} AND T1.CUSTST = 'N' AND T1.MOBILEVERIFIST <> 'N'
+		AND EXISTS(SELECT 1 FROM TRADEACCOINFO T2 WHERE T1.CUSTNO = T2.CUSTNO AND T2.TRADEACCOST = 'N' AND T2.PARTNERNO = '1000'))
+       ]]>
+	</select>
+	<select id="getlastDigitsIdno" resultType="String">
+	<![CDATA[
+		SELECT RIGHT(T1.IDNO, #{i})
+		INTO VC_RIGHT4IDNO
+		FROM CUSTINFO T1
+		WHERE T1.mobileno = #{mobileno}
+		AND T1.CUSTST = 'N'
+		AND T1.MOBILEVERIFIST <> 'N'
+		AND EXISTS (SELECT 1 FROM TRADEACCOINFO T2 WHERE T1.CUSTNO = T2.CUSTNO AND T2.TRADEACCOST = 'N' AND
+		T2.PARTNERNO = '1000')
+		LIMIT 1;
+		  ]]>
+	</select>
+	<select id="generateCustno" resultType="String">
+		SELECT (1000000000 + NEXTVAL('SEQ_CUSTNO'))
+	</select>
+	<select id="generateVirtualIdno" resultType="String">
+		SELECT 'VID' || (100000000000000 + NEXTVAL('SEQ_VIDNO'))
+	</select>
+	<insert id="saveCustInfo" parameterType="CustInfoPO" statementType="CALLABLE">
+		insert into custinfo(
+		custno,
+		invtp,
+		invnm,
+		idtp,
+		idno,
+		mobileno,
+		email,
+		custst,
+		passwd,
+		cappasswd, --资金密码
+		logintime,
+		logincount,
+		passwderr,
+		opendt,
+		updatetimestamp,
+		pwdchdt, --初始交易密码日期
+		mobileverifist --手机是否验证
+		)values(
+		#{custInfoPO.custno},
+		#{custInfoPO.invtp},
+		#{custInfoPO.invnm},
+		#{custInfoPO.idtp},
+		#{custInfoPO.idno},
+		#{custInfoPO.mobileno},
+		#{custInfoPO.email},
+		'C',
+		#{custInfoPO.passwd},
+		#{custInfoPO.cappasswd},
+		current_timestamp,
+		0,
+		0,
+		to_char(current_timestamp, 'yyyymmdd'),
+		current_timestamp,
+		to_char(current_timestamp, 'yyyymmdd'),
+		#{custInfoPO.mobileverifist}
+		);
+	</insert>
 </mapper>

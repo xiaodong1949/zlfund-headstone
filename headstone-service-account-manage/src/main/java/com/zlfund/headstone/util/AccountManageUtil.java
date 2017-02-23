@@ -3,7 +3,8 @@ package com.zlfund.headstone.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.zlfund.headstone.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
 
 /**
  * 帐户业务工具类
@@ -15,18 +16,18 @@ public class AccountManageUtil {
     /** 
      * 检查手机号码 
      * 以1开头的11为数字
-     * @param mobileNo
+     * @param mobileno
      * @return 
      * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    public static boolean isMobileno(String mobileNo) {
-        if (StringUtils.isBlank(mobileNo)) {
+    public static boolean isMobileno(String mobileno) {
+        if (StringUtils.isBlank(mobileno)) {
             return false;
         }
         String regex = "^1\\d{10}$";
-        return match(regex, mobileNo);
+        return match(regex, mobileno);
     }
 
     /** 
@@ -50,7 +51,7 @@ public class AccountManageUtil {
         if (match("^[a-zA-Z]*$", password)) {
             return "密码不能全是字母";
         }
-        if (!StringUtils.isBlank(idno) && idno.equalsIgnoreCase(password)) {
+        if (StringUtils.isNotBlank(idno) && idno.equalsIgnoreCase(password)) {
             return "密码不能为身份证号";
         }
         return "";
@@ -66,10 +67,25 @@ public class AccountManageUtil {
      * @author: Yang Xiaodong
      * @history: 
      */
-    private static boolean match(String regex, String str) {
+    public static boolean match(String regex, String str) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
+    }
+
+    /** 
+     * 打印debug日志
+     * @param log
+     * @param msg
+     * @return 
+     * @create: 2017年2月23日
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public static void logDebug(Log log, String msg) {
+        if (log.isDebugEnabled()) {
+            log.debug(msg);
+        }
     }
 
 }

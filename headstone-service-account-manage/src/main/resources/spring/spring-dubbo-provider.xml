@@ -19,7 +19,7 @@
 	<dubbo:monitor protocol="registry" />
 
 	<!-- 当ProtocolConfig和ServiceConfig某属性没有配置时,采用此缺省值 -->
-	<dubbo:provider timeout="10000" threadpool="fixed"
+	<dubbo:provider timeout="1000000" threadpool="fixed"
 		threads="80" accepts="500" />
 
 	<!-- 和本地bean一样实现服务 -->
@@ -29,5 +29,5 @@
 	<dubbo:service retries="0"
 		interface="com.zlfund.headstone.facade.account.manage.service.AccountManageFacade"
 		ref="accountManageFacade" cluster="failfast" loadbalance="roundrobin"
-		timeout="15000" owner="wangyf,xuwf" version="1.0" />
+		timeout="1500000" owner="wangyf,xuwf" version="1.0" />
 </beans>  

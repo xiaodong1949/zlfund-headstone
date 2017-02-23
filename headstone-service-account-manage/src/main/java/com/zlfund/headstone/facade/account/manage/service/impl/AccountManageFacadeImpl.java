@@ -9,6 +9,7 @@ import com.zlfund.headstone.core.biz.RegisterBiz;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoResultDTO;
 import com.zlfund.headstone.facade.account.manage.service.AccountManageFacade;
+import com.zlfund.headstone.util.AccountManageUtil;
 
 /**
  * 帐户管理实现
@@ -30,12 +31,13 @@ public class AccountManageFacadeImpl implements AccountManageFacade {
      */
     @Override
     public RegisterMobilenoResultDTO registerByMobileno(RegisterMobilenoRequestDTO registerRequestDTO) {
-        // 注册前校验
-        registerBiz.validation(registerRequestDTO);
+
+        AccountManageUtil.logDebug(log, "execute……");
         // 注册 (po)
         RegisterMobilenoResultDTO registerResultDTO = (RegisterMobilenoResultDTO)registerBiz.execute(registerRequestDTO);
 
-        // TODO 生成sessionkey
+        AccountManageUtil.logDebug(log, "return obj:" + registerResultDTO);
+        registerResultDTO.setSuccess(true);
         return registerResultDTO;
     }
 }

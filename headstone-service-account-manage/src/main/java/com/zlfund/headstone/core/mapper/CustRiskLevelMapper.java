@@ -3,31 +3,31 @@ package com.zlfund.headstone.core.mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.zlfund.headstone.core.common.mybatis.BaseSqlMapper;
-import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 
 /**
  * @author Yang Xiaodong
  * @since: 2017年2月21日
  */
-public interface CustInfoExMapper extends BaseSqlMapper {
+public interface CustRiskLevelMapper extends BaseSqlMapper {
 
     /** 
-     * @param mobileno
+     * 查询是否存有设置过风险等级
+     * @param custno
      * @return
      * @return 
      * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    boolean queryAlreadyRegistered(@Param("mobileno") String mobileno);
+    boolean queryNotSetCustRiskLevel(@Param("custno") String custno);
 
     /** 
-     * 插入custinfoex表
+     * 设置风险等级
      * @param custInfoExPO
      * @return 
      * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    void saveCustInfoEx(@Param("custInfoExPO") CustInfoExPO custInfoExPO);
+    void saveCustRiskLevel(@Param("custno") String custno);
 }

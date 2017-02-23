@@ -20,7 +20,7 @@ public class BaseResultDTO {
     private boolean isSuccess;
 
     // 错误码 00000000-成功,其余为各自业务Exception里自定义的错误码
-    private int errCode;
+    private String errCode;
 
     // 错误码描述
     private String errMsg;
@@ -44,11 +44,20 @@ public class BaseResultDTO {
         this.errMsg = errMsg;
     }
 
-    public int getErrCode() {
+    /**
+     * @return the errCode
+     */
+    public String getErrCode() {
+        if (isSuccess) {
+            return "00000000";
+        }
         return errCode;
     }
 
-    public void setErrCode(int errCode) {
+    /**
+     * @param errCode the errCode to set
+     */
+    public void setErrCode(String errCode) {
         this.errCode = errCode;
     }
 

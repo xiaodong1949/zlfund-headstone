@@ -14,59 +14,59 @@ public class CustInfoPO extends AccountManageBasePO implements Serializable {
 
     private static final long serialVersionUID = 5059904617385607483L;
 
-    private String custno;
+    private String custno = "";
 
-    private String cappasswd;
+    private String cappasswd = "";
 
-    private String custst;
+    private String custst = "";
 
-    private String email;
+    private String email = "";
 
     private Timestamp flogintime;
 
-    private String idno;
+    private String idno = "";
 
-    private String idtp;
+    private String idtp = "";
 
     private Timestamp inserttimestamp;
 
-    private String invnm;
+    private String invnm = "";
 
-    private String invtp;
+    private String invtp = "";
 
     private BigDecimal logincount;
 
     private Timestamp logintime;
 
-    private String mobileno;
+    private String mobileno = "";
 
-    private String mobileverifist;
+    private String mobileverifist = "";
 
     private BigDecimal npasswderr;
 
-    private String opendt;
+    private String opendt = "";
 
-    private String passwd;
+    private String passwd = "";
 
     private BigDecimal passwderr;
 
-    private String pwdchdt;
+    private String pwdchdt = "";
 
-    private String resetflag;
+    private String resetflag = "";
 
     private Timestamp tradeftime;
 
     private Integer tradenpasswderr;
 
-    private String tradepasswd;
+    private String tradepasswd = "";
 
     private Integer tradepasswderr;
 
-    private String tradepwdchdt;
+    private String tradepwdchdt = "";
 
     private Timestamp updatetimestamp;
 
-    private String mctcode;
+    private String mctcode = "";
 
     /**
      * @return the custno

@@ -3,11 +3,16 @@ package com.zlfund.headstone.aspect;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Pointcut;
 
+import com.zlfund.headstone.facade.account.manage.consts.AccountManageConsts;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
 import com.zlfund.headstone.util.AccountManageUtil;
+import com.zlfund.security.DESEncHelper;
 
 /**
  * 切面 用于日志输出，参数校验等
@@ -15,6 +20,8 @@ import com.zlfund.headstone.util.AccountManageUtil;
  * @since: 2017年2月22日
  */
 public class AccountManageAspect {
+    private static final Log log = LogFactory.getLog(AccountManageAspect.class);
+
     /** 
      * 目标方法扫描
      * @return 
@@ -22,8 +29,12 @@ public class AccountManageAspect {
      * @author: Yang Xiaodong
      * @history: 
      */
-    @Pointcut("execution(public com.zlfund.headstone.facade.account.manage.service.*.*(..))")
-    public void declareJointPointExpression() {
+    @Pointcut("execution(public * com.zlfund.headstone.core.biz.*.*(..))")
+    public void declareJointPointExpressionBiz() {
+    }
+
+    @Pointcut("execution(public * com.zlfund.headstone.facade.account.manage.service.*.*(..))")
+    public void declareJointPointExpressionService() {
     }
 
     /** 
@@ -80,9 +91,10 @@ public class AccountManageAspect {
      * @history: 
      */
     // @AfterThrowing(value = "declareJointPointExpression()", throwing = "e")
-    public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
+    public Object doAfterThrowing(JoinPoint joinPoint, Exception e) {
         String methodName = joinPoint.getSignature().getName();
         System.out.println("The method " + methodName + " occurs excetion:" + e);
+        return methodName;
     }
 
     /** 
@@ -95,28 +107,28 @@ public class AccountManageAspect {
      * @history: 
      */
     // @Around("declareJointPointExpression()")
-    // public Object doAround(ProceedingJoinPoint pjd) {
-    //
-    // Object result = null;
-    // String methodName = pjd.getSignature().getName();
-    //
-    // try {
-    // // 前置通知
-    // System.out.println("The method " + methodName + " begins with " + Arrays.asList(pjd.getArgs()));
-    // // 执行目标方法
-    // result = pjd.proceed();
-    // // 返回通知
-    // System.out.println("The method " + methodName + " ends with " + result);
-    // } catch(Throwable e) {
-    // // 异常通知
-    // System.out.println("The method " + methodName + " occurs exception:" + e);
-    // throw new RuntimeException(e);
-    // }
-    // // 后置通知
-    // System.out.println("The method " + methodName + " ends");
-    //
-    // return result;
-    // }
+    public Object doAround(ProceedingJoinPoint pjd) {
+
+        Object result = null;
+        String methodName = pjd.getSignature().getName();
+
+        try {
+            // 前置通知
+            System.out.println("The method " + methodName + " begins with " + Arrays.asList(pjd.getArgs()));
+            // 执行目标方法
+            result = pjd.proceed();
+            // 返回通知
+            System.out.println("The method " + methodName + " ends with " + result);
+        } catch(Throwable e) {
+            // 异常通知
+            System.out.println("The method " + methodName + " occurs exception:" + e);
+            throw new RuntimeException(e);
+        }
+        // 后置通知
+        System.out.println("The method " + methodName + " ends");
+
+        return result;
+    }
 
     /** 
      * @param password
@@ -126,9 +138,17 @@ public class AccountManageAspect {
      * @throws Exception 
      * @history: 
      */
-    void checkPassword(String password, String idno) throws AccountManageBizException {
+    void checkPassword(String password, String idno, String mctcode) throws AccountManageBizException {
         if (StringUtils.isBlank(password)) {
             throw AccountManageBizException.ACCOUNT_PASSWORD_BLANK;
+        }
+        if (!AccountManageConsts.WEBSERVER_MCT_CODE.equals(mctcode)) {
+            DESEncHelper des = DESEncHelper.getInstance();
+            try {
+                password = des.decrypt(password);
+            } catch(Exception e) {
+                throw AccountManageBizException.ACCOUNT_PASSWORD_INVALID;
+            }
         }
         String verifyPasswordMsg = AccountManageUtil.verifyPassword(password, idno);
         if (StringUtils.isNotBlank(verifyPasswordMsg)) {
@@ -138,21 +158,27 @@ public class AccountManageAspect {
 
     }
 
-    /** 
+    /** 在
      * 检查手机号码
-     * @param mobileNo
+     * @param mobileno
      * @return 
      * @create: 2017年2月23日
      * @author: Yang Xiaodong
      * @history: 
      */
-    void checkMobileno(String mobileNo) {
-        if (StringUtils.isBlank(mobileNo)) {
+    void checkMobileno(String mobileno) {
+        if (StringUtils.isBlank(mobileno)) {
             throw AccountManageBizException.ACCOUNT_MOBILENO_BLANK;
         }
-        if (!AccountManageUtil.isMobileno(mobileNo)) {
+        if (!AccountManageUtil.isMobileno(mobileno)) {
             throw AccountManageBizException.ACCOUNT_MOBILENO_INVALID;
         }
     }
 
+    void printExecTime(String methodName, long startTime, long endTime) {
+        long diffTime = endTime - startTime;
+        if (diffTime > AccountManageConsts.SHOW_EXECTIME_THRESHOLD) {
+            log.warn(methodName + " 方法执行耗时：" + diffTime + " ms");
+        }
+    }
 }

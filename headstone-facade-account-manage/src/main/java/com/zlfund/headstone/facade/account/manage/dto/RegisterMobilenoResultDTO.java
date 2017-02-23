@@ -52,9 +52,16 @@ public class RegisterMobilenoResultDTO extends BaseResultDTO implements Serializ
         this.mainFlag = mainFlag;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
-        return "RegisterResultDTO [mctCustno=" + mctCustno + ", sessionKey=" + sessionKey + ", mainFlag=" + mainFlag + "]";
+        return "RegisterMobilenoResultDTO [mctCustno=" + mctCustno + ", sessionKey=" + sessionKey + ", mainFlag=" + mainFlag + ", isSuccess()=" + isSuccess()
+                + ", getErrMsg()=" + getErrMsg() + ", getErrCode()=" + getErrCode() + ", getErrDetailMsg()=" + getErrDetailMsg() + "]";
     }
+
 
 }

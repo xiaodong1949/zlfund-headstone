@@ -2,8 +2,9 @@ package com.zlfund.headstone.facade.account.manage.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.zlfund.headstone.common.dto.BaseRequestDTO;
-import com.zlfund.headstone.common.utils.StringUtils;
 
 /**
  * 注册请求dto
@@ -28,11 +29,6 @@ public class RegisterMobilenoRequestDTO extends BaseRequestDTO implements Serial
      * 密码
      */
     private String password;
-
-    /**
-     * 渠道编号
-     */
-    private String mctCode;
 
     /**
      * 流水号
@@ -294,14 +290,6 @@ public class RegisterMobilenoRequestDTO extends BaseRequestDTO implements Serial
         this.password = password;
     }
 
-    public String getMctCode() {
-        return mctCode;
-    }
-
-    public void setMctCode(String mctCode) {
-        this.mctCode = mctCode;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -309,7 +297,7 @@ public class RegisterMobilenoRequestDTO extends BaseRequestDTO implements Serial
      */
     @Override
     public String toString() {
-        return "RegisterRequestDTO [mobileNo=" + mobileNo + ", password=" + (StringUtils.isBlank(password) ? password : "xxxxxx") + ", mctCode=" + mctCode
+        return "RegisterRequestDTO [mobileNo=" + mobileNo + ", password=" + (StringUtils.isBlank(password) ? password : "xxxxxx") + ", mctCode=" + mctcode
                 + "]";
     }
 

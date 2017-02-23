@@ -26,11 +26,15 @@ public class AccountManageBizException extends BizException {
 
     public static final AccountManageBizException ACCOUNT_PASSWORD_INVALID = new AccountManageBizException("10010004", "密码不合法");
 
-    public static final AccountManageBizException ACCOUNT_NOT_EXIT = new AccountManageBizException("10010001", "账户不存在");
+    public static final AccountManageBizException ACCOUNT_MCTCODE_BLANK = new AccountManageBizException("10010005", "商户号不能为空");
 
-    public static final AccountManageBizException ACCOUNT_NOT_FROM_ZLFUND = new AccountManageBizException("10010002", "非众禄渠道不能使用手机号码注册");
+    public static final AccountManageBizException ACCOUNT_MCTCODE_INVALID = new AccountManageBizException("10010006", "商户号不合法");
 
-    public static final AccountManageBizException ACCOUNT_ALREADY_REGISTERED = new AccountManageBizException("10010003", "该手机号码已经注册，请直接登录");
+    public static final AccountManageBizException ACCOUNT_NOT_EXIT = new AccountManageBizException("10011001", "账户不存在");
+
+    public static final AccountManageBizException ACCOUNT_NOT_FROM_ZLFUND = new AccountManageBizException("10011002", "非众禄渠道不能使用手机号码注册");
+
+    public static final AccountManageBizException ACCOUNT_ALREADY_REGISTERED = new AccountManageBizException("10011003", "该手机号码已经注册，请直接登录");
 
     private AccountManageBizException(String code, String msg) {
         super(code, msg);

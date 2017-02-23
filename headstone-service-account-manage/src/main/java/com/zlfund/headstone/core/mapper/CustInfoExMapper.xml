@@ -2,5 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlfund.headstone.core.mapper.CustInfoExMapper">
+	<select id="queryAlreadyRegistered" resultType="boolean">
+		select EXISTS (SELECT 1 FROM CUSTINFOEX T1 WHERE T1.TMPMOBILENO = #{mobileno} AND T1.TMPMOBILEVERIFIST = 'N')
+	</select>
+	<insert id="saveCustInfoEx" parameterType="CustInfoExPO" statementType="CALLABLE">
+		<![CDATA[ 
+		insert into custinfoex(
+			custno,
+			custtp,
+			acctabbr,
+			deliverway, --寄送方式 1-邮寄，2-email，3-短信
+			delivertype, --寄送选择 1-不寄送，2-按月3-按季，4-半年5-一年
+			updatetimestamp,
+			spread_code,
+			promo_code,
+			my_spread_code
+		)values(
+			#{custInfoExPO.custno},
+			#{custInfoExPO.custtp},
+			#{custInfoExPO.acctabbr},
+			(case when #{custInfoExPO.deliverway}='3' then '' else #{custInfoExPO.deliverway} end), --寄送方式 1邮寄, 2email, 3短信
+			(case when #{custInfoExPO.deliverway}='3' then '1' when #{custInfoExPO.deliverway}='1' then '3' else '2' end), --寄送选择 1-不寄送，2-按月3-按季，4-半年5-一年
+			current_timestamp,
+			#{custInfoExPO.spreadCode},
+			case when #{custInfoExPO.spreadCode} is not null and #{custInfoExPO.spreadCode} <> '' then cast(#{custInfoExPO.spreadCode} as int) else null end,
+			cast(cast(right(#{custInfoExPO.custno},9) as int) as varchar)
+		);
+		  ]]>
+	</insert>
 
 </mapper>

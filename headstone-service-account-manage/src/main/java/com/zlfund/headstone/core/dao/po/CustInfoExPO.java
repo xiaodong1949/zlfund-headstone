@@ -14,109 +14,109 @@ public class CustInfoExPO extends AccountManageBasePO implements Serializable {
 
     private static final long serialVersionUID = -357168964039258873L;
 
-    private String custno;
+    private String custno = "";
 
-    private String acctabbr;
+    private String acctabbr = "";
 
-    private String addr;
+    private String addr = "";
 
     private BigDecimal age;
 
-    private String answer;
+    private String answer = "";
 
-    private String appFrom;
+    private String appFrom = "";
 
-    private String availablydate;
+    private String availablydate = "";
 
-    private String birthday;
+    private String birthday = "";
 
-    private String cityname;
+    private String cityname = "";
 
-    private String company;
+    private String company = "";
 
-    private String corpropertiy;
+    private String corpropertiy = "";
 
-    private String counsellor;
+    private String counsellor = "";
 
     private Integer counsellorid;
 
-    private String custtitle;
+    private String custtitle = "";
 
-    private String custtp;
+    private String custtp = "";
 
-    private String delivertype;
+    private String delivertype = "";
 
-    private String deliverway;
+    private String deliverway = "";
 
-    private String edlevel;
+    private String edlevel = "";
 
-    private String faxno;
+    private String faxno = "";
 
-    private String hometel;
+    private String hometel = "";
 
-    private String idno15;
+    private String idno15 = "";
 
     private BigDecimal income;
 
-    private String industrytype;
+    private String industrytype = "";
 
-    private String instrepridno;
+    private String instrepridno = "";
 
-    private String instrepridtp;
+    private String instrepridtp = "";
 
-    private String instreprname;
+    private String instreprname = "";
 
-    private String invest;
+    private String invest = "";
 
-    private String marriage;
+    private String marriage = "";
 
-    private String mySpreadCode;
+    private String mySpreadCode = "";
 
-    private String officetel;
+    private String officetel = "";
 
-    private String origin;
+    private String origin = "";
 
-    private String postcode;
+    private String postcode = "";
 
     private Integer promoCode;
 
-    private String provincecode;
+    private String provincecode = "";
 
-    private String pzbsessionkey;
+    private String pzbsessionkey = "";
 
-    private String question;
+    private String question = "";
 
-    private String registcapital;
+    private String registcapital = "";
 
-    private String sessionkey;
+    private String sessionkey = "";
 
-    private String sex;
+    private String sex = "";
 
-    private String shsecacc;
+    private String shsecacc = "";
 
-    private String spellshort;
+    private String spellshort = "";
 
-    private String spreadCode;
+    private String spreadCode = "";
 
-    private String szsecacc;
+    private String szsecacc = "";
 
-    private String telno;
+    private String telno = "";
 
     private Timestamp titletimestamp;
 
-    private String tmpemail;
+    private String tmpemail = "";
 
-    private String tmpmobileno;
+    private String tmpmobileno = "";
 
-    private String tmpmobileverifist;
+    private String tmpmobileverifist = "";
 
-    private String tmppasswd;
+    private String tmppasswd = "";
 
     private Timestamp updatetimestamp;
 
-    private String vocation;
+    private String vocation = "";
 
-    private String voccode;
+    private String voccode = "";
 
     /**
      * @return the custno
