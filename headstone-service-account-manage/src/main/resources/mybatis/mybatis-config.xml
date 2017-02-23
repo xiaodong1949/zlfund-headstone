@@ -40,26 +40,21 @@
 
 	<!-- 类型别名是为 Java类型命名一个短的名字。 它只和 XML配置有关,只用来减少类完全 限定名的多余部分 -->
 	<typeAliases>
-		<typeAlias alias="CustInfo" type="com.zlfund.headstone.facade.account.entity.CustInfo" />
-		<typeAlias alias="TradeAccoInfo" type="com.zlfund.headstone.facade.account.entity.TradeAccoInfo" />
-		<typeAlias alias="CustHistory" type="com.zlfund.headstone.facade.account.entity.CustHistory" />
+		<typeAlias alias="CustInfoPO" type="com.zlfund.headstone.core.dao.po.CustInfoPO" />
+		<typeAlias alias="CustInfoExPO" type="com.zlfund.headstone.core.dao.po.CustInfoExPO" />
+		<typeAlias alias="MerchantPO" type="com.zlfund.headstone.core.dao.po.MerchantPO" />
 	</typeAliases>
 
-	<!-- 在在mappers定义之前 -->
-	<typeHandlers>
-		<typeHandler javaType="Boolean" jdbcType="SMALLINT" handler="com.zlfund.headstone.core.common.mybatis.BooleanTypeHandler" />
-	</typeHandlers>
+	<!-- 在在mappers定义之前 <typeHandlers> <typeHandler javaType="Boolean" jdbcType="SMALLINT" 
+		handler="com.zlfund.headstone.core.common.mybatis.BooleanTypeHandler" /> 
+		</typeHandlers> -->
 
 	<!-- 数据库适配器 -->
 	<plugins>
-		<plugin interceptor="com.zlfund.headstone.core.common.mybatis.interceptor.ExecutorInterceptor">
+		<plugin
+			interceptor="com.zlfund.headstone.core.common.mybatis.interceptor.ExecutorInterceptor">
 			<property name="dialectClass" value="${Postgres.dialectClass}" />
 		</plugin>
 	</plugins>
-
-	<mappers>
-		<mapper resource="mybatis/mapper/AccountManageMapper.xml" />
-		<mapper resource="mybatis/mapper/AccountQueryMapper.xml" />
-	</mappers>
 
 </configuration>
