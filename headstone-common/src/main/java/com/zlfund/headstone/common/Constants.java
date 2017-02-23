@@ -18,4 +18,6 @@ public class Constants {
 
     // 客户号长度
     public final static int CUSTNO_LENGTH = 10;
+
+    public final static String SUCCESS_CODE = "00000000";
 }

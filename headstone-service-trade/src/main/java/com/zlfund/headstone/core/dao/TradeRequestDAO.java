@@ -18,6 +18,7 @@ import com.zlfund.headstone.core.dao.po.TradeRequestPO;
  * @history:
  */
 public interface TradeRequestDAO {
+    private 
 
     TradeRequestPO getTradeRequest();
 
