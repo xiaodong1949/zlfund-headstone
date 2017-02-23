@@ -397,6 +397,48 @@ public final class StringUtil {
         return buf == null ? camelName : buf.toString();
     }
 
+    /** 
+     * 包含
+     * @param ori
+     * @param dests
+     * @return 
+     * @create: 2014年5月13日 下午3:33:07 
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public static boolean isIn(String ori, String... dests) {
+        if (null == ori) {
+            return false;
+        }
+        for (String tmp : dests) {
+            if (tmp.equals(ori)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 
+     * 包含 忽略大小写
+     * @param ori
+     * @param dests
+     * @return 
+     * @create: 2014年5月13日 下午3:33:11 
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public static boolean isInIgnoreCase(String ori, String... dests) {
+        if (null == ori) {
+            return false;
+        }
+        for (String tmp : dests) {
+            if (tmp.equalsIgnoreCase(ori)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private StringUtil() {
     }
 }
