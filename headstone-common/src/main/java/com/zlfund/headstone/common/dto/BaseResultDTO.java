@@ -8,6 +8,8 @@
  */
 package com.zlfund.headstone.common.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 /** 
  * RPC数据传输对象响应基类,所有响应DTO继承此类
  * @author: 徐文凡 
@@ -48,7 +50,7 @@ public class BaseResultDTO {
      * @return the errCode
      */
     public String getErrCode() {
-        if (isSuccess) {
+        if (isSuccess && StringUtils.isBlank(errCode)) {
             return "00000000";
         }
         return errCode;
