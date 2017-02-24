@@ -177,7 +177,7 @@ public class FundBuyBiz {
         }
 
         // 校验基金状态
-        if (commonBiz.checkFundStatus(fundId, apKind)) {
+        if (commonBiz.checkFundStatus(fundInfoPO, apKind)) {
             throw BuyBizException.FUND_STATUS_PAUSE_BUY;
         }
 

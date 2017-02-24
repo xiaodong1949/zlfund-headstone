@@ -32,6 +32,10 @@ public class BuyBizException extends TradeBizException {
 
     public static final BuyBizException FUND_STATUS_PAUSE_BUY = new BuyBizException("20010007", "基金状态暂停购买");
 
+    public static final BuyBizException NOT_SUPPORT_ZYB = new BuyBizException("20010008", "该产品不支持该类型申购");
+
+    public static final BuyBizException ABNORMAL_CAPITAL_BALANCE = new BuyBizException("20010009", "留存资金异常");
+
     protected BuyBizException(String code, String msg) {
         super(code, msg);
     }

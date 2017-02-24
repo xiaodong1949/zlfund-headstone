@@ -9,6 +9,7 @@
 package com.zlfund.headstone.core.biz;
 
 import com.zlfund.headstone.common.exceptions.BizException;
+import com.zlfund.headstone.core.dao.po.TradeRequestPO;
 import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
 
 /** 
@@ -26,12 +27,12 @@ public abstract class AbstractProductBiz {
      * @author: 徐文凡
      * @history:
      */
-    public void buy(BuyRequestDTO buyRequestDTO) {
+    public TradeRequestPO buy(BuyRequestDTO buyRequestDTO) {
         // 上层实现不开启事务
         checkBeforeBuy(buyRequestDTO);
 
         // 上层实现开启事务
-        submitBuy(buyRequestDTO);
+        return submitBuy(buyRequestDTO);
     }
 
     /**
@@ -52,7 +53,7 @@ public abstract class AbstractProductBiz {
      * @author: 徐文凡
      * @history:
      */
-    protected void submitBuy(BuyRequestDTO buyRequestDTO) {
+    protected TradeRequestPO submitBuy(BuyRequestDTO buyRequestDTO) {
         throw BizException.FUNCTION_NOT_SUPPORT;
     }
 

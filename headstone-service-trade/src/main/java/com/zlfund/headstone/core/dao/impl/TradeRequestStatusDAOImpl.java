@@ -9,6 +9,7 @@
 package com.zlfund.headstone.core.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.zlfund.headstone.core.dao.TradeRequestStatusDAO;
 import com.zlfund.headstone.core.dao.po.TradeRequestStatusPO;
@@ -19,6 +20,7 @@ import com.zlfund.headstone.core.mapper.TradeRequestStatusMapper;
  * @since: 2017年2月22日 上午10:24:06 
  * @history:
  */
+@Repository("tradeRequestStatusDAO")
 public class TradeRequestStatusDAOImpl implements TradeRequestStatusDAO {
 
     @Autowired

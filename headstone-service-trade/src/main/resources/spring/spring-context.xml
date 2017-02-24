@@ -21,7 +21,7 @@
 
 	<!-- 读入配置属性文件 -->
 	<context:property-placeholder
-		location="classpath:public_system.properties,classpath:db.properties,classpath:trade.properties" />
+		location="classpath:public.properties,classpath:db.properties,classpath:trade.properties" />
 
 	<!-- proxy-target-class默认"false",更改为"ture"使用CGLib动态代理 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.CapitalBalanceMapper">
+
+  <select id="getAvailableCapitalBalance" parameterType="map" statementType="CALLABLE">
+    {
+      call OQP_GET_CAPITALBALANCE_TRADEACCO
+      (
+        #{tradeAcco, jdbcType=VARCHAR, mode=IN},
+        
+        #{sumBalance, jdbcType=NUMERIC, mode=OUT},
+        #{sumAvailable, jdbcType=NUMERIC, mode=OUT},
+        #{errCod, jdbcType=VARCHAR, mode=OUT},
+        #{errMsg, jdbcType=VARCHAR, mode=OUT}
+      )
+    }
+  </select>
+
+</mapper>

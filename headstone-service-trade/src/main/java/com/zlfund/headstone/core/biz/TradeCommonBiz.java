@@ -8,7 +8,19 @@
  */
 package com.zlfund.headstone.core.biz;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.zlfund.headstone.common.exceptions.BizException;
+import com.zlfund.headstone.common.utils.StringUtil;
+import com.zlfund.headstone.core.dao.FundInfoDAO;
+import com.zlfund.headstone.core.dao.TAInfoDAO;
+import com.zlfund.headstone.core.dao.TradeAccoInfoDAO;
+import com.zlfund.headstone.core.dao.po.FundInfoPO;
+import com.zlfund.headstone.core.dao.po.TAInfoPO;
+import com.zlfund.headstone.facade.trade.consts.ApKindConsts;
+import com.zlfund.headstone.facade.trade.consts.FundStatusConsts;
+import com.zlfund.headstone.facade.trade.exception.TradeBizException;
 
 /** 
  * 交易公共业务，例如交易流水号管理，检查份额余额等
@@ -19,6 +31,15 @@ import org.springframework.stereotype.Component;
  */
 @Component("commonBiz")
 public class TradeCommonBiz {
+
+    @Autowired
+    FundInfoDAO fundInfoDAO;
+
+    @Autowired
+    TAInfoDAO taInfoDAO;
+
+    @Autowired
+    TradeAccoInfoDAO tradeAccoInfoDAO;
 
     /**
      * 生成交易流水号 24bit
@@ -78,7 +99,31 @@ public class TradeCommonBiz {
      * @author: 徐文凡
      * @history:
      */
-    public boolean checkFundStatus(String fundId, String apKind) {
+    public boolean checkFundStatus(FundInfoPO fundInfoPO, String apKind) {
+        if (fundInfoPO == null) {
+            throw BizException.PARAM_IS_NULL.newInstance("基金产品不存在");
+        }
+
+        String fundStatus = fundInfoPO.getFundSt();
+
+        if (ApKindConsts.BID.equals(apKind)) {
+            // 申购 0 6
+            if (StringUtil.isIn(fundStatus, FundStatusConsts.NORMAL, FundStatusConsts.STOP_RED)) {
+                return false;
+            }
+        } else if (ApKindConsts.SUB.equals(apKind)) {
+            // 认购 1
+            if (StringUtil.isIn(fundStatus, FundStatusConsts.SUB)) {
+                return false;
+            }
+        } else if (ApKindConsts.RED.equals(apKind)) {
+            // 赎回 0 5
+            if (StringUtil.isIn(fundStatus, FundStatusConsts.NORMAL, FundStatusConsts.STOP_BID)) {
+                return false;
+            }
+        }
+        // balabala
+
         return true;
     }
 
@@ -99,11 +144,21 @@ public class TradeCommonBiz {
      * 检查产品所属TA是否仅支持单交易账号
      * @param fundId 产品代码
      * @return 
-     * @create: 2017年2月22日 上午9:05:31 
+     * @create: 2017年2月23日 下午1:32:56 
      * @author: 徐文凡
      * @history:
      */
     public boolean checkSingleTradeAccoTA(String fundId) {
+        TAInfoPO taInfoPO = taInfoDAO.getTaInfoByFundId(fundId);
+
+        if (taInfoPO == null) {
+            throw TradeBizException.TA_NOT_EXISTS;
+        }
+
+        if ("Y".equalsIgnoreCase(taInfoPO.getOneacctFlag())) {
+            return true;
+        }
+
         return false;
     }
 

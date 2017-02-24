@@ -9,7 +9,6 @@
 package com.zlfund.headstone.core.biz.cfp;
 
 import com.zlfund.headstone.core.biz.fund.FundBiz;
-import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
 
 /** 
  * @author: 徐文凡 
@@ -18,10 +17,4 @@ import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
  */
 public class CfpBiz extends FundBiz {
 
-    @Override
-    public void buy(BuyRequestDTO buyRequestDTO) {
-        super.buy(buyRequestDTO);
-
-        // 写电子合同
-    }
 }

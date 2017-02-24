@@ -14,7 +14,7 @@
   <!-- 配置接口存储的包，用来扫描mapper接口和mapper xml文件（mpper xml配置文件必须放在 Mapper接口所在的包） -->
   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <property name="basePackage" value="com.zlfund.headstone.*.mapper" />
-    <property name="markerInterface" value=""/>
+    <property name="markerInterface" value="com.zlfund.headstone.core.common.mybatis.BaseSqlMapper"/>
     <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
   </bean>
   
