@@ -1,7 +1,6 @@
-> ÏµÍ³ÅäÖÃÎÄ¼şÄ£¿é£¬ÓÃÓÚ´æ·ÅËùÓĞµÄÏµÍ³ÅäÖÃ
-
-# Êı¾İ¿âÅäÖÃÎÄ¼ş db.properties
-# ¹«¹²ÅäÖÃÎÄ¼ş public.properties
-# ½»Ò×Ä£¿éÅäÖÃÎÄ¼ş trade.properties
-# ÕË»§¹ÜÀíÅäÖÃÎÄ¼ş account-manage.properties
+# æ•°æ®åº“é…ç½®æ–‡ä»¶ db.properties
+# å…¬å…±é…ç½®æ–‡ä»¶ public.properties
+# äº¤æ˜“æ¨¡å—é…ç½®æ–‡ä»¶ trade.properties
+# è´¦æˆ·ç®¡ç†é…ç½®æ–‡ä»¶ account-manage.properties
 # etc...
+
