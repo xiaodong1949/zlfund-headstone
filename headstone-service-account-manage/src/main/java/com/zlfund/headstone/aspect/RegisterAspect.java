@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.zlfund.headstone.common.dto.BaseResultDTO;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
-import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoResultDTO;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
 
 /**
@@ -71,18 +70,13 @@ public class RegisterAspect extends AccountManageAspect {
         Object resultObj = null;
         long startTime = System.currentTimeMillis();
         String methodName = procedingJoinPoint.getSignature().getName();
-        String packageName = procedingJoinPoint.getSignature().getDeclaringTypeName() + "." + methodName;
+        String packageName = procedingJoinPoint.getSignature().getDeclaringTypeName();
         try {
             // 执行目标方法
             resultObj = procedingJoinPoint.proceed();
         } catch(AccountManageBizException e) {
             log.warn(e.getMsg(), e);
-            // 手机注册
-            if ("registerByMobileno".equals(methodName)) {
-                resultDTO = new RegisterMobilenoResultDTO();
-            } else {
-                resultDTO = new BaseResultDTO();
-            }
+            resultDTO = getBizResultDTO(packageName, methodName);
             resultDTO.setErrCode(e.getCode());
             resultDTO.setErrMsg(e.getMsg());
             resultDTO.setErrDetailMsg(e.getDetailMsg());
@@ -91,14 +85,14 @@ public class RegisterAspect extends AccountManageAspect {
         } catch(Throwable e) {
             log.error(e);
             resultDTO = new BaseResultDTO();
-            resultDTO.setErrCode("99999999");
-            resultDTO.setErrMsg("未知错误");
-            resultDTO.setErrDetailMsg("未知错误");
+            resultDTO.setErrCode(AccountManageBizException.OTHER_ERROR.getCode());
+            resultDTO.setErrMsg(AccountManageBizException.OTHER_ERROR.getMsg());
+            resultDTO.setErrDetailMsg(AccountManageBizException.OTHER_ERROR.getMsg());
             resultDTO.setSuccess(false);
         }
         long endTime = System.currentTimeMillis();
         // 超时执行打印
-        printExecTime(packageName, startTime, endTime);
+        printExecTime(packageName + "." + methodName, startTime, endTime);
 
         return resultObj;
     }

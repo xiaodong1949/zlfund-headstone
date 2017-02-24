@@ -1,5 +1,7 @@
 package com.zlfund.headstone.aspect;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +11,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Pointcut;
 
+import com.zlfund.headstone.common.dto.BaseResultDTO;
+import com.zlfund.headstone.common.utils.ReflectionUtil;
 import com.zlfund.headstone.facade.account.manage.consts.AccountManageConsts;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
 import com.zlfund.headstone.util.AccountManageUtil;
@@ -180,5 +184,38 @@ public class AccountManageAspect {
         if (diffTime > AccountManageConsts.SHOW_EXECTIME_THRESHOLD) {
             log.warn(methodName + " 方法执行耗时：" + diffTime + " ms");
         }
+    }
+
+    /** 
+     * 根据方法明和包名匹配构造返回对象
+     * @param packageName
+     * @param methodName
+     * @return
+     * @return 
+     * @create: 2017年2月24日
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    BaseResultDTO getBizResultDTO(String packageName, String methodName) {
+        if (StringUtils.isNotBlank(packageName) && StringUtils.isNotBlank(methodName)) {
+            try {
+                Class<?> clazz = Class.forName(packageName);
+                Method[] methods = clazz.getDeclaredMethods();
+                for (Method method : methods) {
+                    if (methodName.equals(method.getName())) {
+                        Type classType = method.getGenericReturnType();
+                        return (BaseResultDTO)ReflectionUtil.newInstance(classType);
+                    }
+                }
+            } catch(ClassNotFoundException e) {
+                log.warn("GetBizResultDTO ERROR!", e);
+            } catch(InstantiationException e) {
+                log.warn("GetBizResultDTO ERROR!", e);
+            } catch(IllegalAccessException e) {
+                log.warn("GetBizResultDTO ERROR!", e);
+            }
+        }
+        return new BaseResultDTO();
+
     }
 }
