@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.TAInfoMapper">
+
+  <select id="getTAInfoByFundId" resultType="TAInfo">
+    SELECT a.tano, a.tanm, a.tatype, a.detailflag, a.sharetype, a.inserttimestamp, a.updatetimestamp, a.
+       sendflag, a.send, a.receive, a.dssend, a.dsreceive, a.currencyreceive, 
+       a.oneacctflag, a.senddetail, a.settlmode, a.recvmipst, a.recvcfile
+    FROM tainfo a INNER JOIN fundinfo b ON a.tano = b.tano
+    WHERE b.fundid = #{fundId}
+  </select>
+
+</mapper>

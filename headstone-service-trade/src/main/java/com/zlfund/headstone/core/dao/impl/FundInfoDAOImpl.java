@@ -9,6 +9,7 @@
 package com.zlfund.headstone.core.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.zlfund.headstone.core.dao.FundInfoDAO;
 import com.zlfund.headstone.core.dao.po.FundInfoPO;
@@ -19,6 +20,7 @@ import com.zlfund.headstone.core.mapper.FundInfoMapper;
  * @since: 2017年2月22日 下午1:23:06 
  * @history:
  */
+@Repository("fundInfoDAO")
 public class FundInfoDAOImpl implements FundInfoDAO {
 
     @Autowired

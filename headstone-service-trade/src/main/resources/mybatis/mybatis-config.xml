@@ -13,7 +13,7 @@
 <configuration>
 
 	<!-- 引用系统全局配置文件 -->
-	<properties resource="public_system.properties" />
+	<properties resource="db.properties" />
 
 	<settings>
 		<!-- 这个配置使全局的映射器启用或禁用 缓存 -->
@@ -40,9 +40,13 @@
 
 	<!-- 类型别名是为 Java类型命名一个短的名字。 它只和 XML配置有关,只用来减少类完全 限定名的多余部分 -->
 	<typeAliases>
-		<typeAlias alias="CustInfo" type="com.zlfund.headstone.facade.account.entity.CustInfo" />
-		<typeAlias alias="TradeAccoInfo" type="com.zlfund.headstone.facade.account.entity.TradeAccoInfo" />
-		<typeAlias alias="CustHistory" type="com.zlfund.headstone.facade.account.entity.CustHistory" />
+		<typeAlias alias="BankCommandPO" type="com.zlfund.headstone.core.dao.po.BankCommandPO" />
+		<typeAlias alias="CustInfoPO" type="com.zlfund.headstone.core.dao.po.CustInfoPO" />
+		<typeAlias alias="FundInfoPO" type="com.zlfund.headstone.core.dao.po.FundInfoPO" />
+		<typeAlias alias="TAInfoPO" type="com.zlfund.headstone.core.dao.po.TAInfoPO" />
+		<typeAlias alias="TradeAccoInfoPO" type="com.zlfund.headstone.core.dao.po.TradeAccoInfoPO" />
+		<typeAlias alias="TradeRequestPO" type="com.zlfund.headstone.core.dao.po.TradeRequestPO" />
+		<typeAlias alias="TradeRequestStatusPO" type="com.zlfund.headstone.core.dao.po.TradeRequestStatusPO" />
 	</typeAliases>
 
 	<!-- 在在mappers定义之前 -->
@@ -56,10 +60,5 @@
 			<property name="dialectClass" value="${Postgres.dialectClass}" />
 		</plugin>
 	</plugins>
-
-	<mappers>
-		<mapper resource="mybatis/mapper/AccountManageMapper.xml" />
-		<mapper resource="mybatis/mapper/AccountQueryMapper.xml" />
-	</mappers>
 
 </configuration>

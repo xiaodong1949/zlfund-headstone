@@ -18,16 +18,15 @@ import com.zlfund.headstone.core.dao.po.TradeRequestPO;
  * @history:
  */
 public interface TradeRequestDAO {
-    private 
 
-    TradeRequestPO getTradeRequest();
+    public TradeRequestPO getTradeRequest();
 
-    List<TradeRequestPO> listTradeRequest();
+    public List<TradeRequestPO> listTradeRequest();
 
-    int countTradeRequest();
+    public int countTradeRequest();
 
-    int saveTradeRequest(TradeRequestPO tradeRequestPO);
+    public int saveTradeRequest(TradeRequestPO tradeRequestPO);
 
-    int updateTradeRequest(TradeRequestPO tradeRequestPO);
+    public int updateTradeRequest(TradeRequestPO tradeRequestPO);
 
 }

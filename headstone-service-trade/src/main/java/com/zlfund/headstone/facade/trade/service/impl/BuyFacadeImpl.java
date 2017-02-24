@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zlfund.headstone.common.exceptions.BizException;
-import com.zlfund.headstone.core.biz.buy.FundBuyBiz;
 import com.zlfund.headstone.core.biz.fund.FundBiz;
 import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
 import com.zlfund.headstone.facade.trade.dto.BuyResultDTO;
@@ -28,9 +27,6 @@ import com.zlfund.headstone.facade.trade.service.BuyFacade;
 public class BuyFacadeImpl implements BuyFacade {
 
     private static final Logger LOG = Logger.getLogger(BuyFacadeImpl.class);
-
-    @Autowired
-    private FundBuyBiz buyBiz;
 
     @Autowired
     private FundBiz fundBiz;
@@ -48,11 +44,8 @@ public class BuyFacadeImpl implements BuyFacade {
         try {
             fundBiz.buy(buyRequest);
 
-            // 下单
-            buyBiz.buyFund(buyRequest);
-
             buyResultDTO.setSuccess(true);
-            buyResultDTO.setErrCode(00000000);
+            buyResultDTO.setErrCode("00000000");
             buyResultDTO.setErrMsg("成功");
             buyResultDTO.setErrDetailMsg("成功");
         } catch(BizException bizEx) {
@@ -66,7 +59,7 @@ public class BuyFacadeImpl implements BuyFacade {
         } catch(Exception e) {
             // 运行时异常
             buyResultDTO.setSuccess(false);
-            buyResultDTO.setErrCode(99999999);
+            buyResultDTO.setErrCode("99999999");
             buyResultDTO.setErrMsg("内部错误，请联系客服");
             buyResultDTO.setErrDetailMsg(e.getLocalizedMessage());
 

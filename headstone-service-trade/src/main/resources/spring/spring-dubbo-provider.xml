@@ -26,7 +26,7 @@
     <!-- 声明需要暴露的服务接口 尽可能配置客户端的参数-->
     <!-- 账户管理 不可重试，可以配置consumer更多策略 -->
     <dubbo:service retries="0" interface="com.zlfund.headstone.facade.trade.service.BuyFacade"
-                   ref="accountManageFacade" cluster="failfast"  loadbalance="roundrobin"
+                   ref="buyFacade" cluster="failfast"  loadbalance="roundrobin"
                    timeout="15000" owner="wangyf,xuwf" version="1.0"/>
 
 </beans>  

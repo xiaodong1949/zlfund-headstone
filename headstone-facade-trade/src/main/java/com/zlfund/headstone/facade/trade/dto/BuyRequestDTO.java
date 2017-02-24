@@ -35,7 +35,7 @@ public class BuyRequestDTO extends BaseRequestDTO {
     private double subAmt;
 
     // 扣款类型 0-不重用撤单资金 1-重用撤单资金
-    private char bidTp;
+    private String bidTp;
 
     public String getCustNo() {
         return custNo;
@@ -69,11 +69,11 @@ public class BuyRequestDTO extends BaseRequestDTO {
         this.subAmt = subAmt;
     }
 
-    public char getBidTp() {
+    public String getBidTp() {
         return bidTp;
     }
 
-    public void setBidTp(char bidTp) {
+    public void setBidTp(String bidTp) {
         this.bidTp = bidTp;
     }
 
@@ -87,7 +87,7 @@ public class BuyRequestDTO extends BaseRequestDTO {
 
     @Override
     public String toString() {
-        return "BuyRequest [serialNo=" + serialNo + ", custNo=" + custNo + ", tradeAcco=" + tradeAcco + ", fundId="
-                + fundId + ", subAmt=" + subAmt + ", bidTp=" + bidTp + "]";
+        return "BuyRequest [serialNo=" + serialNo + ", custNo=" + custNo + ", tradeAcco=" + tradeAcco + ", fundId=" + fundId + ", subAmt=" + subAmt
+                + ", bidTp=" + bidTp + "]";
     }
 }

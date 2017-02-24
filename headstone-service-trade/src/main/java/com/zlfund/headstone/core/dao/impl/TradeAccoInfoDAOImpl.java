@@ -9,6 +9,7 @@
 package com.zlfund.headstone.core.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.zlfund.headstone.core.dao.TradeAccoInfoDAO;
 import com.zlfund.headstone.core.dao.po.TradeAccoInfoPO;
@@ -19,6 +20,7 @@ import com.zlfund.headstone.core.mapper.TradeAccoInfoMapper;
  * @since: 2017年2月22日 下午2:08:21 
  * @history:
  */
+@Repository("tradeAccoInfoDAO")
 public class TradeAccoInfoDAOImpl implements TradeAccoInfoDAO {
 
     @Autowired
