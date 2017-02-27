@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * The persistent class for the infosendprod database table.
  * 
  */
-public class InfoSendProdPO implements Serializable {
+public class InfoSendProdPO extends AccountManageBasePO implements Serializable {
 
     private static final long serialVersionUID = 6491758299024207257L;
 
