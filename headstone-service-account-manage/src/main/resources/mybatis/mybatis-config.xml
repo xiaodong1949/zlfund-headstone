@@ -44,6 +44,7 @@
 		<typeAlias alias="CustInfoExPO" type="com.zlfund.headstone.core.dao.po.CustInfoExPO" />
 		<typeAlias alias="MerchantPO" type="com.zlfund.headstone.core.dao.po.MerchantPO" />
 		<typeAlias alias="CustRiskLevelPO" type="com.zlfund.headstone.core.dao.po.CustRiskLevelPO" />
+		<typeAlias alias="InfoSendProdPO" type="com.zlfund.headstone.core.dao.po.InfoSendProdPO" />
 	</typeAliases>
 
 	<!-- 在在mappers定义之前 <typeHandlers> <typeHandler javaType="Boolean" jdbcType="SMALLINT" 

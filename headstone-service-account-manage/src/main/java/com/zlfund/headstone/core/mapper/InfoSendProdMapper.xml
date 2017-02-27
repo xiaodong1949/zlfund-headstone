@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.InfoSendProdMapper">
+	<insert id="saveInfoSendProd" parameterType="InfoSendProdPO" statementType="CALLABLE">
+      insert into infosendprod(
+        custno,                --客户编号
+        openprocd,             --开通项目
+        opendetailcd,          --开通类型
+        msgflg,                --短信通知标记：y：通知，n：不通知
+        msgfrequency,          --短信频率
+        mailflg,               --邮件通知标记：y：通知，n：不通知
+        mailfrequency,         --邮件频率
+        postflg,               --邮寄  y：通知，n：不通知
+        postfrequency,         --邮寄频率
+        usestat,               --使用状态，u：在用  s：停用
+        updatetimestamp  --更新时间戳
+      )values(
+        #{infoSendProdPO.custno},
+        #{infoSendProdPO.openprocd},
+        #{infoSendProdPO.opendetailcd},
+        #{infoSendProdPO.msgflg},
+        #{infoSendProdPO.msgfrequency},
+        #{infoSendProdPO.mailflg},
+        #{infoSendProdPO.mailfrequency},
+        #{infoSendProdPO.postflg},
+        #{infoSendProdPO.postfrequency},
+        #{infoSendProdPO.usestat},
+        current_timestamp
+      );
+	</insert>
+</mapper>

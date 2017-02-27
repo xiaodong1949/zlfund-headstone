@@ -9,6 +9,7 @@ import com.zlfund.headstone.common.dto.BaseRequestDTO;
 import com.zlfund.headstone.core.dao.AccountManageDao;
 import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
+import com.zlfund.headstone.core.dao.po.InfoSendProdPO;
 import com.zlfund.headstone.facade.account.manage.consts.AccountManageConsts;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoResultDTO;
@@ -52,8 +53,10 @@ public class RegisterBiz extends AccountManageCommonBiz {
         accountManagerDao.saveCustInfo(custInfoPO);
         // 写如custinfoex表
         accountManagerDao.saveCustInfoEx(custInfoExPO);
-        // TODO 写客户定制信息
-        // TODO 如果不存在客户信息 写入风险等级
+        // 写客户定制信息 默认不寄送
+        InfoSendProdPO infoSendProdPO = new InfoSendProdPO(custno);
+        accountManagerDao.saveInfoSendProd(infoSendProdPO);
+        // 如果不存在客户信息 写入风险等级
         accountManagerDao.saveCustRiskLevel(custno);
         resultDTO.setMctCustno(custno);
         return resultDTO;

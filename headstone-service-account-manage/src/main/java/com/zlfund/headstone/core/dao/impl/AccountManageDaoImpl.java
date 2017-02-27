@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 import com.zlfund.headstone.core.dao.AccountManageDao;
 import com.zlfund.headstone.core.dao.po.CustInfoExPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
+import com.zlfund.headstone.core.dao.po.InfoSendProdPO;
 import com.zlfund.headstone.core.mapper.CustInfoExMapper;
 import com.zlfund.headstone.core.mapper.CustInfoMapper;
 import com.zlfund.headstone.core.mapper.CustRiskLevelMapper;
+import com.zlfund.headstone.core.mapper.InfoSendProdMapper;
 import com.zlfund.headstone.core.mapper.MerchantMapper;
 
 /**
@@ -29,6 +31,9 @@ public class AccountManageDaoImpl implements AccountManageDao {
 
     @Autowired
     private CustRiskLevelMapper custRiskLevelMapper;
+
+    @Autowired
+    private InfoSendProdMapper infoSendProdMapper;
 
     /*
      * (non-Javadoc)
@@ -118,5 +123,14 @@ public class AccountManageDaoImpl implements AccountManageDao {
 
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.zlfund.headstone.core.dao.AccountManageDao#saveInfoSendProd(java.lang.String)
+     */
+    @Override
+    public void saveInfoSendProd(InfoSendProdPO infoSendProdPO) {
+        infoSendProdMapper.saveInfoSendProd(infoSendProdPO);
+    }
 
 }

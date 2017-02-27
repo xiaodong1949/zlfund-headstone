@@ -1,7 +1,8 @@
 package com.zlfund.headstone.core.dao;
 
-import com.zlfund.headstone.core.dao.po.CustInfoPO;
 import com.zlfund.headstone.core.dao.po.CustInfoExPO;
+import com.zlfund.headstone.core.dao.po.CustInfoPO;
+import com.zlfund.headstone.core.dao.po.InfoSendProdPO;
 
 /**
  * 用户信息表操作
@@ -93,5 +94,15 @@ public interface AccountManageDao {
      * @history: 
      */
     public void saveCustRiskLevel(String custno);
+
+    /** 
+     * 保存账单寄送
+     * @param custno
+     * @return 
+     * @create: 2017年2月27日
+     * @author: Yang Xiaodong
+     * @history: 
+     */
+    public void saveInfoSendProd(InfoSendProdPO infoSendProdPO);
 
 }
