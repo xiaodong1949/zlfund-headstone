@@ -66,34 +66,32 @@ public class RegisterAspect extends AccountManageAspect {
     @Override
     @Around("declareJointPointExpressionService()")
     public Object doAround(ProceedingJoinPoint procedingJoinPoint) {
-        BaseResultDTO resultDTO = null;
         Object resultObj = null;
         long startTime = System.currentTimeMillis();
         String methodName = procedingJoinPoint.getSignature().getName();
         String packageName = procedingJoinPoint.getSignature().getDeclaringTypeName();
+        BaseResultDTO resultDTO = getBizResultDTO(packageName, methodName);
         try {
             // 执行目标方法
             resultObj = procedingJoinPoint.proceed();
         } catch(AccountManageBizException e) {
             log.warn(e.getMsg(), e);
-            resultDTO = getBizResultDTO(packageName, methodName);
             resultDTO.setErrCode(e.getCode());
             resultDTO.setErrMsg(e.getMsg());
             resultDTO.setErrDetailMsg(e.getDetailMsg());
             resultDTO.setSuccess(false);
-            return resultDTO;
+            resultObj = resultDTO;
         } catch(Throwable e) {
             log.error(e);
-            resultDTO = new BaseResultDTO();
             resultDTO.setErrCode(AccountManageBizException.OTHER_ERROR.getCode());
             resultDTO.setErrMsg(AccountManageBizException.OTHER_ERROR.getMsg());
             resultDTO.setErrDetailMsg(AccountManageBizException.OTHER_ERROR.getMsg());
             resultDTO.setSuccess(false);
+            resultObj = resultDTO;
         }
         long endTime = System.currentTimeMillis();
         // 超时执行打印
         printExecTime(packageName + "." + methodName, startTime, endTime);
-
         return resultObj;
     }
 }

@@ -26,8 +26,8 @@ public class RegisterBiz extends AccountManageCommonBiz {
     private AccountManageDao accountManagerDao;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    protected RegisterMobilenoResultDTO doBiz(BaseRequestDTO requestDTO) throws AccountManageBizException {
+    @Transactional(rollbackFor = Throwable.class)
+    public RegisterMobilenoResultDTO doBiz(BaseRequestDTO requestDTO) throws AccountManageBizException {
         RegisterMobilenoRequestDTO bizRequestDTO = (RegisterMobilenoRequestDTO)requestDTO;
         RegisterMobilenoResultDTO resultDTO = new RegisterMobilenoResultDTO();
         // 生成客户号
@@ -67,7 +67,7 @@ public class RegisterBiz extends AccountManageCommonBiz {
      * BaseRequestDTO)
      */
     @Override
-    protected void checkRequestDTO(BaseRequestDTO requestDTO) throws AccountManageBizException {
+    public void checkRequestDTO(BaseRequestDTO requestDTO) throws AccountManageBizException {
         RegisterMobilenoRequestDTO registerRequestDTO = (RegisterMobilenoRequestDTO)requestDTO;
         // 非众禄渠道不能使用手机号码注册
         if (accountManagerDao.queryFromMerchant(registerRequestDTO.getMctcode())) {

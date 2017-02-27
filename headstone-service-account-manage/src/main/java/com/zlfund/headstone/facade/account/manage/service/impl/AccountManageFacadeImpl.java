@@ -34,7 +34,9 @@ public class AccountManageFacadeImpl implements AccountManageFacade {
 
         AccountManageUtil.logDebug(log, "execute……");
         // 注册 (po)
-        RegisterMobilenoResultDTO registerResultDTO = (RegisterMobilenoResultDTO)registerBiz.execute(registerRequestDTO);
+        registerBiz.checkRequestDTO(registerRequestDTO);
+        // 业务处理，一般配置事务
+        RegisterMobilenoResultDTO registerResultDTO = registerBiz.doBiz(registerRequestDTO);
 
         AccountManageUtil.logDebug(log, "return obj:" + registerResultDTO);
         registerResultDTO.setSuccess(true);

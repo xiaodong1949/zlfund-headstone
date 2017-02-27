@@ -17,9 +17,9 @@ public class HeadstoneConsumer4Dubbo {
 
         try {
             DESEncHelper des = DESEncHelper.getInstance();
-            registerRequestDTO.setMobileNo("12364345549");
+            registerRequestDTO.setMobileNo("12364345571");
             registerRequestDTO.setMctcode("1000");
-            registerRequestDTO.setPassword(des.encrypt("123456"));
+            registerRequestDTO.setPassword(des.encrypt("Admin@123"));
 
             RegisterMobilenoResultDTO custInfo1 = accountManageFacade.registerByMobileno(registerRequestDTO);
             System.out.println("test RegisterMobilenoResultDTO :" + custInfo1);

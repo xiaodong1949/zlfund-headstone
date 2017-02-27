@@ -12,23 +12,6 @@ import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizExce
 public abstract class AccountManageCommonBiz {
 
     /** 
-     * 执行业务
-     * @param requestDTO
-     * @return
-     * @return 
-     * @create: 2017年2月23日
-     * @author: Yang Xiaodong
-     * @history: 
-     */
-    public BaseResultDTO execute(BaseRequestDTO requestDTO) {
-        // 参数检查，一般不配置事务
-        checkRequestDTO(requestDTO);
-        // 业务处理，一般配置事务
-        BaseResultDTO result = doBiz(requestDTO);
-        return result;
-    }
-
-    /** 
      * 参数校验（DB）
      * @param requestDTO
      * @return
