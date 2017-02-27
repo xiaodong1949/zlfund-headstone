@@ -87,6 +87,11 @@ public class BizException extends RuntimeException {
     public static final BizException DB_GET_SEQ_NEXT_VALUE_ERROR = new BizException("90040007", "获取序列出错");
 
     /**
+     * 数据库操作,update返回不等于1
+     */
+    public static final BizException DB_UPDATE_RESULT_NE_1 = new BizException("90040008", "数据库操作,update返回不等于1");
+
+    /**
      * 其他错误
      */
     public static final BizException OTHER_ERROR = new BizException("99999999", "未知错误");

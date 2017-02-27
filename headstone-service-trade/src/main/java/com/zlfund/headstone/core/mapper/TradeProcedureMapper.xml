@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.TradeProcedureMapper">
+
+  <select id="oqpFundIsFirstBuy" parameterType="map" statementType="CALLABLE">
+    {
+      call OQP_FUND_IS_FIRSTBUY
+      (
+        #{custNo, jdbcType=VARCHAR, mode=IN},
+        #{fundId, jdbcType=VARCHAR, mode=IN},
+        #{apKind, jdbcType=VARCHAR, mode=IN},
+        
+        #{firstBuyFlag, jdbcType=VARCHAR, mode=OUT}
+      )
+    }
+  </select>
+
+  <select id="ibfGetCurrentHKWorkDate" parameterType="string" resultType="string" >
+    select IBF_GET_CURRENT_HK_WORKDATE(#{apKind})
+  </select>
+  
+  <select id="ibfGetCurrentWorkDate" parameterType="string" resultType="string">
+    select IBF_GET_CURRENT_WORKDATE(#{apKind})
+  </select>
+
+  <select id="oqpGetCapitalbalanceTradeacco" parameterType="map" statementType="CALLABLE">
+    {
+      call OQP_GET_CAPITALBALANCE_TRADEACCO
+      (
+        #{tradeAcco, jdbcType=VARCHAR, mode=IN},
+        
+        #{sumBalance, jdbcType=NUMERIC, mode=OUT},
+        #{sumAvailable, jdbcType=NUMERIC, mode=OUT},
+        #{errCod, jdbcType=VARCHAR, mode=OUT},
+        #{errMsg, jdbcType=VARCHAR, mode=OUT}
+      )
+    }
+  </select>
+</mapper>

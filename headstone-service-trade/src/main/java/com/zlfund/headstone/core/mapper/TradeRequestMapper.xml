@@ -3,7 +3,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlfund.headstone.core.mapper.TradeRequestMapper">
 
-  <insert id="saveTradeRequest" resultType="TradeRequestPO">
+  <insert id="saveTradeRequest" parameterType="TradeRequest" statementType="CALLABLE">
     INSERT INTO traderequest(
             serialno, custno, tradeacco, apkind, fundid, subquty, subamt, 
             apdt, aptm, remark, updatetimestamp, workdate, spanflag, cashfrom, 

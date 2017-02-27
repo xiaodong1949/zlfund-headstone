@@ -48,4 +48,6 @@ public class ApKindConsts {
 
     public static final String QUICK_CONV = "956";
 
+    public static final String QUICK_REDEEM = "098";
+
 }

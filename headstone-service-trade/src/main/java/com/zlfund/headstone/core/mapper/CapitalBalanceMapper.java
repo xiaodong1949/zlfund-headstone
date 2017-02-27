@@ -8,11 +8,10 @@
  */
 package com.zlfund.headstone.core.mapper;
 
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.zlfund.headstone.core.common.mybatis.BaseSqlMapper;
+import com.zlfund.headstone.core.dao.po.CapitalBalancePO;
 
 /** 
  * @author: 徐文凡 
@@ -21,6 +20,11 @@ import com.zlfund.headstone.core.common.mybatis.BaseSqlMapper;
  */
 public interface CapitalBalanceMapper extends BaseSqlMapper {
 
-    void getAvailableCapitalBalance(@Param("param") Map<String, Object> param);
+    int countCapitalBalance(@Param("capitalBalance") CapitalBalancePO capitalBalancePO);
 
+    int saveCapitalBalance(@Param("capitalBalance") CapitalBalancePO capitalBalancePO);
+
+    int updateCapitalBalance(@Param("capitalBalance") CapitalBalancePO capitalBalancePO);
+
+    CapitalBalancePO getCapitalBalance(@Param("capitalBalance") CapitalBalancePO capitalBalancePO);
 }

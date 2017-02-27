@@ -30,6 +30,34 @@ public class TradeBizException extends BizException {
 
     public static final TradeBizException TA_SINGLE_TRADEACCO_LIMIT = new TradeBizException("20000005", "TA单交易账号限制");
 
+    public static final TradeBizException ACCOUNT_ALREADY_FREEZE = new TradeBizException("20000006", "对不起，您的账户已被冻结，详询请致电在线客服。");
+
+    public static final TradeBizException ACCOUNT_ALREADY_CANCEL = new TradeBizException("20000007", "对不起，您的账户已注销，详询请致电在线客服。");
+
+    public static final TradeBizException AVAILABLE_BALANCE_LT_ZERO = new TradeBizException("20000008", "该次赎回份额大于该可用余额");
+
+    public static final TradeBizException LT_MINREDAMT = new TradeBizException("20000009", "小于最低赎回份额");
+
+    public static final TradeBizException LT_MINADDSUBAMT = new TradeBizException("20000010", "认购金额不能低于最低追加认购金额");
+
+    public static final TradeBizException GT_MAXSUBAMT = new TradeBizException("20000011", "认购金额不能高于最高认购金额");
+
+    public static final TradeBizException SUBAMT_MUST_MULTIPLE = new TradeBizException("20000012", "认购金额必须为级差的整数倍");
+
+    public static final TradeBizException LT_MINSUBAMT = new TradeBizException("20000013", "认购金额不能低于最低认购金额");
+
+    public static final TradeBizException LT_MINADDAPPAMT = new TradeBizException("20000014", "申购金额不能低于最低追加申购金额");
+
+    public static final TradeBizException LT_MINBIDAMT = new TradeBizException("20000015", "申购金额不能低于最低申购金额");
+
+    public static final TradeBizException GT_MAXBIDAMT = new TradeBizException("20000016", "申购金额不能高于最高申购金额");
+
+    public static final TradeBizException BIDAMT_MUST_MULTIPLE = new TradeBizException("20000017", "申购金额必须为级差的整数倍");
+
+    public static final TradeBizException LT_MINHOLDAMT = new TradeBizException("20000018", "剩余份额低于最低保有份额");
+
+    public static final TradeBizException LT_MINCONVAMT = new TradeBizException("20000019", "低于最低转换份额");
+
     /**
      * 交易账号状态不为N
      */

@@ -13,13 +13,23 @@ import org.springframework.stereotype.Component;
 
 import com.zlfund.headstone.common.exceptions.BizException;
 import com.zlfund.headstone.common.utils.StringUtil;
+import com.zlfund.headstone.core.bo.AvailableBalanceBO;
+import com.zlfund.headstone.core.dao.CustAbnStatusDAO;
+import com.zlfund.headstone.core.dao.CustInfoDAO;
+import com.zlfund.headstone.core.dao.FundBalanceDAO;
 import com.zlfund.headstone.core.dao.FundInfoDAO;
+import com.zlfund.headstone.core.dao.FundInfoExDAO;
 import com.zlfund.headstone.core.dao.TAInfoDAO;
 import com.zlfund.headstone.core.dao.TradeAccoInfoDAO;
+import com.zlfund.headstone.core.dao.TradeProcedureDAO;
+import com.zlfund.headstone.core.dao.po.CustAbnStatusPO;
+import com.zlfund.headstone.core.dao.po.CustInfoPO;
+import com.zlfund.headstone.core.dao.po.FundInfoExPO;
 import com.zlfund.headstone.core.dao.po.FundInfoPO;
 import com.zlfund.headstone.core.dao.po.TAInfoPO;
 import com.zlfund.headstone.facade.trade.consts.ApKindConsts;
 import com.zlfund.headstone.facade.trade.consts.FundStatusConsts;
+import com.zlfund.headstone.facade.trade.consts.TradeConsts;
 import com.zlfund.headstone.facade.trade.exception.TradeBizException;
 
 /** 
@@ -40,6 +50,21 @@ public class TradeCommonBiz {
 
     @Autowired
     TradeAccoInfoDAO tradeAccoInfoDAO;
+
+    @Autowired
+    FundInfoExDAO fundInfoExDAO;
+
+    @Autowired
+    CustInfoDAO custInfoDAO;
+
+    @Autowired
+    CustAbnStatusDAO custAbnStatusDAO;
+
+    @Autowired
+    FundBalanceDAO fundBalanceDAO;
+
+    @Autowired
+    TradeProcedureDAO tradeProcedureDAO;
 
     /**
      * 生成交易流水号 24bit
@@ -64,7 +89,8 @@ public class TradeCommonBiz {
     }
 
     /**
-     * 检查交易可行性
+     * 检查交易可行性 优化重写IBF_CHECK_AVALIABLE
+     * @param custNo 客户号
      * @param tradeAcco 交易账号
      * @param fundId 产品代码
      * @param apKind 交易类型
@@ -74,8 +100,109 @@ public class TradeCommonBiz {
      * @author: 徐文凡
      * @history:
      */
-    public boolean checkTradeAvailable(String tradeAcco, String fundId, String apKind, double quantity) {
-        return true;
+    public void checkTradeAvailable(String custNo, String tradeAcco, String fundId, String apKind, double quantity) {
+        FundInfoExPO fundInfoExPO = fundInfoExDAO.getFundInfoExByFundId(fundId);
+
+        if (fundInfoExPO == null) {
+            throw TradeBizException.PRODUCT_NOT_EXISTS;
+        }
+
+        if (StringUtil.isIn(apKind, ApKindConsts.SUB, ApKindConsts.BID)) {
+            // 认申购 查询是否首次购买
+            String firstBuyFlag = tradeProcedureDAO.oqpFundIsFirstBuy(custNo, fundId, apKind);
+
+            // 认购检查
+            if (ApKindConsts.SUB.equals(apKind)) {
+
+                // 首次认购检查
+                if ("N".equalsIgnoreCase(firstBuyFlag)) {
+                    if (quantity < fundInfoExPO.getMinAddSubAmt()) {
+                        throw TradeBizException.LT_MINADDSUBAMT;
+                    }
+                } else {
+                    if (quantity < fundInfoExPO.getMinSubAmt()) {
+                        throw TradeBizException.LT_MINSUBAMT;
+                    }
+                }
+
+                if (quantity > fundInfoExPO.getMaxSubAmt()) {
+                    throw TradeBizException.GT_MAXSUBAMT;
+                }
+
+                if ("1".equals(fundInfoExPO.getIfMultiple()) && (quantity % fundInfoExPO.getMinAddSubAmt() != 0)) {
+                    throw TradeBizException.SUBAMT_MUST_MULTIPLE;
+                }
+
+            } else if (ApKindConsts.BID.equals(apKind)) {
+                // 申购检查
+                if ("N".equalsIgnoreCase(firstBuyFlag)) {
+                    if (quantity < fundInfoExPO.getMinAddAppAmt()) {
+                        throw TradeBizException.LT_MINADDAPPAMT;
+                    }
+                } else {
+                    if (quantity < fundInfoExPO.getMinBidAmt()) {
+                        throw TradeBizException.LT_MINBIDAMT;
+                    }
+                }
+
+                if (quantity > fundInfoExPO.getMaxBidAmt()) {
+                    throw TradeBizException.GT_MAXBIDAMT;
+                }
+
+                if ("1".equals(fundInfoExPO.getIfMultiple()) && (quantity % fundInfoExPO.getMinAddAppAmt() != 0)) {
+                    throw TradeBizException.BIDAMT_MUST_MULTIPLE;
+                }
+            }
+
+        } else if (StringUtil.isIn(apKind, ApKindConsts.RED, ApKindConsts.CONV, ApKindConsts.QUICK_REDEEM, ApKindConsts.SPAN_CONV)) {
+            // 仅针对需要读取可用份额的交易类型做fundbalance行锁操作
+            fundBalanceDAO.fundBalanceLineForUpdate(tradeAcco, fundId);
+
+            // 可用余额
+            double useableBalance = 0.00;
+
+            // 针对银华定活两变基金特殊处理
+            if (TradeConsts.YHHQB_FUNDID.equals(fundId)) {
+                // 单独查询银华活钱宝可用份额
+                useableBalance = fundBalanceDAO.getYHHQBAvailableBalance(tradeAcco) - quantity;
+            } else {
+                // 读取账户可用余额
+                AvailableBalanceBO availableBalanceBO = fundBalanceDAO.oqpGetAvaliableBalance(tradeAcco, fundId);
+                useableBalance = availableBalanceBO.getAvailableBalance() - quantity;
+            }
+
+            if (useableBalance < 0) {
+                throw TradeBizException.AVAILABLE_BALANCE_LT_ZERO;
+            }
+
+            if (useableBalance == 0) {
+                // 全额赎回直接返回
+                return;
+            }
+
+            if (ApKindConsts.RED.equals(apKind)) {
+                // 赎回检查
+                if (quantity < fundInfoExPO.getMinRedAmt()) {
+                    throw TradeBizException.LT_MINREDAMT;
+                }
+
+                if (quantity < fundInfoExPO.getMinHoldAmt()) {
+                    throw TradeBizException.LT_MINHOLDAMT;
+                }
+            }
+
+            if (ApKindConsts.CONV.equals(apKind)) {
+                // 转换检查
+                if (quantity < fundInfoExPO.getMinConvAmt()) {
+                    throw TradeBizException.LT_MINCONVAMT;
+                }
+
+                if (quantity < fundInfoExPO.getMinHoldAmt()) {
+                    throw TradeBizException.LT_MINHOLDAMT;
+                }
+            }
+
+        }
     }
 
     /**
@@ -87,6 +214,36 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkCustAbnStatus(String custNo) {
+        // 获取客户信息
+        CustInfoPO custInfoPO = custInfoDAO.getCustInfoByCustNo(custNo);
+
+        if (custInfoPO == null) {
+            throw TradeBizException.CUST_NOT_EXISTS;
+        }
+
+        // 15 or 18位证件
+        String counterpart = null;
+
+        // 查询用户冻结状态
+        CustAbnStatusPO custAbnStatusPO = custAbnStatusDAO.getCustAbnStatusByIdNo(custInfoPO.getIdNo(), counterpart);
+
+        if (custAbnStatusPO == null) {
+            // 无冻结记录
+            return false;
+        }
+
+        String abnStatus = custAbnStatusPO.getAbnStatus();
+
+        if ("D".equalsIgnoreCase(abnStatus)) {
+            // 账户已被人工冻结
+            throw TradeBizException.ACCOUNT_ALREADY_FREEZE;
+        }
+
+        if ("C".equalsIgnoreCase(abnStatus)) {
+            // 账户已被人工注销
+            throw TradeBizException.ACCOUNT_ALREADY_CANCEL;
+        }
+
         return true;
     }
 
@@ -136,7 +293,14 @@ public class TradeCommonBiz {
      * @author: 徐文凡
      * @history:
      */
-    public boolean checkMarketIsFuse(String fundId, String apKind) {
+    public boolean checkMarketIsFuse(String fundId) {
+        // 查询系统是否已经触发熔断机制
+        int count = fundInfoExDAO.countFundInfoExIfFuse(fundId);
+
+        if (count == 0) {
+            return false;
+        }
+
         return true;
     }
 
