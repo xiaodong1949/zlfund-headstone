@@ -83,9 +83,8 @@ public class DateTimeBiz {
      * @history:
      */
     public String getCurrentHKWorkDate(String apKind) {
-        // TODO 暂时调用IBF_GET_CURRENT_HK_WORKDATE 后续改为JAVA
-        // return workDaysDAO.ibfGetCurrentHKWorkDate(apKind);
-        return null;
+        // TODO 暂时调用IBF_GET_CURRENT_HK_WORKDATE 后续可考虑改为JAVA
+        return procedureDAO.ibfGetCurrentHKWorkDate(apKind);
     }
 
     /**
@@ -97,9 +96,8 @@ public class DateTimeBiz {
      * @history:
      */
     public String getCurrentWorkDate(String apKind) {
-        // TODO 暂时调用IBF_GET_CURRENT_WORKDATE 后续改为JAVA
-        // return workDaysDAO.ibfGetCurrentWorkDate(apKind);
-        return null;
+        // TODO 暂时调用IBF_GET_CURRENT_WORKDATE 后续可考虑改为JAVA
+        return procedureDAO.ibfGetCurrentWorkDate(apKind);
     }
 
     /**

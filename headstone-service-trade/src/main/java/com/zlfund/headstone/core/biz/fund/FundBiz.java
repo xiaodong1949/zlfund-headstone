@@ -26,6 +26,7 @@ import com.zlfund.headstone.core.dao.FundInfoDAO;
 import com.zlfund.headstone.core.dao.TradeAccoInfoDAO;
 import com.zlfund.headstone.core.dao.TradeProcedureDAO;
 import com.zlfund.headstone.core.dao.TradeRequestDAO;
+import com.zlfund.headstone.core.dao.TradeRequestStatusDAO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
 import com.zlfund.headstone.core.dao.po.FundInfoPO;
 import com.zlfund.headstone.core.dao.po.TradeAccoInfoPO;
@@ -73,6 +74,9 @@ public class FundBiz extends AbstractProductBiz {
     @Autowired
     TradeProcedureDAO tradeProcedureDAO;
 
+    @Autowired
+    TradeRequestStatusDAO tradeRequestStatusDAO;
+
     /**
      * 购买下单前检查，不开启事务
      * @see com.zlfund.headstone.core.biz.AbstractProductBiz#checkBeforeBuy(com.zlfund.headstone.facade.trade.dto.BuyRequestDTO)
@@ -83,6 +87,15 @@ public class FundBiz extends AbstractProductBiz {
         // 基本参数校验
         if (buyRequest == null) {
             throw BuyBizException.PARAM_IS_NULL;
+        }
+
+        // 校验流水号 这里存储过程漏校验了
+        String serialNo = buyRequest.getSerialNo();
+        if (StringUtils.isBlank(serialNo)) {
+            throw BuyBizException.PARAM_IS_NULL.newInstance("请输入交易流水号。");
+        }
+        if (StringUtils.length(serialNo) != 24) {
+            throw BuyBizException.PARAM_ILLEGAL.newInstance("交易流水号应该为24位，请重新输入。");
         }
 
         // 校验基金代码
@@ -199,6 +212,9 @@ public class FundBiz extends AbstractProductBiz {
 
         // 校验交易可行性
         commonBiz.checkTradeAvailable(custNo, tradeAcco, fundId, apKind, subAmt);
+
+        // 校验用户是否冻结
+        commonBiz.checkCustAbnStatus(custNo);
     }
 
     /**
@@ -208,6 +224,14 @@ public class FundBiz extends AbstractProductBiz {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     protected TradeRequestPO submitBuy(BuyRequestDTO buyRequestDTO) {
+        // 首先查询流水是否存在 解决幂等问题
+        String serialNo = buyRequestDTO.getSerialNo();
+        TradeRequestPO tradeRequestPO = tradeRequestDAO.getTradeRequestBySerialNo(serialNo);
+        if (tradeRequestPO != null) {
+            // 如果存在直接返回
+            return tradeRequestPO;
+        }
+
         TradeAccoInfoPO tradeAccoInfoPO = tradeAccoInfoDAO.getTradeAccoInfoByTradeAcco(buyRequestDTO.getTradeAcco());
 
         // 资金来源 默认从银行扣款
@@ -251,8 +275,9 @@ public class FundBiz extends AbstractProductBiz {
         CurrentWorkDateBO currentWorkDateBO = dateTimeBiz.getCurrentCommonWorkDate(buyRequestDTO.getFundId(), apKind);
 
         // 写traderequest
-        TradeRequestPO tradeRequestPO = new TradeRequestPO();
-        tradeRequestPO.setSerialNo(commonBiz.newTradeSerialNo());
+        tradeRequestPO = new TradeRequestPO();
+        // 这里的流水号需要外部传进来 解决幂等问题
+        tradeRequestPO.setSerialNo(buyRequestDTO.getSerialNo());
         tradeRequestPO.setCustNo(buyRequestDTO.getCustNo());
         tradeRequestPO.setTradeAcco(buyRequestDTO.getTradeAcco());
         tradeRequestPO.setFundId(buyRequestDTO.getFundId());
@@ -289,6 +314,7 @@ public class FundBiz extends AbstractProductBiz {
         tradeRequestStatusPO.setPayTm(null);
         tradeRequestStatusPO.setSummary(null);
         tradeRequestStatusPO.setUpdateTimeStamp(dateTimeBiz.getCurrentTimeStamp());
+        tradeRequestStatusDAO.saveTradeRequestStatus(tradeRequestStatusPO);
 
         if (capitalBalance > 0) {
             // 冻结留存资金
@@ -297,8 +323,12 @@ public class FundBiz extends AbstractProductBiz {
 
         if (CashFromConsts.REMNANT.equals(cashFrom)) {
             // 直接写资金流水
+            // 调用过程?
+            // tradeProcedureDAO.ibfWriteCaptrade();
         } else {
             // 转账处理
+            // 这里逻辑过于复杂 直接调用过程?
+            // tradeProcedureDAO.otpCapitaltdBid();
         }
 
         return tradeRequestPO;

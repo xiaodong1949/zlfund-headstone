@@ -53,7 +53,7 @@ public class TradeProcedureDAOImpl implements TradeProcedureDAO {
     }
 
     @Override
-    public String ibfGetCurrentWorkdate(String apKind) {
+    public String ibfGetCurrentWorkDate(String apKind) {
         return tradeProcedureMapper.ibfGetCurrentWorkDate(apKind);
     }
 

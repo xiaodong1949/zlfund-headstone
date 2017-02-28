@@ -30,7 +30,7 @@ public class TradeProcedureDAOImplTest extends JUnitServiceBase {
 
     @Test
     public void testIbfGetCurrentWorkdate() {
-        String workDate = tradeProcedureDAO.ibfGetCurrentWorkdate("022");
+        String workDate = tradeProcedureDAO.ibfGetCurrentWorkDate("022");
         System.out.println(workDate);
 
         Assert.assertNotNull(workDate);

@@ -5,17 +5,43 @@
 
   <insert id="saveTradeRequest" parameterType="TradeRequest" statementType="CALLABLE">
     INSERT INTO traderequest(
-            serialno, custno, tradeacco, apkind, fundid, subquty, subamt, 
-            apdt, aptm, remark, updatetimestamp, workdate, spanflag, cashfrom, 
+            serialno, 
+            custno, 
+            tradeacco, 
+            apkind, 
+            fundid, 
+            subquty, 
+            subamt, 
+            apdt, 
+            aptm, 
+            remark, 
+            updatetimestamp, 
+            workdate, 
+            spanflag, 
+            cashfrom, 
             subramt)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 
-            ?, ?, ?, ?, ?, ?, ?, 
-            ?);
+    VALUES (#{tradeRequest.serialNo}, 
+            #{tradeRequest.custNo}, 
+            #{tradeRequest.tradeAcco}, 
+            #{tradeRequest.apKind}, 
+            #{tradeRequest.fundId}, 
+            #{tradeRequest.subQuty}, 
+            #{tradeRequest.subAmt}, 
+            #{tradeRequest.apDt}, 
+            #{tradeRequest.remark}, 
+            #{tradeRequest.updateTimeStamp}, 
+            #{tradeRequest.workDate}, 
+            #{tradeRequest.spanFlag}, 
+            #{tradeRequest.cashFrom}, 
+            #{tradeRequest.subrAmt});
   </insert>
   
-  <select id="xxx">
-    select 
-    
+  <select id="getTradeRequestBySerialNo" resultType="TradeRequest">
+    SELECT serialno, custno, tradeacco, apkind, fundid, subquty, subamt, 
+       apdt, aptm, remark, updatetimestamp, workdate, spanflag, cashfrom, 
+       subramt
+    FROM traderequest
+    WHERE serialno = #{serialNo}
   </select>
 
 </mapper>

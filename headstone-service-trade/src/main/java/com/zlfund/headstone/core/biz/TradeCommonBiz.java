@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.zlfund.headstone.common.exceptions.BizException;
+import com.zlfund.headstone.common.utils.IdCardUtil;
 import com.zlfund.headstone.common.utils.StringUtil;
 import com.zlfund.headstone.core.bo.AvailableBalanceBO;
 import com.zlfund.headstone.core.dao.CustAbnStatusDAO;
@@ -206,7 +207,7 @@ public class TradeCommonBiz {
     }
 
     /**
-     * 检查客户账户是否冻结
+     * 检查客户账户是否冻结 IBF_CHECK_CUST_ABNSTATUS
      * @param custNo 客户号
      * @return 
      * @create: 2017年2月21日 下午7:26:46 
@@ -222,7 +223,7 @@ public class TradeCommonBiz {
         }
 
         // 15 or 18位证件
-        String counterpart = null;
+        String counterpart = IdCardUtil.getOtherIdNo(custInfoPO.getIdNo());
 
         // 查询用户冻结状态
         CustAbnStatusPO custAbnStatusPO = custAbnStatusDAO.getCustAbnStatusByIdNo(custInfoPO.getIdNo(), counterpart);
@@ -285,7 +286,7 @@ public class TradeCommonBiz {
     }
 
     /**
-     * 检查当前该基金是否触发指数熔断
+     * 检查当前该基金是否触发指数熔断 ITP_MARKET_IS_FUSE
      * @param fundId 产品代码
      * @param apKind 交易类型
      * @return 
@@ -335,6 +336,7 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkBankTradeTime(String bankNo) {
+        // IBF_CHK_BANKTRADETM 使用JAVA重写
         return true;
     }
 
@@ -349,6 +351,9 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkApKindIsStop(String fundId, String oFundId, String apKind) {
+        // 对应存储过程ITP_APKIND_IS_STOP
+        // TODO 这一块业务极其冗长 目前是否用JAVA重写?
+        // tradeProcedureDAO.itpApKindIsStop();
         return true;
     }
 
@@ -361,6 +366,14 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkIsMinor(String idNo) {
+        // 根据银行预留身份证获取年龄
+        int age = IdCardUtil.getAgeById(idNo);
+
+        if (age < 18) {
+            return true;
+        }
+
         return false;
+
     }
 }

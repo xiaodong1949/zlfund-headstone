@@ -45,7 +45,7 @@ public interface TradeProcedureDAO {
      * @author: 徐文凡
      * @history:
      */
-    String ibfGetCurrentWorkdate(String apKind);
+    String ibfGetCurrentWorkDate(String apKind);
 
     /**
      * 获取资金留存
