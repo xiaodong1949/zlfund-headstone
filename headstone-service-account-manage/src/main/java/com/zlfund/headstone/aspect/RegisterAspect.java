@@ -8,9 +8,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.zlfund.headstone.common.dto.BaseResultDTO;
+import com.zlfund.headstone.core.mongo.repository.CustInfoRepository;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
 
@@ -23,6 +27,9 @@ import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizExce
 @Component
 public class RegisterAspect extends AccountManageAspect {
     private static final Log log = LogFactory.getLog(RegisterAspect.class);
+
+    @Autowired
+    private CustInfoRepository custInfoRepository;
 
     /*
      * (non-Javadoc)
@@ -49,7 +56,13 @@ public class RegisterAspect extends AccountManageAspect {
                     checkMobileno(registerMobilenoRequestDTO.getMobileNo());
                     // 密码验证
                     checkPassword(registerMobilenoRequestDTO.getPassword(), "", registerMobilenoRequestDTO.getMctcode());
-                    // TODO mongo check
+                    // mongo check
+                    Query query = new Query(
+                            Criteria.where("mobileno").is(registerMobilenoRequestDTO.getMobileNo()).and("custst").is("N").and("mobileverifist").ne("N"));
+                    long count = custInfoRepository.count(query);
+                    if (count > 0) {
+                        throw AccountManageBizException.ACCOUNT_ALREADY_REGISTERED;
+                    }
                 }
 
             } else {
