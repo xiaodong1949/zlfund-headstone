@@ -4,11 +4,28 @@
 <mapper namespace="com.zlfund.headstone.core.mapper.FundInfoMapper">
 
   <select id="getFundInfoByFundId" resultType="FundInfo">
-    SELECT fundid, fundnm, currencytype, fundst, tano, displayorder, inserttimestamp, 
-       updatetimestamp, navdt, nav, sharetype, shareclass, yield, companyno, 
-       aipst, convst, fundincome
-    FROM fundinfo
-    WHERE fundid = #{fundId}
+    SELECT
+      fundid,
+      fundnm,
+      currencytype,
+      fundst,
+      tano,
+      displayorder,
+      inserttimestamp,
+      updatetimestamp,
+      navdt,
+      nav,
+      sharetype,
+      shareclass,
+      yield,
+      companyno,
+      aipst,
+      convst,
+      fundincome
+    FROM
+      fundinfo
+    WHERE
+      fundid = #{fundId}
   </select>
 
   <select id="countFundInfoByFundId">

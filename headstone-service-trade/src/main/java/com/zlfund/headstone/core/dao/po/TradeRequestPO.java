@@ -1,6 +1,6 @@
 package com.zlfund.headstone.core.dao.po;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @Title TradeRequestDO.java 
@@ -30,9 +30,9 @@ public class TradeRequestPO {
 
     private String fundId;
 
-    private double subQuty;
+    private double subQuty = 0.00;
 
-    private double subAmt;
+    private double subAmt = 0.00;
 
     private String apDt;
 

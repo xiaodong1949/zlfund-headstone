@@ -10,6 +10,8 @@ package com.zlfund.headstone.core.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.zlfund.headstone.core.common.mybatis.BaseSqlMapper;
 import com.zlfund.headstone.core.dao.po.TradeRequestPO;
 
@@ -29,4 +31,6 @@ public interface TradeRequestMapper extends BaseSqlMapper {
     int saveTradeRequest(TradeRequestPO tradeRequestPO);
 
     int updateTradeRequest(TradeRequestPO tradeRequestPO);
+
+    TradeRequestPO getTradeRequestBySerialNo(@Param("serialNo") String serialNo);
 }

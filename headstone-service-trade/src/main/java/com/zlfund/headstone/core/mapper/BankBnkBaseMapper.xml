@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.BankBnkBaseMapper">
+
+  <resultMap id="BankBnkBaseMap" type="BankBnkBase">
+    <result property="bnkNo" column="bnk_no"/>
+    <result property="bnkNm" column="bnk_nm"/>
+    <result property="webSite" column="web_site"/>
+    <result property="ebnkUrl" column="ebnk_url"/>
+    <result property="bTradeDate" column="b_tradedate"/>
+    <result property="eTradeDate" column="e_tradedate"/>
+    <result property="tradeStatus" column="tradestatus"/>
+  </resultMap>
+
+  <select id="getBankBnkBaseByBankNo" parameterType="string" resultMap="BankBnkBaseMap">
+    SELECT bnk_no, 
+           bnk_nm, 
+           web_site, 
+           ebnk_url, 
+           balance_url, 
+           tel_bnk, 
+           link_man, 
+           link_man_tel, 
+           link_man_fax, 
+           link_man_email, 
+           dis_order, 
+           dis_flg, 
+           c_time, 
+           c_man, 
+           e_time, 
+           e_man, 
+           status, 
+           cmb_cmdk, 
+           cmb_cmdm, 
+           cmdm_date, 
+           protocol, 
+           netpoint, 
+           capitalmode, 
+           realtimeflag, 
+           b_tradedate, 
+           e_tradedate, 
+           tradestatus, 
+           priority, 
+           bank_id, 
+           app_dis_flg, 
+           validcodefrom, 
+           refund_split_amt
+    FROM bank_bnkbase
+    WHERE bnk_no = #{bankNo }
+  </select>
+  
+</mapper>

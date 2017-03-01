@@ -19,6 +19,8 @@ import com.zlfund.headstone.core.dao.po.TradeRequestPO;
  */
 public interface TradeRequestDAO {
 
+    public TradeRequestPO getTradeRequestBySerialNo(String serialNo);
+
     public TradeRequestPO getTradeRequest();
 
     public List<TradeRequestPO> listTradeRequest();

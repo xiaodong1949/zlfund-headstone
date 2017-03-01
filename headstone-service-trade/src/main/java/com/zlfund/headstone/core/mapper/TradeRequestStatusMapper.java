@@ -20,7 +20,7 @@ import com.zlfund.headstone.core.dao.po.TradeRequestStatusPO;
  */
 public interface TradeRequestStatusMapper extends BaseSqlMapper {
 
-    int saveTradeRequestStatus(@Param("param") TradeRequestStatusPO tradeRequestStatusPO);
+    int saveTradeRequestStatus(@Param("tradeRequestStatus") TradeRequestStatusPO tradeRequestStatusPO);
 
-    int updateTradeRequestStatus(@Param("param") TradeRequestStatusPO tradeRequestStatusPO);
+    int updateTradeRequestStatus(@Param("tradeRequestStatus") TradeRequestStatusPO tradeRequestStatusPO);
 }

@@ -31,4 +31,14 @@ public class TradeAccoInfoDAOImpl implements TradeAccoInfoDAO {
         return tradeAccoInfoMapper.getTradeAccoInfoByTradeAcco(tradeAcco);
     }
 
+    @Override
+    public TradeAccoInfoPO getTradeAccoInfoByTradeAccoAndCustNo(String tradeAcco, String custNo) {
+        return tradeAccoInfoMapper.getTradeAccoInfoByTradeAccoAndCustNo(tradeAcco, custNo);
+    }
+
+    @Override
+    public int countYeepayRemainCust(String custNo) {
+        return tradeAccoInfoMapper.countYeepayRemainCust(custNo);
+    }
+
 }

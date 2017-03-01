@@ -167,7 +167,7 @@ public class FundBuyBiz {
         }
 
         // 校验是否触发指数熔断机制
-        if (commonBiz.checkMarketIsFuse(fundId, apKind)) {
+        if (commonBiz.checkMarketIsFuse(fundId)) {
             throw BuyBizException.TRIGGER_FUSE;
         }
 
@@ -182,7 +182,7 @@ public class FundBuyBiz {
         }
 
         // 校验交易可行性
-        commonBiz.checkTradeAvailable(tradeAcco, fundId, apKind, subAmt);
+        commonBiz.checkTradeAvailable(custNo, tradeAcco, fundId, apKind, subAmt);
 
         // 生成交易流水号
         String serialNo = commonBiz.newTradeSerialNo();

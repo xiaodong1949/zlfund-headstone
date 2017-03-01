@@ -40,13 +40,17 @@
 
 	<!-- 类型别名是为 Java类型命名一个短的名字。 它只和 XML配置有关,只用来减少类完全 限定名的多余部分 -->
 	<typeAliases>
-		<typeAlias alias="BankCommandPO" type="com.zlfund.headstone.core.dao.po.BankCommandPO" />
-		<typeAlias alias="CustInfoPO" type="com.zlfund.headstone.core.dao.po.CustInfoPO" />
-		<typeAlias alias="FundInfoPO" type="com.zlfund.headstone.core.dao.po.FundInfoPO" />
-		<typeAlias alias="TAInfoPO" type="com.zlfund.headstone.core.dao.po.TAInfoPO" />
-		<typeAlias alias="TradeAccoInfoPO" type="com.zlfund.headstone.core.dao.po.TradeAccoInfoPO" />
-		<typeAlias alias="TradeRequestPO" type="com.zlfund.headstone.core.dao.po.TradeRequestPO" />
-		<typeAlias alias="TradeRequestStatusPO" type="com.zlfund.headstone.core.dao.po.TradeRequestStatusPO" />
+		<typeAlias alias="BankCommand" type="com.zlfund.headstone.core.dao.po.BankCommandPO" />
+		<typeAlias alias="CustInfo" type="com.zlfund.headstone.core.dao.po.CustInfoPO" />
+		<typeAlias alias="FundInfo" type="com.zlfund.headstone.core.dao.po.FundInfoPO" />
+		<typeAlias alias="FundInfoEx" type="com.zlfund.headstone.core.dao.po.FundInfoExPO" />
+		<typeAlias alias="TAInfo" type="com.zlfund.headstone.core.dao.po.TAInfoPO" />
+		<typeAlias alias="TradeAccoInfo" type="com.zlfund.headstone.core.dao.po.TradeAccoInfoPO" />
+		<typeAlias alias="TradeRequest" type="com.zlfund.headstone.core.dao.po.TradeRequestPO" />
+		<typeAlias alias="TradeRequestStatus" type="com.zlfund.headstone.core.dao.po.TradeRequestStatusPO" />
+		<typeAlias alias="CustAbnStatus" type="com.zlfund.headstone.core.dao.po.CustAbnStatusPO" />
+		<typeAlias alias="CapitalBalance" type="com.zlfund.headstone.core.dao.po.CapitalBalancePO" />
+		<typeAlias alias="BankBnkBase" type="com.zlfund.headstone.core.dao.po.BankBnkBasePO" />
 	</typeAliases>
 
 	<!-- 在在mappers定义之前 -->

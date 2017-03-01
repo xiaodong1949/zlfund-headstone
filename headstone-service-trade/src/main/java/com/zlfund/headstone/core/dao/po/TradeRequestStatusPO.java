@@ -8,6 +8,8 @@
  */
 package com.zlfund.headstone.core.dao.po;
 
+import java.util.Date;
+
 /** 
  * @author: 徐文凡 
  * @since: 2017年2月22日 上午10:20:49 
@@ -38,6 +40,8 @@ public class TradeRequestStatusPO {
     private String payDt;
 
     private String payTm;
+
+    private Date updateTimeStamp;
 
     public String getSerialNo() {
         return serialNo;
@@ -140,6 +144,14 @@ public class TradeRequestStatusPO {
         return "TradeRequestStatusPO [serialNo=" + serialNo + ", priorNo=" + priorNo + ", referNo=" + referNo + ", seqNo=" + seqNo + ", custNo=" + custNo
                 + ", applySt=" + applySt + ", transSt=" + transSt + ", paySt=" + paySt + ", summary=" + summary + ", modifyFlag=" + modifyFlag + ", payDt="
                 + payDt + ", payTm=" + payTm + "]";
+    }
+
+    public Date getUpdateTimeStamp() {
+        return updateTimeStamp;
+    }
+
+    public void setUpdateTimeStamp(Date updateTimeStamp) {
+        this.updateTimeStamp = updateTimeStamp;
     }
 
 }

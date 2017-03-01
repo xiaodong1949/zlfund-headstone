@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlfund.headstone.core.mapper.FundInfoExMapper">
+
+  <select id="getFundInfoExByFundId" resultType="FundInfoEx">
+    SELECT
+      fundid,
+      fundchinesenm,
+      fundenglishnm,
+      investtype,
+      fundtp,
+      issueprice,
+      facevalue,
+      managername,
+      trusteename,
+      tanm,
+      issuedate,
+      setupdate,
+      managerratio,
+      minsubamt,
+      minbidamt,
+      minredamt,
+      minconvamt,
+      minrspamt,
+      inserttimestamp,
+      updatetimestamp,
+      transferdays,
+      fundrisklevel,
+      navfracnum,
+      navfracmode,
+      fundevaldate,
+      maxsubamt,
+      maxbidamt,
+      url,
+      minholdamt,
+      managercode,
+      fundstyle,
+      minaddappamt,
+      productperiod,
+      minaddsubamt,
+      maxaipamt,
+      maxcurrdaybinamt,
+      saleserviceratio,
+      if_multiple,
+      multamt,
+      isfuse,
+      redflag,
+      transferstatus,
+      ackdays,
+      defaultmelonmd,
+      modifymelonmd
+    FROM
+      fundinfoex
+    WHERE
+      fundid = #{fundId}
+  </select>
+
+  <select id="countFundInfoExIfFuse">
+    SELECT count(t1.fundid)
+    FROM fundinfoex t1
+    WHERE t1.fundid = #{fundId}
+    AND t1.isfuse = '1'
+    AND EXISTS (SELECT 1 FROM SYSALTER S WHERE S.KEY1='EC' AND S.KEY2='SYS' AND S.KEY3 = 'FUSEDATE' AND S.KYDATE = OQP_GET_CURRENT_WORKDATE('022'))
+  </select>
+
+</mapper>

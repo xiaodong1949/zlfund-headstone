@@ -8,14 +8,11 @@
  */
 package com.zlfund.headstone.core.dao.impl;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.zlfund.headstone.core.dao.CapitalBalanceDAO;
+import com.zlfund.headstone.core.dao.po.CapitalBalancePO;
 import com.zlfund.headstone.core.mapper.CapitalBalanceMapper;
 
 /** 
@@ -30,11 +27,23 @@ public class CapitalBalanceDAOImpl implements CapitalBalanceDAO {
     CapitalBalanceMapper capitalBalanceMapper;
 
     @Override
-    public double getAvailableCapitalBalance(String tradeAcco) {
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("tradeAcco", tradeAcco);
-        capitalBalanceMapper.getAvailableCapitalBalance(param);
-        return ((BigDecimal)param.get("sumAvailable")).doubleValue();
+    public int countCapitalBalance(CapitalBalancePO capitalBalancePO) {
+        return capitalBalanceMapper.countCapitalBalance(capitalBalancePO);
+    }
+
+    @Override
+    public int saveCapitalBalance(CapitalBalancePO capitalBalancePO) {
+        return capitalBalanceMapper.saveCapitalBalance(capitalBalancePO);
+    }
+
+    @Override
+    public int updateCapitalBalance(CapitalBalancePO capitalBalancePO) {
+        return capitalBalanceMapper.updateCapitalBalance(capitalBalancePO);
+    }
+
+    @Override
+    public CapitalBalancePO getCapitalBalance(CapitalBalancePO capitalBalancePO) {
+        return capitalBalanceMapper.getCapitalBalance(capitalBalancePO);
     }
 
 }

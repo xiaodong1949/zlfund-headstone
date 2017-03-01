@@ -3,18 +3,69 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlfund.headstone.core.mapper.CapitalBalanceMapper">
 
-  <select id="getAvailableCapitalBalance" parameterType="map" statementType="CALLABLE">
-    {
-      call OQP_GET_CAPITALBALANCE_TRADEACCO
-      (
-        #{tradeAcco, jdbcType=VARCHAR, mode=IN},
-        
-        #{sumBalance, jdbcType=NUMERIC, mode=OUT},
-        #{sumAvailable, jdbcType=NUMERIC, mode=OUT},
-        #{errCod, jdbcType=VARCHAR, mode=OUT},
-        #{errMsg, jdbcType=VARCHAR, mode=OUT}
-      )
-    }
+  <select id="countCapitalBalance" parameterType="CapitalBalance" resultType="int">
+    select count(custno) from capitalbalance t1
+    <where>
+      <if test="capitalBalance.tradeAcco != null and capitalBalance.tradeAcco != ''">
+        and t1.tradeacco = #{capitalBalance.tradeAcco }
+      </if>
+      <if test="capitalBalance.custNo != null and capitalBalance.custNo != ''">
+        and t1.custno = #{capitalBalance.custNo }
+      </if>
+    </where>
   </select>
 
+  <insert id="saveCapitalBalance" parameterType="CapitalBalance" statementType="CALLABLE">
+    INSERT INTO capitalbalance(
+            tradeacco, 
+            custno, 
+            balance, 
+            abnmfrozen, 
+            lastdate, 
+            updatetimestamp, 
+            transferstatus, 
+            returnbalance, 
+            soadate)
+    VALUES (#{capitalBalance.tradeAcco}, 
+            #{capitalBalance.custNo}, 
+            #{capitalBalance.balance}, 
+            #{capitalBalance.abnmFrozen}, 
+            #{capitalBalance.lastDate}, 
+            #{capitalBalance.updateTimeStamp}, 
+            #{capitalBalance.transferStatus}, 
+            #{capitalBalance.returnBalance}, 
+            #{capitalBalance.soaDate});
+  </insert>
+
+  <update id="updateCapitalBalance" parameterType="CapitalBalance" statementType="CALLABLE">
+    UPDATE capitalbalance t1
+    <set>
+       <if test="capitalBalance.abnmFrozen != null">
+        abnmfrozen = #{capitalBalance.abnmFrozen }
+       </if>
+    </set>
+    <where>
+      <if test="capitalBalance.tradeAcco != null and capitalBalance.tradeAcco != ''">
+        and t1.tradeacco = #{capitalBalance.tradeAcco }
+      </if>
+      <if test="capitalBalance.custNo != null and capitalBalance.custNo != ''">
+        and t1.custno = #{capitalBalance.custNo }
+      </if>
+    </where>
+  </update>
+  
+  <select id="getCapitalBalance" parameterType="CapitalBalance" resultType="CapitalBalance">
+    SELECT tradeacco, custno, balance, abnmfrozen, lastdate, updatetimestamp, 
+       transferstatus, returnbalance, soadate
+    FROM capitalbalance t1
+    <where>
+      <if test="capitalBalance.tradeAcco != null and capitalBalance.tradeAcco != ''">
+        and t1.tradeacco = #{capitalBalance.tradeAcco }
+      </if>
+      <if test="capitalBalance.custNo != null and capitalBalance.custNo != ''">
+        and t1.custno = #{capitalBalance.custNo }
+      </if>
+    </where>
+  </select>
+  
 </mapper>

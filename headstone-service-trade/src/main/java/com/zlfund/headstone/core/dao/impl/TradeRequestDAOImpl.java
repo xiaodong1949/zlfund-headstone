@@ -53,4 +53,9 @@ public class TradeRequestDAOImpl implements TradeRequestDAO {
         return tradeRequestMapper.updateTradeRequest(tradeRequestPO);
     }
 
+    @Override
+    public TradeRequestPO getTradeRequestBySerialNo(String serialNo) {
+        return tradeRequestMapper.getTradeRequestBySerialNo(serialNo);
+    }
+
 }

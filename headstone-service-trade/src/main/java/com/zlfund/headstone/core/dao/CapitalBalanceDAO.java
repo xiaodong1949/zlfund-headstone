@@ -8,6 +8,8 @@
  */
 package com.zlfund.headstone.core.dao;
 
+import com.zlfund.headstone.core.dao.po.CapitalBalancePO;
+
 /** 
  * @author: 徐文凡 
  * @since: 2017年2月23日 下午6:26:56 
@@ -15,5 +17,11 @@ package com.zlfund.headstone.core.dao;
  */
 public interface CapitalBalanceDAO {
 
-    double getAvailableCapitalBalance(String tradeAcco);
+    int countCapitalBalance(CapitalBalancePO capitalBalancePO);
+
+    int saveCapitalBalance(CapitalBalancePO capitalBalancePO);
+
+    int updateCapitalBalance(CapitalBalancePO capitalBalancePO);
+
+    CapitalBalancePO getCapitalBalance(CapitalBalancePO capitalBalancePO);
 }

@@ -3,13 +3,46 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlfund.headstone.core.mapper.TradeAccoInfoMapper">
 
-  <insert id="getTradeAccoInfoByTradeAcco" resultType="TradeAccoInfo">
-    SELECT tradeacco, custno, mainflag, tradeaccost, opendt, bankno, bankacco, 
-       bankaccodisplay, bankidtp, bankidno, updatetimestamp, bankproexists, 
-       protocol_no, input_acct_no, subbankno, netpoint, capitalmode, 
-       closedt, mobileno, partnerno, accounttype, pzbid
-    FROM tradeaccoinfo
+  <select id="getTradeAccoInfoByTradeAcco" resultType="TradeAccoInfo">
+    <include refid="selectTradeAccoInfo"/>
     WHERE tradeacco = #{tradeAcco}
-  </insert>
+  </select>
+
+  <select id="getTradeAccoInfoByTradeAccoAndCustNo" resultType="TradeAccoInfo">
+    <include refid="selectTradeAccoInfo"/>
+    WHERE tradeacco = #{tradeAcco} and custno = #{custNo}
+  </select>
+
+  <select id="countYeepayRemainCust" resultType="int">
+    SELECT count(custno) FROM tradeaccoinfo
+    WHERE custno = #{custNo} AND bankno LIKE 'y%' AND tradeaccost = 'N'
+  </select>
+
+  <sql id="selectTradeAccoInfo">
+    SELECT
+      tradeacco,
+      custno,
+      mainflag,
+      tradeaccost,
+      opendt,
+      bankno,
+      bankacco,
+      bankaccodisplay,
+      bankidtp,
+      bankidno,
+      updatetimestamp,
+      bankproexists,
+      protocol_no,
+      input_acct_no,
+      subbankno,
+      netpoint,
+      capitalmode,
+      closedt,
+      mobileno,
+      partnerno,
+      accounttype,
+      pzbid
+    FROM tradeaccoinfo
+  </sql>
 
 </mapper>
