@@ -37,4 +37,60 @@
       )
     }
   </select>
+  
+  <select id="ibfWriteCaptrade" parameterType="map" statementType="CALLABLE">
+    {
+      call IBF_WRITE_CAPTRADE
+      (
+        #{serialNo, jdbcType=VARCHAR, mode=IN},
+        #{apDt, jdbcType=VARCHAR, mode=IN},
+        #{apTm, jdbcType=VARCHAR, mode=IN},
+        #{ackDt, jdbcType=VARCHAR, mode=IN},
+        #{ackTm, jdbcType=VARCHAR, mode=IN},
+        #{apKind, jdbcType=VARCHAR, mode=IN},
+        #{capitalAmt, jdbcType=NUMERIC, mode=IN},
+        '156',
+        #{custNo, jdbcType=VARCHAR, mode=IN},
+        #{tradeAcco, jdbcType=VARCHAR, mode=IN},
+        #{capitalTp, jdbcType=VARCHAR, mode=IN},
+        #{bankNo, jdbcType=VARCHAR, mode=IN},
+        #{bankAcco, jdbcType=VARCHAR, mode=IN},
+        #{fundId, jdbcType=VARCHAR, mode=IN},
+        #{fee, jdbcType=NUMERIC, mode=IN},
+        #{ackNav, jdbcType=NUMERIC, mode=IN},
+        #{navDt, jdbcType=VARCHAR, mode=IN},
+        #{ackQuty, jdbcType=NUMERIC, mode=IN},
+        #{balanceFee, jdbcType=NUMERIC, mode=IN},
+        #{fundAcct, jdbcType=VARCHAR, mode=IN},
+        #{subSerialNo, jdbcType=VARCHAR, mode=IN},
+        #{initFlag, jdbcType=VARCHAR, mode=IN},
+        #{status, jdbcType=VARCHAR, mode=IN},
+        #{summary, jdbcType=VARCHAR, mode=IN},
+        
+        #{errCod, jdbcType=VARCHAR, mode=OUT},
+        #{errMsg, jdbcType=VARCHAR, mode=OUT}
+      )
+    }
+  </select>
+  
+  <select id="otpCaptialtdBid" parameterType="map" statementType="CALLABLE">
+    {
+      call OTP_CAPTIALTD_BID
+      (
+        #{serialNo, jdbcType=VARCHAR, mode=IN},
+        #{custNo, jdbcType=VARCHAR, mode=IN},
+        #{tadeTp, jdbcType=VARCHAR, mode=IN},
+        #{apKind, jdbcType=VARCHAR, mode=IN},
+        #{tradeAcco, jdbcType=VARCHAR, mode=IN},
+        #{amount, jdbcType=NUMERIC, mode=IN},
+        #{subrAmt, jdbcType=NUMERIC, mode=IN},
+        #{fundId, jdbcType=VARCHAR, mode=IN},
+        
+        #{capitalNo, jdbcType=VARCHAR, mode=OUT},
+        #{errCod, jdbcType=VARCHAR, mode=OUT},
+        #{errMsg, jdbcType=VARCHAR, mode=OUT}
+      )
+    }
+  </select>
+  
 </mapper>

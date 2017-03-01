@@ -8,6 +8,9 @@
  */
 package com.zlfund.headstone.core.biz.fund;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +39,8 @@ import com.zlfund.headstone.facade.trade.consts.ApKindConsts;
 import com.zlfund.headstone.facade.trade.consts.CashFromConsts;
 import com.zlfund.headstone.facade.trade.consts.FundStatusConsts;
 import com.zlfund.headstone.facade.trade.consts.InvTpConsts;
+import com.zlfund.headstone.facade.trade.consts.TradeAccoStatusConsts;
+import com.zlfund.headstone.facade.trade.consts.TradeAccoTypeConsts;
 import com.zlfund.headstone.facade.trade.dto.BuyRequestDTO;
 import com.zlfund.headstone.facade.trade.exception.BuyBizException;
 
@@ -116,6 +121,8 @@ public class FundBiz extends AbstractProductBiz {
         if (StringUtils.length(custNo) != Constants.CUSTNO_LENGTH) {
             throw BuyBizException.PARAM_ILLEGAL.newInstance("客户号长度不合法%s", custNo);
         }
+        // 校验用户是否冻结
+        commonBiz.checkCustAbnStatus(custNo);
 
         // 校验交易账号
         String tradeAcco = buyRequest.getTradeAcco();
@@ -132,14 +139,11 @@ public class FundBiz extends AbstractProductBiz {
             throw BuyBizException.PARAM_ILLEGAL.newInstance("购买金额必须大于0.00元，请重新输入。");
         }
 
-        // 校验产品是否存在
-        int count = fundInfoDAO.countFundInfoByFundId(fundId);
-        if (count == 0) {
-            throw BuyBizException.PRODUCT_NOT_EXISTS.newInstance("%s产品信息不存在", fundId);
-        }
-
         // 获取产品信息
         FundInfoPO fundInfoPO = fundInfoDAO.getFundInfoByFundId(fundId);
+        if (fundInfoPO == null) {
+            throw BuyBizException.PRODUCT_NOT_EXISTS.newInstance("%s产品信息不存在", fundId);
+        }
 
         if ("ZL".equalsIgnoreCase(fundInfoPO.getTaNo())) {
             throw BuyBizException.NOT_SUPPORT_ZYB;
@@ -153,12 +157,12 @@ public class FundBiz extends AbstractProductBiz {
         }
 
         // 获取交易账号信息
-        TradeAccoInfoPO tradeAccoInfoPO = tradeAccoInfoDAO.getTradeAccoInfoByTradeAcco(tradeAcco);
+        TradeAccoInfoPO tradeAccoInfoPO = tradeAccoInfoDAO.getTradeAccoInfoByTradeAccoAndCustNo(tradeAcco, custNo);
         if (tradeAccoInfoPO == null) {
             // 交易账号不存在
             throw BuyBizException.TRADEACCO_NOT_EXISTS;
         }
-        if (!"N".equalsIgnoreCase(tradeAccoInfoPO.getTradeAccoSt())) {
+        if (!TradeAccoStatusConsts.NORMAL.equalsIgnoreCase(tradeAccoInfoPO.getTradeAccoSt())) {
             throw BuyBizException.TRADEACCO_STATUS_ABN.newInstance("您的银行卡%s暂未绑定，请重新绑卡。", tradeAccoInfoPO.getBankAcco());
         }
 
@@ -168,7 +172,7 @@ public class FundBiz extends AbstractProductBiz {
         }
 
         // 校验交易账号是否为S-自助理财账户,限制配置宝交易账户
-        if (!InvTpConsts.INDIVIDUAL.equalsIgnoreCase(tradeAccoInfoPO.getAccountType())) {
+        if (!TradeAccoTypeConsts.SELF_SERVICE.equalsIgnoreCase(tradeAccoInfoPO.getAccountType())) {
             // 配置宝交易账户只允许购买配置宝伴侣
             if (!"161608".equals(fundId)) {
                 throw BuyBizException.ACCOUNT_TYPE_NOT_ALLOW_BUY;
@@ -209,12 +213,6 @@ public class FundBiz extends AbstractProductBiz {
         if (commonBiz.checkFundStatus(fundInfoPO, apKind)) {
             throw BuyBizException.FUND_STATUS_PAUSE_BUY;
         }
-
-        // 校验交易可行性
-        commonBiz.checkTradeAvailable(custNo, tradeAcco, fundId, apKind, subAmt);
-
-        // 校验用户是否冻结
-        commonBiz.checkCustAbnStatus(custNo);
     }
 
     /**
@@ -232,6 +230,19 @@ public class FundBiz extends AbstractProductBiz {
             return tradeRequestPO;
         }
 
+        String apKind = null;
+        FundInfoPO fundInfoPO = fundInfoDAO.getFundInfoByFundId(buyRequestDTO.getFundId());
+        if (FundStatusConsts.SUB.equals(fundInfoPO.getFundSt())) {
+            // 认购
+            apKind = ApKindConsts.SUB;
+        } else {
+            // 申购
+            apKind = ApKindConsts.BID;
+        }
+
+        // 校验交易可行性
+        commonBiz.checkTradeAvailable(buyRequestDTO.getCustNo(), buyRequestDTO.getTradeAcco(), buyRequestDTO.getFundId(), apKind, buyRequestDTO.getSubAmt());
+
         TradeAccoInfoPO tradeAccoInfoPO = tradeAccoInfoDAO.getTradeAccoInfoByTradeAcco(buyRequestDTO.getTradeAcco());
 
         // 资金来源 默认从银行扣款
@@ -239,11 +250,13 @@ public class FundBiz extends AbstractProductBiz {
         double subAmt = buyRequestDTO.getSubAmt();
 
         // 0-不重用撤单资金 1-重用撤单资金
-        String bidTp = buyRequestDTO.getBidTp();
+        boolean reuseCapital = buyRequestDTO.isReuseCapital();
 
         double capitalBalance = 0.00;
+        // 从留存资金扣除的金额
+        double subrAmt = 0.00;
         // bidTp 是否使用撤单资金 0-不使用 1-使用
-        if ("1".equals(bidTp)) {
+        if (reuseCapital) {
             // 查询可重用资金余额
             // TODO 暂调存储过程 后续可改为JAVA
             capitalBalance = tradeProcedureDAO.oqpGetCapitalbalanceTradeacco(tradeAccoInfoPO.getTradeAcco());
@@ -255,20 +268,12 @@ public class FundBiz extends AbstractProductBiz {
             if (capitalBalance < subAmt) {
                 // 部分扣款 部分留存
                 cashFrom = CashFromConsts.SECTION;
+                subrAmt = capitalBalance;
             } else {
                 // 全部留存
                 cashFrom = CashFromConsts.REMNANT;
+                subrAmt = buyRequestDTO.getSubAmt();
             }
-        }
-
-        String apKind = null;
-        FundInfoPO fundInfoPO = fundInfoDAO.getFundInfoByFundId(buyRequestDTO.getFundId());
-        if (FundStatusConsts.SUB.equals(fundInfoPO.getFundSt())) {
-            // 认购
-            apKind = ApKindConsts.SUB;
-        } else {
-            // 申购
-            apKind = ApKindConsts.BID;
         }
 
         // 获取当前工作日
@@ -286,7 +291,7 @@ public class FundBiz extends AbstractProductBiz {
         tradeRequestPO.setApDt(currentWorkDateBO.getCurrentDate());
         tradeRequestPO.setApTm(currentWorkDateBO.getCurrentTime());
         tradeRequestPO.setCashFrom(cashFrom);
-        tradeRequestPO.setSubrAmt(capitalBalance);
+        tradeRequestPO.setSubrAmt(subrAmt);
         tradeRequestPO.setWorkDate(currentWorkDateBO.getCurrentWorkDate());
         tradeRequestPO.setUpdateTimeStamp(dateTimeBiz.getCurrentTimeStamp());
         tradeRequestDAO.saveTradeRequest(tradeRequestPO);
@@ -316,19 +321,41 @@ public class FundBiz extends AbstractProductBiz {
         tradeRequestStatusPO.setUpdateTimeStamp(dateTimeBiz.getCurrentTimeStamp());
         tradeRequestStatusDAO.saveTradeRequestStatus(tradeRequestStatusPO);
 
-        if (capitalBalance > 0) {
+        if (subrAmt > 0) {
             // 冻结留存资金
-            capitalBalanceBiz.frozenCapitalBalance(buyRequestDTO.getCustNo(), buyRequestDTO.getTradeAcco(), buyRequestDTO.getSubAmt());
+            capitalBalanceBiz.frozenCapitalBalance(buyRequestDTO.getCustNo(), buyRequestDTO.getTradeAcco(), subrAmt);
         }
 
         if (CashFromConsts.REMNANT.equals(cashFrom)) {
             // 直接写资金流水
-            // 调用过程?
-            // tradeProcedureDAO.ibfWriteCaptrade();
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("serialNo", serialNo);
+            param.put("apDt", tradeRequestPO.getWorkDate());
+            param.put("apTm", tradeRequestPO.getApTm());
+            param.put("ackDt", tradeRequestPO.getWorkDate());
+            param.put("ackTm", tradeRequestPO.getApTm());
+            param.put("apKind", tradeRequestPO.getApKind());
+            param.put("capitalAmt", tradeRequestPO.getSubAmt());
+            param.put("custNo", tradeRequestPO.getCustNo());
+            param.put("tradeAcco", tradeRequestPO.getTradeAcco());
+            param.put("capitalTp", "S");
+            param.put("bankNo", tradeAccoInfoPO.getBankNo());
+            param.put("bankAcco", tradeAccoInfoPO.getBankAcco());
+            param.put("fundId", tradeRequestPO.getFundId());
+            tradeProcedureDAO.ibfWriteCaptrade(param);
         } else {
             // 转账处理
-            // 这里逻辑过于复杂 直接调用过程?
-            // tradeProcedureDAO.otpCapitaltdBid();
+            // 这里逻辑过于复杂 直接调用过程
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("serialNo", serialNo);
+            param.put("custNo", tradeRequestPO.getCustNo());
+            param.put("tadeTp", "B");
+            param.put("apKind", tradeRequestPO.getApKind());
+            param.put("tradeAcco", tradeRequestPO.getTradeAcco());
+            param.put("amount", tradeRequestPO.getSubAmt());
+            param.put("subrAmt", tradeRequestPO.getSubrAmt());
+            param.put("fundId", tradeRequestPO.getFundId());
+            tradeProcedureDAO.otpCaptialtdBid(param);
         }
 
         return tradeRequestPO;

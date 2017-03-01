@@ -28,4 +28,8 @@ public interface TradeProcedureMapper extends BaseSqlMapper {
     String ibfGetCurrentWorkDate(@Param("apKind") String apKind);
 
     double oqpGetCapitalbalanceTradeacco(Map<String, Object> param);
+
+    void ibfWriteCaptrade(Map<String, Object> param);
+
+    void otpCaptialtdBid(Map<String, Object> param);
 }

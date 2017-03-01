@@ -18,4 +18,8 @@ import com.zlfund.headstone.core.dao.po.TradeAccoInfoPO;
 public interface TradeAccoInfoDAO {
 
     public TradeAccoInfoPO getTradeAccoInfoByTradeAcco(String tradeAcco);
+
+    public TradeAccoInfoPO getTradeAccoInfoByTradeAccoAndCustNo(String tradeAcco, String custNo);
+
+    public int countYeepayRemainCust(String custNo);
 }

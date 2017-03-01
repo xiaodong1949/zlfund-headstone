@@ -22,4 +22,7 @@ public interface TradeAccoInfoMapper extends BaseSqlMapper {
 
     TradeAccoInfoPO getTradeAccoInfoByTradeAcco(@Param("tradeAcco") String tradeAcco);
 
+    TradeAccoInfoPO getTradeAccoInfoByTradeAccoAndCustNo(@Param("tradeAcco") String tradeAcco, @Param("custNo") String custNo);
+
+    int countYeepayRemainCust(@Param("custNo") String custNo);
 }

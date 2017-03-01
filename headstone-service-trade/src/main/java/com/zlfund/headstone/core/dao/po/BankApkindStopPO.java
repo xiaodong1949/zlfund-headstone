@@ -15,7 +15,7 @@ import java.util.Date;
  * @since: 2017年2月27日 下午7:58:06 
  * @history:
  */
-public class BankApkindStop {
+public class BankApkindStopPO {
 
     private String fundId;
 

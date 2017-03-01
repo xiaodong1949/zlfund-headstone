@@ -8,6 +8,8 @@
  */
 package com.zlfund.headstone.core.dao;
 
+import java.util.Map;
+
 /** 
  * 交易类存储过程
  * 目前为了赶进度,部分功能仍然采用存储过程方式(大部分为查询类)
@@ -56,4 +58,22 @@ public interface TradeProcedureDAO {
      * @history:
      */
     double oqpGetCapitalbalanceTradeacco(String tradeAcco);
+
+    /**
+     * 写资金流水
+     * @param param 
+     * @create: 2017年2月28日 下午7:07:37 
+     * @author: 徐文凡
+     * @history:
+     */
+    void ibfWriteCaptrade(Map<String, Object> param);
+
+    /**
+     * 资金转账处理
+     * @param param 
+     * @create: 2017年2月28日 下午7:21:17 
+     * @author: 徐文凡
+     * @history:
+     */
+    void otpCaptialtdBid(Map<String, Object> param);
 }

@@ -8,6 +8,8 @@
  */
 package com.zlfund.headstone.facade.trade.dto;
 
+import java.io.Serializable;
+
 import com.zlfund.headstone.common.dto.BaseRequestDTO;
 
 /** 
@@ -15,7 +17,7 @@ import com.zlfund.headstone.common.dto.BaseRequestDTO;
  * @since: 2017年2月20日 下午5:06:39 
  * @history:
  */
-public class BuyRequestDTO extends BaseRequestDTO {
+public class BuyRequestDTO extends BaseRequestDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,10 @@ public class BuyRequestDTO extends BaseRequestDTO {
     private double subAmt;
 
     // 扣款类型 0-不重用撤单资金 1-重用撤单资金
-    private String bidTp;
+    private boolean reuseCapital = true;
+
+    // 是否发起扣款
+    private boolean launchCharge = true;
 
     public String getCustNo() {
         return custNo;
@@ -69,14 +74,6 @@ public class BuyRequestDTO extends BaseRequestDTO {
         this.subAmt = subAmt;
     }
 
-    public String getBidTp() {
-        return bidTp;
-    }
-
-    public void setBidTp(String bidTp) {
-        this.bidTp = bidTp;
-    }
-
     public String getSerialNo() {
         return serialNo;
     }
@@ -85,9 +82,26 @@ public class BuyRequestDTO extends BaseRequestDTO {
         this.serialNo = serialNo;
     }
 
+    public boolean isReuseCapital() {
+        return reuseCapital;
+    }
+
+    public void setReuseCapital(boolean reuseCapital) {
+        this.reuseCapital = reuseCapital;
+    }
+
+    public boolean isLaunchCharge() {
+        return launchCharge;
+    }
+
+    public void setLaunchCharge(boolean launchCharge) {
+        this.launchCharge = launchCharge;
+    }
+
     @Override
     public String toString() {
-        return "BuyRequest [serialNo=" + serialNo + ", custNo=" + custNo + ", tradeAcco=" + tradeAcco + ", fundId=" + fundId + ", subAmt=" + subAmt
-                + ", bidTp=" + bidTp + "]";
+        return "BuyRequestDTO [serialNo=" + serialNo + ", custNo=" + custNo + ", tradeAcco=" + tradeAcco + ", fundId=" + fundId + ", subAmt=" + subAmt
+                + ", reuseCapital=" + reuseCapital + ", launchCharge=" + launchCharge + "]";
     }
+
 }

@@ -8,13 +8,19 @@
  */
 package com.zlfund.headstone.core.biz;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zlfund.headstone.common.exceptions.BizException;
+import com.zlfund.headstone.common.utils.DateUtil;
 import com.zlfund.headstone.common.utils.IdCardUtil;
 import com.zlfund.headstone.common.utils.StringUtil;
 import com.zlfund.headstone.core.bo.AvailableBalanceBO;
+import com.zlfund.headstone.core.dao.BankBnkBaseDAO;
 import com.zlfund.headstone.core.dao.CustAbnStatusDAO;
 import com.zlfund.headstone.core.dao.CustInfoDAO;
 import com.zlfund.headstone.core.dao.FundBalanceDAO;
@@ -23,12 +29,14 @@ import com.zlfund.headstone.core.dao.FundInfoExDAO;
 import com.zlfund.headstone.core.dao.TAInfoDAO;
 import com.zlfund.headstone.core.dao.TradeAccoInfoDAO;
 import com.zlfund.headstone.core.dao.TradeProcedureDAO;
+import com.zlfund.headstone.core.dao.po.BankBnkBasePO;
 import com.zlfund.headstone.core.dao.po.CustAbnStatusPO;
 import com.zlfund.headstone.core.dao.po.CustInfoPO;
 import com.zlfund.headstone.core.dao.po.FundInfoExPO;
 import com.zlfund.headstone.core.dao.po.FundInfoPO;
 import com.zlfund.headstone.core.dao.po.TAInfoPO;
 import com.zlfund.headstone.facade.trade.consts.ApKindConsts;
+import com.zlfund.headstone.facade.trade.consts.CustAbnStatusConsts;
 import com.zlfund.headstone.facade.trade.consts.FundStatusConsts;
 import com.zlfund.headstone.facade.trade.consts.TradeConsts;
 import com.zlfund.headstone.facade.trade.exception.TradeBizException;
@@ -42,6 +50,11 @@ import com.zlfund.headstone.facade.trade.exception.TradeBizException;
  */
 @Component("commonBiz")
 public class TradeCommonBiz {
+
+    private static final Logger LOG = Logger.getLogger(TradeCommonBiz.class);
+
+    @Autowired
+    DateTimeBiz dateTimeBiz;
 
     @Autowired
     FundInfoDAO fundInfoDAO;
@@ -66,6 +79,9 @@ public class TradeCommonBiz {
 
     @Autowired
     TradeProcedureDAO tradeProcedureDAO;
+
+    @Autowired
+    BankBnkBaseDAO bankBnkBaseDAO;
 
     /**
      * 生成交易流水号 24bit
@@ -101,6 +117,7 @@ public class TradeCommonBiz {
      * @author: 徐文凡
      * @history:
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void checkTradeAvailable(String custNo, String tradeAcco, String fundId, String apKind, double quantity) {
         FundInfoExPO fundInfoExPO = fundInfoExDAO.getFundInfoExByFundId(fundId);
 
@@ -118,40 +135,40 @@ public class TradeCommonBiz {
                 // 首次认购检查
                 if ("N".equalsIgnoreCase(firstBuyFlag)) {
                     if (quantity < fundInfoExPO.getMinAddSubAmt()) {
-                        throw TradeBizException.LT_MINADDSUBAMT;
+                        throw TradeBizException.LT_MINADDSUBAMT.newInstance("认购金额不能低于最低追加认购金额%s元", fundInfoExPO.getMinAddSubAmt());
                     }
                 } else {
                     if (quantity < fundInfoExPO.getMinSubAmt()) {
-                        throw TradeBizException.LT_MINSUBAMT;
+                        throw TradeBizException.LT_MINSUBAMT.newInstance("认购金额不能低于最低认购金额%s元", fundInfoExPO.getMinSubAmt());
                     }
                 }
 
                 if (quantity > fundInfoExPO.getMaxSubAmt()) {
-                    throw TradeBizException.GT_MAXSUBAMT;
+                    throw TradeBizException.GT_MAXSUBAMT.newInstance("认购金额不能高于最高认购金额%s元", fundInfoExPO.getMaxSubAmt());
                 }
 
                 if ("1".equals(fundInfoExPO.getIfMultiple()) && (quantity % fundInfoExPO.getMinAddSubAmt() != 0)) {
-                    throw TradeBizException.SUBAMT_MUST_MULTIPLE;
+                    throw TradeBizException.SUBAMT_MUST_MULTIPLE.newInstance("认购金额必须为%s的的整数倍", fundInfoExPO.getMinAddSubAmt());
                 }
 
             } else if (ApKindConsts.BID.equals(apKind)) {
                 // 申购检查
                 if ("N".equalsIgnoreCase(firstBuyFlag)) {
                     if (quantity < fundInfoExPO.getMinAddAppAmt()) {
-                        throw TradeBizException.LT_MINADDAPPAMT;
+                        throw TradeBizException.LT_MINADDAPPAMT.newInstance("申购金额不能低于最低追加申购金额%s元", fundInfoExPO.getMinAddAppAmt());
                     }
                 } else {
                     if (quantity < fundInfoExPO.getMinBidAmt()) {
-                        throw TradeBizException.LT_MINBIDAMT;
+                        throw TradeBizException.LT_MINBIDAMT.newInstance("申购金额不能低于最低申购金额%s元", fundInfoExPO.getMinBidAmt());
                     }
                 }
 
                 if (quantity > fundInfoExPO.getMaxBidAmt()) {
-                    throw TradeBizException.GT_MAXBIDAMT;
+                    throw TradeBizException.GT_MAXBIDAMT.newInstance("申购金额不能高于最高申购金额%s元", fundInfoExPO.getMaxBidAmt());
                 }
 
                 if ("1".equals(fundInfoExPO.getIfMultiple()) && (quantity % fundInfoExPO.getMinAddAppAmt() != 0)) {
-                    throw TradeBizException.BIDAMT_MUST_MULTIPLE;
+                    throw TradeBizException.BIDAMT_MUST_MULTIPLE.newInstance("申购金额必须为%s的整数倍", fundInfoExPO.getMinAddAppAmt());
                 }
             }
 
@@ -184,22 +201,22 @@ public class TradeCommonBiz {
             if (ApKindConsts.RED.equals(apKind)) {
                 // 赎回检查
                 if (quantity < fundInfoExPO.getMinRedAmt()) {
-                    throw TradeBizException.LT_MINREDAMT;
+                    throw TradeBizException.LT_MINREDAMT.newInstance("小于最低赎回份额%s份", fundInfoExPO.getMinRedAmt());
                 }
 
-                if (quantity < fundInfoExPO.getMinHoldAmt()) {
-                    throw TradeBizException.LT_MINHOLDAMT;
+                if (useableBalance < fundInfoExPO.getMinHoldAmt()) {
+                    throw TradeBizException.LT_MINHOLDAMT.newInstance("剩余份额低于最低保有份额%s份", fundInfoExPO.getMinHoldAmt());
                 }
             }
 
             if (ApKindConsts.CONV.equals(apKind)) {
                 // 转换检查
                 if (quantity < fundInfoExPO.getMinConvAmt()) {
-                    throw TradeBizException.LT_MINCONVAMT;
+                    throw TradeBizException.LT_MINCONVAMT.newInstance("小于最低转换份额%s份", fundInfoExPO.getMinConvAmt());
                 }
 
-                if (quantity < fundInfoExPO.getMinHoldAmt()) {
-                    throw TradeBizException.LT_MINHOLDAMT;
+                if (useableBalance < fundInfoExPO.getMinHoldAmt()) {
+                    throw TradeBizException.LT_MINHOLDAMT.newInstance("剩余份额低于最低保有份额%s份", fundInfoExPO.getMinHoldAmt());
                 }
             }
 
@@ -235,14 +252,22 @@ public class TradeCommonBiz {
 
         String abnStatus = custAbnStatusPO.getAbnStatus();
 
-        if ("D".equalsIgnoreCase(abnStatus)) {
+        if (CustAbnStatusConsts.FROZEN.equalsIgnoreCase(abnStatus)) {
             // 账户已被人工冻结
             throw TradeBizException.ACCOUNT_ALREADY_FREEZE;
         }
 
-        if ("C".equalsIgnoreCase(abnStatus)) {
+        if (CustAbnStatusConsts.CLOSE.equalsIgnoreCase(abnStatus)) {
             // 账户已被人工注销
             throw TradeBizException.ACCOUNT_ALREADY_CANCEL;
+        }
+
+        // 限制易宝存量客户
+        int count = tradeAccoInfoDAO.countYeepayRemainCust(custNo);
+
+        if (count > 0) {
+            // 易宝存量客户限制交易
+            throw TradeBizException.YEEPAY_USER_TRADE_LIMIT;
         }
 
         return true;
@@ -295,14 +320,16 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkMarketIsFuse(String fundId) {
-        // 查询系统是否已经触发熔断机制
-        int count = fundInfoExDAO.countFundInfoExIfFuse(fundId);
+        /*
+         * // 查询系统是否已经触发熔断机制 int count = fundInfoExDAO.countFundInfoExIfFuse(fundId);
+         * 
+         * if (count == 0) { return false; }
+         * 
+         * return true;
+         */
 
-        if (count == 0) {
-            return false;
-        }
-
-        return true;
+        // 熔断机制暂停,如启用后将上述注释打开
+        return false;
     }
 
     /**
@@ -328,7 +355,7 @@ public class TradeCommonBiz {
     }
 
     /**
-     * 检查该银行渠道是否在交易时间
+     * 检查该银行渠道是否在交易时间 IBF_CHK_BANKTRADETM 使用JAVA重写
      * @param bankNo 银行渠道
      * @return 
      * @create: 2017年2月22日 上午9:06:39 
@@ -336,8 +363,45 @@ public class TradeCommonBiz {
      * @history:
      */
     public boolean checkBankTradeTime(String bankNo) {
-        // IBF_CHK_BANKTRADETM 使用JAVA重写
+        BankBnkBasePO bankBnkBasePO = bankBnkBaseDAO.getBankBnkBaseByBankNo(bankNo);
+
+        if (bankBnkBasePO == null) {
+            throw TradeBizException.BANKNO_NOT_EXISTS;
+        }
+
+        if (StringUtils.isBlank(bankBnkBasePO.geteTradeDate()) && StringUtils.isBlank(bankBnkBasePO.getbTradeDate())) {
+            // 没有设置则为允许交易
+            return false;
+        }
+
+        String currentTime = dateTimeBiz.getCurrentTime();
+        String cuurentDate = dateTimeBiz.getCurrentDate();
+
+        try {
+            int cTime = Integer.parseInt(currentTime);
+            int bTime = Integer.parseInt(bankBnkBasePO.getbTradeDate());
+            int eTime = Integer.parseInt(bankBnkBasePO.geteTradeDate());
+
+            if (cTime >= bTime && cTime <= eTime) {
+                // 非交易时间
+                throw TradeBizException.NON_TRADING_HOURS.newInstance("非交易时间，请在%s之后再试",
+                        DateUtil.formatDate(cuurentDate + bankBnkBasePO.geteTradeDate(), DateUtil.YMDHMS, DateUtil.YMDHMS_CHN));
+            } else {
+                return false;
+            }
+        } catch(NumberFormatException nfe) {
+            LOG.error("", nfe);
+        }
+
         return true;
+    }
+
+    public static void main(String[] args) {
+        String currentTime = "150101a";
+        String beginTime = "150000";
+        String endTime = "163000";
+
+        System.out.println(Integer.parseInt(currentTime));
     }
 
     /**
@@ -354,7 +418,10 @@ public class TradeCommonBiz {
         // 对应存储过程ITP_APKIND_IS_STOP
         // TODO 这一块业务极其冗长 目前是否用JAVA重写?
         // tradeProcedureDAO.itpApKindIsStop();
-        return true;
+
+        // 会议评审将ITP_APKIND_IS_STOP砍掉 20170228
+        // 原因是FUNDINFO.FUNDST已经可以满足拦截条件, BANK_APKIND_STOP是多此一举
+        return false;
     }
 
     /**

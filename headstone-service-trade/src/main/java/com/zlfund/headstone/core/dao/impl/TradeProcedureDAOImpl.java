@@ -66,4 +66,14 @@ public class TradeProcedureDAOImpl implements TradeProcedureDAO {
         return ((BigDecimal)param.get("sumAvailable")).doubleValue();
     }
 
+    @Override
+    public void ibfWriteCaptrade(Map<String, Object> param) {
+        tradeProcedureMapper.ibfWriteCaptrade(param);
+    }
+
+    @Override
+    public void otpCaptialtdBid(Map<String, Object> param) {
+        tradeProcedureMapper.otpCaptialtdBid(param);
+    }
+
 }

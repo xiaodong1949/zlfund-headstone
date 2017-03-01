@@ -4,13 +4,37 @@
 <mapper namespace="com.zlfund.headstone.core.mapper.CustInfoMapper">
 
   <select id="getCustInfoByCustNo" resultType="CustInfo">
-    SELECT custno, invtp, invnm, idtp, idno, mobileno, email, custst, passwd, 
-       cappasswd, logintime, logincount, passwderr, opendt, updatetimestamp, 
-       pwdchdt, npasswderr, flogintime, resetflag, inserttimestamp, 
-       mobileverifist, tradepasswd, tradepasswderr, tradenpasswderr, 
-       tradepwdchdt, tradeftime
-    FROM custinfo
-    WHERE custno = #{custNo}
+    SELECT
+      custno,
+      invtp,
+      invnm,
+      idtp,
+      idno,
+      mobileno,
+      email,
+      custst,
+      passwd,
+      cappasswd,
+      logintime,
+      logincount,
+      passwderr,
+      opendt,
+      updatetimestamp,
+      pwdchdt,
+      npasswderr,
+      flogintime,
+      resetflag,
+      inserttimestamp,
+      mobileverifist,
+      tradepasswd,
+      tradepasswderr,
+      tradenpasswderr,
+      tradepwdchdt,
+      tradeftime
+    FROM
+      custinfo
+    WHERE
+      custno = #{custNo}
   </select>
 
   <select id="countCustInfoByCustNo">

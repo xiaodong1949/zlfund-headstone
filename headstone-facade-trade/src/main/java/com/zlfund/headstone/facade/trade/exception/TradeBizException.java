@@ -58,6 +58,12 @@ public class TradeBizException extends BizException {
 
     public static final TradeBizException LT_MINCONVAMT = new TradeBizException("20000019", "低于最低转换份额");
 
+    public static final TradeBizException YEEPAY_USER_TRADE_LIMIT = new TradeBizException("20000020", "对不起，交易受限。为保障交易安全，请立即完成升级。");
+
+    public static final TradeBizException BANKNO_NOT_EXISTS = new TradeBizException("20000021", "银行支付渠道不存在");
+
+    public static final TradeBizException NON_TRADING_HOURS = new TradeBizException("20000021", "银行支付渠道非交易时间");
+
     /**
      * 交易账号状态不为N
      */

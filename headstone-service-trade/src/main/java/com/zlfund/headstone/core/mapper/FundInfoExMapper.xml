@@ -4,17 +4,56 @@
 <mapper namespace="com.zlfund.headstone.core.mapper.FundInfoExMapper">
 
   <select id="getFundInfoExByFundId" resultType="FundInfoEx">
-    SELECT fundid, fundchinesenm, fundenglishnm, investtype, fundtp, issueprice, 
-       facevalue, managername, trusteename, tanm, issuedate, setupdate, 
-       managerratio, minsubamt, minbidamt, minredamt, minconvamt, minrspamt, 
-       inserttimestamp, updatetimestamp, transferdays, fundrisklevel, 
-       navfracnum, navfracmode, fundevaldate, maxsubamt, maxbidamt, 
-       url, minholdamt, managercode, fundstyle, minaddappamt, productperiod, 
-       minaddsubamt, maxaipamt, maxcurrdaybinamt, saleserviceratio, 
-       if_multiple, multamt, isfuse, redflag, transferstatus, ackdays, 
-       defaultmelonmd, modifymelonmd
-    FROM fundinfoex
-    WHERE fundid = #{fundId}
+    SELECT
+      fundid,
+      fundchinesenm,
+      fundenglishnm,
+      investtype,
+      fundtp,
+      issueprice,
+      facevalue,
+      managername,
+      trusteename,
+      tanm,
+      issuedate,
+      setupdate,
+      managerratio,
+      minsubamt,
+      minbidamt,
+      minredamt,
+      minconvamt,
+      minrspamt,
+      inserttimestamp,
+      updatetimestamp,
+      transferdays,
+      fundrisklevel,
+      navfracnum,
+      navfracmode,
+      fundevaldate,
+      maxsubamt,
+      maxbidamt,
+      url,
+      minholdamt,
+      managercode,
+      fundstyle,
+      minaddappamt,
+      productperiod,
+      minaddsubamt,
+      maxaipamt,
+      maxcurrdaybinamt,
+      saleserviceratio,
+      if_multiple,
+      multamt,
+      isfuse,
+      redflag,
+      transferstatus,
+      ackdays,
+      defaultmelonmd,
+      modifymelonmd
+    FROM
+      fundinfoex
+    WHERE
+      fundid = #{fundId}
   </select>
 
   <select id="countFundInfoExIfFuse">

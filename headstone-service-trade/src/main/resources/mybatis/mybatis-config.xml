@@ -50,6 +50,7 @@
 		<typeAlias alias="TradeRequestStatus" type="com.zlfund.headstone.core.dao.po.TradeRequestStatusPO" />
 		<typeAlias alias="CustAbnStatus" type="com.zlfund.headstone.core.dao.po.CustAbnStatusPO" />
 		<typeAlias alias="CapitalBalance" type="com.zlfund.headstone.core.dao.po.CapitalBalancePO" />
+		<typeAlias alias="BankBnkBase" type="com.zlfund.headstone.core.dao.po.BankBnkBasePO" />
 	</typeAliases>
 
 	<!-- 在在mappers定义之前 -->

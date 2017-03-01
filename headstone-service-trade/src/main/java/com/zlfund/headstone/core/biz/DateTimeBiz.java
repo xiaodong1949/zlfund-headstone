@@ -49,7 +49,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public CurrentWorkDateBO getCurrentCommonWorkDate(String fundId, String apKind) {
         // 当前日期
         String currentDate = getCurrentDate();
@@ -82,6 +82,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public String getCurrentHKWorkDate(String apKind) {
         // TODO 暂时调用IBF_GET_CURRENT_HK_WORKDATE 后续可考虑改为JAVA
         return procedureDAO.ibfGetCurrentHKWorkDate(apKind);
@@ -95,6 +96,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public String getCurrentWorkDate(String apKind) {
         // TODO 暂时调用IBF_GET_CURRENT_WORKDATE 后续可考虑改为JAVA
         return procedureDAO.ibfGetCurrentWorkDate(apKind);
@@ -107,7 +109,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public String getCurrentDate() {
         return postgreSQLDAO.getCurrentDate();
     }
@@ -119,7 +121,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public String getCurrentTime() {
         return postgreSQLDAO.getCurrentTime();
     }
@@ -131,6 +133,7 @@ public class DateTimeBiz {
      * @author: 徐文凡
      * @history:
      */
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public Date getCurrentTimeStamp() {
         return postgreSQLDAO.getCurrentTimeStamp();
     }
