@@ -88,7 +88,7 @@ public class RegisterBiz extends AccountManageCommonBiz {
         }
         // 一个客户不能同时属于地推员和推广员
         if (StringUtils.isNotBlank(registerRequestDTO.getPromo_code()) && StringUtils.isBlank(registerRequestDTO.getSpread_code())) {
-            registerRequestDTO.setSerialno("");
+            registerRequestDTO.setSpread_code("");
         }
     }
 

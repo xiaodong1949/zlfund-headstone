@@ -17,6 +17,7 @@ import com.zlfund.headstone.common.dto.BaseResultDTO;
 import com.zlfund.headstone.core.mongo.repository.CustInfoRepository;
 import com.zlfund.headstone.facade.account.manage.dto.RegisterMobilenoRequestDTO;
 import com.zlfund.headstone.facade.account.manage.exception.AccountManageBizException;
+import com.zlfund.headstone.util.AccountManageUtil;
 
 /**
  * 注册切面
@@ -42,10 +43,8 @@ public class RegisterAspect extends AccountManageAspect {
         Object[] args = joinPoint.getArgs();
         if (null != args && args.length > 0) {
             Object requestObj = args[0];
-            if (log.isDebugEnabled()) {
-                log.debug(requestObj);
-            }
             if (null != requestObj) {
+                AccountManageUtil.logDebug(log, requestObj.toString());
                 // 手机号码注册
                 if (requestObj instanceof RegisterMobilenoRequestDTO) {
                     RegisterMobilenoRequestDTO registerMobilenoRequestDTO = (RegisterMobilenoRequestDTO)requestObj;
@@ -95,7 +94,7 @@ public class RegisterAspect extends AccountManageAspect {
             resultDTO.setSuccess(false);
             resultObj = resultDTO;
         } catch(Throwable e) {
-            log.error(e);
+            e.printStackTrace();
             resultDTO.setErrCode(AccountManageBizException.OTHER_ERROR.getCode());
             resultDTO.setErrMsg(AccountManageBizException.OTHER_ERROR.getMsg());
             resultDTO.setErrDetailMsg(AccountManageBizException.OTHER_ERROR.getMsg());

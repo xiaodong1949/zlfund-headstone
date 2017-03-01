@@ -8,31 +8,27 @@
     http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd  
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	<!-- 获取配置资源 -->
-	<context:property-placeholder location="classpath:mongo.properties" />
-	<mongo:mongo id="mongo" replica-set="${account.manage.account.manage.mongo.replicaSet}">
+	<mongo:mongo id="mongo" replica-set="10.234.99.246:27017">
 		<!-- connections-per-host: 每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住 
 		     max-wait-time: 被阻塞线程从连接池获取连接的最长等待时间（ms） 
 		     connect-timeout:在建立（打开）套接字连接时的超时时间（ms） 
 		     socket-timeout:套接字超时时间;该值会被传递给
 		     Socket.setSoTimeout(int) 
 		     slave-ok:指明是否答应驱动从次要节点或者奴隶节点读取数据 -->
-		<mongo:options 
-			 connections-per-host="${account.manage.mongo.connectionsPerHost}" 
-			 threads-allowed-to-block-for-connection-multiplier="${account.manage.mongo.threadsAllowedToBlockForConnectionMultiplier}" 
-			 connect-timeout="${account.manage.mongo.connectTimeout}" 
-			 max-wait-time="${account.manage.mongo.maxWaitTime}"
-			 auto-connect-retry="${account.manage.mongo.autoConnectRetry}" 
-			 socket-keep-alive="${account.manage.mongo.socketKeepAlive}" 
-			 socket-timeout="${account.manage.mongo.socketTimeout}" 
-			 slave-ok="${account.manage.mongo.slaveOk}" 
-			 write-number="${account.manage.mongo.writeNumber}" 
-			 write-timeout="${account.manage.mongo.riteTimeout}"
-			 write-fsync="${account.manage.mongo.writeFsync}" />
+		<mongo:options connections-per-host="8"
+                   threads-allowed-to-block-for-connection-multiplier="4"
+                   connect-timeout="1000"
+                   max-wait-time="1500"
+                   auto-connect-retry="true"
+                   socket-keep-alive="true"
+                   socket-timeout="1500"
+                   slave-ok="true"
+                   />
 	</mongo:mongo>
+	<mongo:db-factory dbname="fund" mongo-ref="mongo" username="zlfund" password="1qaz2wsx" />
 	<!-- mongodb的模板 (fund ) -->
 	<bean id="fundMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		 <constructor-arg ref="mongo" />
-         <constructor-arg name="databaseName" value="${account.manage.mongo.name.fund}" />
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
 	</bean>
 	  <!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为mongodb的一个collection的映射 -->
     <mongo:mapping-converter base-package="com.zlfund.headstone.core.mongo.collection" />
