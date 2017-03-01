@@ -33,7 +33,7 @@ public class AccountManageAspect {
      * @author: Yang Xiaodong
      * @history: 
      */
-    @Pointcut("execution(public * com.zlfund.headstone.core.biz.*.*(..))")
+    @Pointcut("execution(public * com.zlfund.headstone.core.biz.*.check*(..))")
     public void declareJointPointExpressionBiz() {
     }
 
